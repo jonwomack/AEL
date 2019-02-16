@@ -64,14 +64,14 @@
                 "<br>Distance (m): " + currDistance;
                 el.setAttribute('geometry', {
                     primitive: 'sphere',
-                    color: 'red',
-                    radius: 500,
+                    color: 'blue',
+                    radius: 5,
                 });
                 el.setAttribute('position', {
-                    x: x,
-                    y: y,
-                    z: z
-                })
+                    x: 0,
+                    y: 1.5,
+                    z: -10
+                });
                 var sceneEl = document.querySelector('a-scene');
                 sceneEl.appendChild(el);
             }
@@ -110,7 +110,7 @@
 
         <div id="a-scene">
             <a-scene embedded>
-                <a-sphere id="sphere" position="0 1.5 -10" radius="5" color="blue"></a-sphere>
+                <a-sphere id="sphere" position="0 1.5 -20" radius="5" color="blue"></a-sphere>
             </a-scene>
         </div>
     </body>

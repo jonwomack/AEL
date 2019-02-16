@@ -62,6 +62,7 @@
                 "<br>Altitude: " + currAlt +
                 "<br>Heading: " + currHeading +
                 "<br>Distance (m): " + currDistance;
+                var el = document.createElement('a-entity');
                 el.setAttribute('geometry', {
                     primitive: 'sphere',
                     color: 'blue',

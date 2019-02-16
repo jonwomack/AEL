@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+ <html>
+    <head>
+        <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
+        <style>
+            a-scene {
+                position: absolute;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 600px;
+                height: 600px;
+            }
+            #a-scene {
+                margin-left: 10 auto;
+                margin-right: 10 auto;
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <p>Click the button to get your coordinates.</p>
+        <button onclick="getLocation()">Try It</button>
+        <p id="demo"></p>
+        <script>
+            var demo = document.getElementById("demo");
+            var currLat;
+            var currLon;
+            var currAlt;
+            var currHeading;
+            var currDistance;
+            var x;
+            var y;
+            var z;
+            
+            var lat = 33.777024;
+            var lon = -84.389256;
+            var alt = 294;
+            
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(storePosition);
+                } else { 
+                    demo.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+            
+            function storePosition(position) {
+                currLat = position.coords.latitude;
+                currLon = position.coords.longitude;
+                currAlt = position.coords.altitude;
+                currHeading = position.coords.heading;
+                if (currHeading === null) {
+                    currHeading = calculateBearing(currLat, lat, currLon, lon);
+                }
+                currDistance = distanceBetweenPoints(currLat, lat, currLon, lon);
+                x = currDistance * Math.cos(currHeading);
+                y = currDistance * Math.sin(currHeading);
+                z = 0;
+                demo.innerHTML = "Latitude: " + currLat +
+                "<br>Longitude: " + currLon +
+                "<br>Altitude: " + currAlt +
+                "<br>Heading: " + currHeading +
+                "<br>Distance (m): " + currDistance;
+                el.setAttribute('geometry', {
+                    primitive: 'sphere',
+                    color: 'red',
+                    radius: 500,
+                });
+                el.setAttribute('position', {
+                    x: x,
+                    y: y,
+                    z: z
+                })
+                var sceneEl = document.querySelector('a-scene');
+                sceneEl.appendChild(el);
+            }
+            
+            function distanceBetweenPoints(lat1, lat2, lon1, lon2) {
+                var radius = 6371e3; // metres
+                var lat1 = toRadians(lat1);
+                var lat2 = toRadians(lat2);
+                var deltaLat = toRadians(lat2-lat1);
+                var deltaLon = toRadians(lon2-lon1);
+                var a = Math.sin(deltaLat/2) * Math.sin(deltaLat/2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltaLon/2) * Math.sin(deltaLon/2);
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                var distance = radius * c;
+                var el = document.createElement('a-entity');
+                return distance;
+            }
+            
+            function calculateBearing(lat1, lat2, lon1, lon2) {
+                var dLon = (lon2-lon1);
+                var y = Math.sin(dLon) * Math.cos(lat2);
+                var x = Math.cos(lat1)*Math.sin(lat2) - Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
+                var brng = toDegrees((Math.atan2(y, x)));
+                var brng = (360 - ((brng + 360) % 360));
+                return brng;
+            }
+            
+            function toDegrees(radians) {
+                var pi = Math.PI;
+                return radians * (180/pi);
+            }
+            function toRadians(degrees) {
+                var pi = Math.PI;
+                return degrees * (pi/180);
+            }
+        </script>
+
+        <div id="a-scene">
+            <a-scene embedded>
+                <a-sphere id="sphere" position="0 1.5 -10" radius="5" color="blue"></a-sphere>
+            </a-scene>
+        </div>
+    </body>
+</html>

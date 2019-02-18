@@ -108,7 +108,13 @@
         return degrees * (pi/180);
     }
 </script>
-
+<script>
+    function AR(lat, lon) {
+        this.lat = lat;
+        this.lon = lon;
+        this.distance = distanceBetweenPoints(currLat, lat, currLon, lon);
+    }
+</script>
 <div id="a-scene">
     <a-scene embedded>
         <a-sphere id="sphere" position="0 1.5 -20" radius="5" color="blue"></a-sphere>

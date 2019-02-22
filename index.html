@@ -14,6 +14,10 @@
             margin-right: 10 auto;
             display: block;
         }
+        #container {
+            position: absolute;
+            left: 550px;
+        }
         p {
             position: relative;
             text-align: center;
@@ -34,19 +38,23 @@
 <p>Then, place objects by pressing this button</p>
 <button onclick="placeObjects()">Place</button>
 
+<div id="container">
+    <video autoplay="true" id="videoElement">
+
+    </video>
+</div>
 
 <div id="a-scene">
-
-    <a-scene embedded>
-        <a-sky color="#6EBAA7"></a-sky>
-        <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#93648D"></a-plane>
+    <a-assets>
+        <a-asset-item id="buzz" src="Buzz_Solid.gltf"></a-asset-item>
+        <a-asset-item id="bin" src="Buzz_Solid.bin"></a-asset-item>
+    </a-assets>
+    <a-scene embedded background="color: black; transparent: true">
+        <!--<a-sky material="src: #webcam"></a-sky>-->
+        <!--<a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#93648D"></a-plane>-->
         <a-entity camera look-controls position="0 1.6 0"></a-entity>
-        <a-assets>
-            <a-asset-item id="plane" src="Plane.gltf"></a-asset-item>
-        </a-assets>
-
-        <a-entity gltf-model="#plane"></a-entity>
-
+        <a-sphere position="0 10 0" color="white"></a-sphere>
+        <a-entity gltf-model="#buzz" position="0 1.6 -10"></a-entity>
     </a-scene>
 </div>
 
@@ -61,11 +69,14 @@
     const ncr = new AR(33.779051, -84.389330, "NCR Global");
     const westVillage = new AR(33.779457, -84.404843, "West Village", 'blue');
     const wingZone = new AR(33.779466, -84.405400, "Wing Zone", 'orange');
-    const fitten = new AR(33.778210, -84.403753, "Fitten", 'yellow');
+    const fitten = new AR(33.778210, -84.403753, "Fitten", 'red');
     const folk = new AR(33.778907, -84.404858, "Folk", 'red');
-    const fulmer = new AR(33.778625, -84.403892, "Fulmer", 'purple');
+    const fulmer = new AR(33.778625, -84.403892, "Fulmer", 'yellow');
     const caldwell = new AR(33.778897, -84.404419, "Caldwell", 'green');
-    const objs = [waffleHouse, starBucks, ncr, westVillage, wingZone, fitten, folk, fulmer, caldwell];
+    const eighth = new AR(33.779803, -84.403961, "Due North", 'blue');
+    const coor = new AR(33.779125, -84.403064, "East Point", 'red');
+    const westVillageDiningCommons = new AR(33.779146, -84.404474, "WVDC", 'green');
+    const objs = [fulmer, westVillageDiningCommons, eighth, coor];
     const demo = document.getElementById("demo");
     var currLat;
     var currLon;
@@ -86,8 +97,8 @@
         //currLon = position.coords.longitude;
         currLat = 33.779149;
         currLon = -84.403955;
-        currAlt = position.coords.altitude;
-        currHeading = position.coords.heading;
+        //currAlt = position.coords.altitude;
+        //currHeading = position.coords.heading;
     }
 
     function placeObjects() {
@@ -101,13 +112,13 @@
         demo.innerHTML += "<br>Name: " + obj.name + " ";
         let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon);
         let bearing = calculateBearing(currLat, obj.lat, currLon, obj.lon);
-        let x = distance * Math.cos(bearing);
-        let y = 10
-        let z = distance * Math.sin(bearing);;
+        let x = distance * Math.cos(toRadians(bearing));
+        let y = 10;
+        let z = distance * Math.sin(toRadians(bearing));
         let el = document.createElement('a-entity');
         el.setAttribute('geometry', {
             primitive: 'sphere',
-            radius: 10,
+            radius: 5,
         });
         el.setAttribute('material', {
             color: obj.color
@@ -139,7 +150,7 @@
         let a = Math.sin(deltaLat/2) * Math.sin(deltaLat/2) + Math.cos(lat1radians) * Math.cos(lat2radians) * Math.sin(deltaLon/2) * Math.sin(deltaLon/2);
         let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         let distance = radius * c;
-        demo.innerHTML += "<br>Distance: " + distance + "<br>";
+        demo.innerHTML += "<br>Distance: " + distance;
         return distance;
     }
 
@@ -149,6 +160,7 @@
         let x = Math.cos(latB1)*Math.sin(latB2) - Math.sin(latB1)*Math.cos(latB2)*Math.cos(dLon);
         let brng = toDegrees((Math.atan2(y, x)));
         brng = (360 - ((brng + 360) % 360));
+        demo.innerHTML += "<br>Bearing: " + brng + "<br>";
         return brng;
     }
 
@@ -180,7 +192,19 @@
         })
     }
 </script>
+<script>
+    var video = document.querySelector("#videoElement");
 
+    if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({video: true})
+            .then(function(stream) {
+                video.srcObject = stream;
+            })
+            .catch(function(err0r) {
+                console.log("Something went wrong!");
+            });
+    }
+</script>
 
 
 

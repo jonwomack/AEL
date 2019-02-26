@@ -33,9 +33,9 @@
     </style>
 </head>
 <body>
-<!--<div id="flip-button">
+<div id="flip-button">
     <button onclick="">Flip Camera</button>
-</div>-->
+</div>
 <p>First, store your lat/lon by pressing this button.</p>
 <button onclick="getLocation()">Store</button>
 <p>Update position using this button.</p>
@@ -44,11 +44,11 @@
 <button onclick="placeObjects()">Place</button>
 
 <div id="container">
-    <video autoplay="true" id="videoElement">
+    <video  id="videoElement">
     </video>
 </div>
 
-<div id="a-scene">
+<!--<div id="a-scene">
     <a-scene embedded background="color: black; transparent: true">
         <a-assets>
             <a-asset-item id="buzz" src="Buzz_Solid.gltf"></a-asset-item>
@@ -61,7 +61,7 @@
         <a-sphere radius="5" position="0 10 0" color="white"></a-sphere>
         <a-entity gltf-model="#einstein" position="0 1.6 -10" rotation="0 -90 0" scale="1 1 2"></a-entity>
     </a-scene>
-</div>
+</div>-->
 
 <p>To see current position click here</p>
 <button onclick="makeString()">Here</button>
@@ -230,21 +230,26 @@
 </script>
 <script>
     var front = false;
-    document.getElementById('flip-button').onclick = function() { front = !front; };
+    document.getElementById('flip-button').onclick = function() {
+        front = !front;
+        console.log("Switched Camera")
+    };
     var constraints = { video: { facingMode: (front? "user" : "environment") } };
-
-    var video = document.querySelector("#videoElement");
-
-    if (navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({video: true})
-            .then(function(stream) {
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then(function(stream) {
+            var video = document.querySelector('video');
+            if ("srcObject" in video) {
                 video.srcObject = stream;
+            } else {
+                video.src = window.URL.createObjectURL(stream);
+            }
+            video.onloadedmetadata = function(e) {
                 video.play();
-            })
-            .catch(function(err0r) {
-                console.log("Something went wrong!");
-            });
-    }
+            };
+        })
+        .catch(function(err) {
+            console.log(err.name + ": " + err.message);
+        });
 </script>
 
 

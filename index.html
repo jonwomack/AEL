@@ -33,28 +33,33 @@
     </style>
 </head>
 <body>
+<div id="flip-button">
+    <button onclick="">Flip Camera</button>
+</div>
 <p>First, store your lat/lon by pressing this button.</p>
 <button onclick="getLocation()">Store</button>
+<p>Update position using this button.</p>
+<button onclick="updatePosition()">Update</button>
 <p>Then, place objects by pressing this button</p>
 <button onclick="placeObjects()">Place</button>
 
 <div id="container">
     <video autoplay="true" id="videoElement">
-
     </video>
 </div>
 
 <div id="a-scene">
-    <a-assets>
-        <a-asset-item id="buzz" src="Buzz_Solid.gltf"></a-asset-item>
-        <a-asset-item id="bin" src="Buzz_Solid.bin"></a-asset-item>
-    </a-assets>
     <a-scene embedded background="color: black; transparent: true">
+        <a-assets>
+            <a-asset-item id="buzz" src="Buzz_Solid.gltf"></a-asset-item>
+            <a-asset-item id="bin" src="Buzz_Solid.bin"></a-asset-item>
+            <a-asset-item id="einstein" src="Einstein.glb"></a-asset-item>
+        </a-assets>
         <!--<a-sky material="src: #webcam"></a-sky>-->
         <!--<a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#93648D"></a-plane>-->
-        <a-entity camera look-controls position="0 1.6 0"></a-entity>
-        <a-sphere position="0 10 0" color="white"></a-sphere>
-        <a-entity gltf-model="#buzz" position="0 1.6 -10"></a-entity>
+        <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
+        <a-sphere radius="5" position="0 10 0" color="white"></a-sphere>
+        <a-entity gltf-model="#einstein" position="0 1.6 -10" rotation="0 -90 0" scale="1 1 2"></a-entity>
     </a-scene>
 </div>
 
@@ -67,21 +72,26 @@
     const waffleHouse = new AR(33.776607,-84.389426, "Waffle House");
     const starBucks = new AR(33.776527, -84.388348, "Starbucks");
     const ncr = new AR(33.779051, -84.389330, "NCR Global");
-    const westVillage = new AR(33.779457, -84.404843, "West Village", 'blue');
-    const wingZone = new AR(33.779466, -84.405400, "Wing Zone", 'orange');
-    const fitten = new AR(33.778210, -84.403753, "Fitten", 'red');
-    const folk = new AR(33.778907, -84.404858, "Folk", 'red');
-    const fulmer = new AR(33.778625, -84.403892, "Fulmer", 'yellow');
-    const caldwell = new AR(33.778897, -84.404419, "Caldwell", 'green');
-    const eighth = new AR(33.779803, -84.403961, "Due North", 'blue');
-    const coor = new AR(33.779125, -84.403064, "East Point", 'red');
-    const westVillageDiningCommons = new AR(33.779146, -84.404474, "WVDC", 'green');
-    const objs = [fulmer, westVillageDiningCommons, eighth, coor];
+    const westVillage = new AR(33.779457, -84.404843, "West Village", 'black');
+    const wingZone = new AR(33.779466, -84.405400, "Wing Zone", 'black');
+    const fitten = new AR(33.778210, -84.403753, "Fitten", 'black');
+    const folk = new AR(33.778907, -84.404858, "Folk", 'black');
+    const caldwell = new AR(33.778897, -84.404419, "Caldwell", 'black');
+    const fulmer = new AR(33.778625, -84.403892, "Fulmer", 'black');
+    const westVillageDiningCommons = new AR(33.779146, -84.404474, "WVDC", 'black');
+    const eighth = new AR(33.779803, -84.403961, "Due North", 'black');
+    const coor = new AR(33.779125, -84.403064, "East Point", 'black');
+    const einstein = new AR(33.775203, -84.397774,  "einstein", '')
+    const objs = [waffleHouse, starBucks, ncr
+        , westVillage, wingZone, fitten, folk, caldwell, fulmer
+        , westVillageDiningCommons, eighth, coor];
     const demo = document.getElementById("demo");
     var currLat;
     var currLon;
     var currAlt;
     var currHeading;
+    var currX = 0;
+    var currZ = 0;
 
 
     function getLocation() {
@@ -91,6 +101,33 @@
             demo.innerHTML = "Geolocation is not supported by this browser.";
         }
     }
+    function updatePosition() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(updatePositionHelper);
+        } else {
+            demo.innerHTML = "Geolocation cannot be updated.";
+        }
+    }
+    function updatePositionHelper(position) {
+        let cam = document.getElementById("camera");
+        let tempLat = position.coords.latitude;
+        let tempLon = position.coords.longitude;
+        let changeInDistance = calculateDistance(tempLat, currLat, tempLon, currLon);
+        let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
+        if (changeInDistance > 10) {
+            currLat = position.coords.latitude;
+            currLon = position.coords.longitude;
+            currX = currX + changeInDistance * Math.cos(toRadians(changeInBearing));
+            currZ = currZ + changeInDistance * Math.sin(toRadians(changeInBearing))
+            cam.setAttribute('position', {
+                x: currX,
+                y: 1.6,
+                z: currZ
+            });
+        }
+    }
+
+
 
     function storePosition(position) {
         //currLat = position.coords.latitude;
@@ -128,7 +165,6 @@
             y: y,
             z: z
         });
-        //el.setAttribute('color', obj.color);
         let sceneEl = document.querySelector('a-scene');
         el.flushToDOM();
         sceneEl.appendChild(el);
@@ -193,6 +229,11 @@
     }
 </script>
 <script>
+    var front = false;
+    document.getElementById('flip-button').onclick = function() { front = !front; };
+    var constraints = { video: { facingMode: (front? "user" : "environment") } };
+
+
     var video = document.querySelector("#videoElement");
 
     if (navigator.mediaDevices.getUserMedia) {

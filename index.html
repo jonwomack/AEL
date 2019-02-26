@@ -33,9 +33,6 @@
     </style>
 </head>
 <body>
-<div id="flip-button">
-    <button onclick="">Flip Camera</button>
-</div>
 <p>First, store your lat/lon by pressing this button.</p>
 <button onclick="getLocation()">Store</button>
 <p>Update position using this button.</p>
@@ -68,19 +65,19 @@
 <button onclick="ARtoString()">List</button>
 <p id="demo"></p>
 <script>
-    const waffleHouse = new AR(33.776607,-84.389426, "Waffle House");
-    const starBucks = new AR(33.776527, -84.388348, "Starbucks");
-    const ncr = new AR(33.779051, -84.389330, "NCR Global");
-    const westVillage = new AR(33.779457, -84.404843, "West Village", 'black');
-    const wingZone = new AR(33.779466, -84.405400, "Wing Zone", 'black');
-    const fitten = new AR(33.778210, -84.403753, "Fitten", 'black');
-    const folk = new AR(33.778907, -84.404858, "Folk", 'black');
-    const caldwell = new AR(33.778897, -84.404419, "Caldwell", 'black');
-    const fulmer = new AR(33.778625, -84.403892, "Fulmer", 'black');
-    const westVillageDiningCommons = new AR(33.779146, -84.404474, "WVDC", 'black');
-    const eighth = new AR(33.779803, -84.403961, "Due North", 'black');
-    const coor = new AR(33.779125, -84.403064, "East Point", 'black');
-    const einstein = new AR(33.775203, -84.397774,  "einstein", '')
+    const waffleHouse = new AR(33.776607,-84.389426, 10, "Waffle House");
+    const starBucks = new AR(33.776527, -84.388348, 10, "Starbucks");
+    const ncr = new AR(33.779051, -84.389330, 10, "NCR Global");
+    const westVillage = new AR(33.779457, -84.404843, 10, "West Village", 'black');
+    const wingZone = new AR(33.779466, -84.405400, 10, "Wing Zone", 'black');
+    const fitten = new AR(33.778210, -84.403753, 10, "Fitten", 'black');
+    const folk = new AR(33.778907, -84.404858, 10, "Folk", 'black');
+    const caldwell = new AR(33.778897, -84.404419, 10, "Caldwell", 'black');
+    const fulmer = new AR(33.778625, -84.403892, 10, "Fulmer", 'black');
+    const westVillageDiningCommons = new AR(33.779146, -84.404474, 10, "WVDC", 'black');
+    const eighth = new AR(33.779803, -84.403961, 10, "Due North", 'black');
+    const coor = new AR(33.779125, -84.403064, 10, "East Point", 'black');
+    const einstein = new AR(33.775203, -84.397774, 10,  "einstein", '')
     const objs = [waffleHouse, starBucks, ncr
         , westVillage, wingZone, fitten, folk, caldwell, fulmer
         , westVillageDiningCommons, eighth, coor];
@@ -100,6 +97,17 @@
             demo.innerHTML = "Geolocation is not supported by this browser.";
         }
     }
+
+    function storePosition(position) {
+        //currLat = position.coords.latitude;
+        //currLon = position.coords.longitude;
+        currLat = 33.779149;
+        currLon = -84.403955;
+        currAlt = position.coords.altitude;
+        //currHeading = position.coords.heading;
+    }
+
+
     function updatePosition() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(updatePositionHelper);
@@ -116,25 +124,15 @@
         if (changeInDistance > 10) {
             currLat = position.coords.latitude;
             currLon = position.coords.longitude;
+            currAlt = position.coords.altitude;
             currX = currX + changeInDistance * Math.cos(toRadians(changeInBearing));
             currZ = currZ + changeInDistance * Math.sin(toRadians(changeInBearing))
             cam.setAttribute('position', {
                 x: currX,
-                y: 1.6,
+                y: currAlt,
                 z: currZ
             });
         }
-    }
-
-
-
-    function storePosition(position) {
-        //currLat = position.coords.latitude;
-        //currLon = position.coords.longitude;
-        currLat = 33.779149;
-        currLon = -84.403955;
-        //currAlt = position.coords.altitude;
-        //currHeading = position.coords.heading;
     }
 
     function placeObjects() {
@@ -149,7 +147,7 @@
         let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon);
         let bearing = calculateBearing(currLat, obj.lat, currLon, obj.lon);
         let x = distance * Math.cos(toRadians(bearing));
-        let y = 10;
+        let y = obj.alt;
         let z = distance * Math.sin(toRadians(bearing));
         let el = document.createElement('a-entity');
         el.setAttribute('geometry', {
@@ -176,6 +174,7 @@
             "<br>Heading: " + currHeading + "<br><br>";
     }
 
+    //Calculates the distance between user's location and object's location
     function calculateDistance(lat1, lat2, lon1, lon2) {
         const radius = 6371e3; // Radius of Earth in Meters
         let lat1radians = toRadians(lat1);
@@ -189,6 +188,7 @@
         return distance;
     }
 
+    //Calculates angle between user's location and object's location
     function calculateBearing(latB1, latB2, lonB1, lonB2) {
         let dLon = (lonB2-lonB1);
         let y = Math.sin(dLon) * Math.cos(latB2);
@@ -205,19 +205,26 @@
     function toRadians(degrees) {
         return degrees * (Math.PI/180);
     }
-    function AR(lat, lon) {
-        AR(lat, lon, '');
-    }
-    function AR(lat, lon, name) {
-        AR(lat, lon, '' + name, 'white');
-    }
 
-    function AR(lat, lon, name, color) {
+
+
+
+
+    //AR Object Constructors
+    function AR(lat, lon, alt) {
+        AR(lat, lon, alt, '');
+    }
+    function AR(lat, lon, alt, name) {
+        AR(lat, lon, alt, '' + name, 'white');
+    }
+    function AR(lat, lon, alt, name, color) {
         this.lat = lat;
         this.lon = lon;
+        this.alt = alt;
         this.name = name;
         this.color = color;
     }
+
 
     function ARtoString() {
         objs.forEach(function (item, index, array) {
@@ -227,7 +234,9 @@
         })
     }
 </script>
+
 <script>
+    //Enables camera functionality
     var front = false;
     var constraints = { video: { facingMode: (front? "user" : "environment") } };
     navigator.mediaDevices.getUserMedia(constraints)
@@ -246,10 +255,5 @@
             console.log(err.name + ": " + err.message);
         });
 </script>
-
-
-
-
-
 </body>
 </html>

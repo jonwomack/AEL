@@ -33,9 +33,9 @@
     </style>
 </head>
 <body>
-<div id="flip-button">
+<!--<div id="flip-button">
     <button onclick="">Flip Camera</button>
-</div>
+</div>-->
 <p>First, store your lat/lon by pressing this button.</p>
 <button onclick="getLocation()">Store</button>
 <p>Update position using this button.</p>
@@ -233,13 +233,13 @@
     document.getElementById('flip-button').onclick = function() { front = !front; };
     var constraints = { video: { facingMode: (front? "user" : "environment") } };
 
-
     var video = document.querySelector("#videoElement");
 
     if (navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({video: true})
             .then(function(stream) {
                 video.srcObject = stream;
+                video.play();
             })
             .catch(function(err0r) {
                 console.log("Something went wrong!");

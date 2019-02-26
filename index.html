@@ -16,7 +16,7 @@
         }
         #container {
             position: absolute;
-            left: 0px;
+            left: 50px;
         }
         p {
             position: relative;
@@ -229,10 +229,6 @@
 </script>
 <script>
     var front = false;
-    document.getElementById('flip-button').onclick = function() {
-        front = !front;
-        console.log("Switched Camera")
-    };
     var constraints = { video: { facingMode: (front? "user" : "environment") } };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {

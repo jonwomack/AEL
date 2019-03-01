@@ -100,6 +100,7 @@
     }
 
     function storePosition(position) {
+        demo.innerHTML = "Storing Position";
         //currLat = position.coords.latitude;
         //currLon = position.coords.longitude;
         currLat = 33.779149;
@@ -117,6 +118,7 @@
         }
     }
     function updatePositionHelper(position) {
+        demo.innerHTML = "Updating Position";
         let cam = document.getElementById("camera");
         let tempLat = position.coords.latitude;
         let tempLon = position.coords.longitude;
@@ -184,7 +186,6 @@
         let a = Math.sin(deltaLat/2) * Math.sin(deltaLat/2) + Math.cos(lat1radians) * Math.cos(lat2radians) * Math.sin(deltaLon/2) * Math.sin(deltaLon/2);
         let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         let distance = radius * c;
-        demo.innerHTML += "<br>Distance: " + distance;
         return distance;
     }
 
@@ -195,7 +196,6 @@
         let x = Math.cos(latB1)*Math.sin(latB2) - Math.sin(latB1)*Math.cos(latB2)*Math.cos(dLon);
         let brng = toDegrees((Math.atan2(y, x)));
         brng = (360 - ((brng + 360) % 360));
-        demo.innerHTML += "<br>Bearing: " + brng + "<br>";
         return brng;
     }
 
@@ -258,7 +258,7 @@
     function handleOrientation(event) {
         var x = event.beta;  // In degree in the range [-180,180]
         var y = event.gamma; // In degree in the range [-90,90]
-        demo.innerHTML = "Beta: " + x + " Gamma: " + y;
+        demo.innerHTML = "<br>Beta: " + x + "<br>Gamma: " + y;
     }
 </script>
 </body>

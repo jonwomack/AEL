@@ -39,7 +39,8 @@
 <button onclick="updatePosition()">Update</button>
 <p>Then, place objects by pressing this button</p>
 <button onclick="placeObjects()">Place</button>
-<button onclick="handleOrientation()">Orientation</button>
+<p>Orientation button</p>
+<button onclick="heading()">Orientation</button>
 
 <div id="container">
     <video  id="videoElement">
@@ -142,6 +143,31 @@
         objs.forEach(function (item, index, array) {
             createObject(item);
         });
+    }
+
+    function heading() {
+        demo.innerHTML = "Running";
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener("deviceorientation", function (event) {
+                // alpha: rotation around z-axis
+                var rotateDegrees = event.alpha;
+                // gamma: left to right
+                var leftToRight = event.gamma;
+                // beta: front back motion
+                var frontToBack = event.beta;
+
+                handleOrientationEvent(frontToBack, leftToRight, rotateDegrees);
+            }, true);
+        } else {
+            demo.innerHTML = "No Device Orientation";
+        }
+        demo.innerHTML += "Ending";
+    }
+
+    function handleOrientationEvent(frontToBack, leftToRight, rotateDegrees) {
+        demo.innerHTML = "Front to back: " + frontToBack
+            + "Left to Right: " + leftToRight
+            + "Rotate Degrees: " + rotateDegrees;
     }
 
 
@@ -255,11 +281,6 @@
             console.log(err.name + ": " + err.message);
         });
 
-    function handleOrientation(event) {
-        var x = event.beta;  // In degree in the range [-180,180]
-        var y = event.gamma; // In degree in the range [-90,90]
-        demo.innerHTML = "<br>Beta: " + x + "<br>Gamma: " + y;
-    }
 </script>
 </body>
 </html>

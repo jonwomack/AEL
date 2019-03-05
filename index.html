@@ -163,10 +163,10 @@
     }
 
     function handleOrientationEvent(frontToBack, leftToRight, rotateDegrees, trueNorth) {
-        demo.innerHTML = "Front to back: " + frontToBack
-            + "<br>Left to Right: " + leftToRight
-            + "<br>Rotate Degrees: " + rotateDegrees
-            + "<br>True North: " + trueNorth;
+        demo.innerHTML = "Front to back: " + parseFloat(Math.round(frontToBack * 100) / 100).toFixed(2);
+            + "<br>Left to Right: " + parseFloat(Math.round(leftToRight * 100) / 100).toFixed(2);
+            + "<br>Rotate Degrees: " + parseFloat(Math.round(rotateDegrees * 100) / 100).toFixed(2);
+        + "<br>True North: " + trueNorth;
     }
 
     function createObject(obj) {

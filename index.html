@@ -155,17 +155,21 @@
                 var leftToRight = event.gamma;
                 // beta: front back motion
                 var frontToBack = event.beta;
-
+                if(event.webkitCompassHeading) {
+                    // Apple works only with this, alpha doesn't work
+                    var compass = event.webkitCompassHeading;
+                }
                 var trueNorth = event.absolute;
-                handleOrientationEvent(frontToBack, leftToRight, rotateDegrees, trueNorth);
+                handleOrientationEvent(frontToBack, leftToRight, rotateDegrees, trueNorth, compass);
             }, true);
         }
     }
 
-    function handleOrientationEvent(frontToBack, leftToRight, rotateDegrees, trueNorth) {
-        demo.innerHTML = "Front to back: " + parseFloat(Math.round(frontToBack * 100) / 100).toFixed(2)
-            + "<br>Left to Right: " + parseFloat(Math.round(leftToRight * 100) / 100).toFixed(2)
-            + "<br>Rotate Degrees: " + parseFloat(Math.round(rotateDegrees * 100) / 100).toFixed(2)
+    function handleOrientationEvent(frontToBack, leftToRight, rotateDegrees, trueNorth, compass) {
+        demo.innerHTML = //"Front to back: " + parseFloat(Math.round(frontToBack * 100) / 100).toFixed(2)
+           // + "<br>Left to Right: " + parseFloat(Math.round(leftToRight * 100) / 100).toFixed(2)
+           // + "<br>Rotate Degrees: " + parseFloat(Math.round(rotateDegrees * 100) / 100).toFixed(2)
+            "<br>Compass: " + parseFloat(Math.round(rotateDe * 100) / 100).toFixed(2)
             + "<br>True North: " + trueNorth;
     }
 

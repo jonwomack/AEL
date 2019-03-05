@@ -156,20 +156,18 @@
                 // beta: front back motion
                 var frontToBack = event.beta;
 
-                handleOrientationEvent(frontToBack, leftToRight, rotateDegrees);
+                var trueNorth = event.absolute;
+                handleOrientationEvent(frontToBack, leftToRight, rotateDegrees, trueNorth);
             }, true);
-        } else {
-            demo.innerHTML = "No Device Orientation";
         }
-        demo.innerHTML += "Ending";
     }
 
-    function handleOrientationEvent(frontToBack, leftToRight, rotateDegrees) {
-        demo.innerHTML = "Front to back: " + frontToBack
-            + "Left to Right: " + leftToRight
-            + "Rotate Degrees: " + rotateDegrees;
+    function handleOrientationEvent(frontToBack, leftToRight, rotateDegrees, trueNorth) {
+        demo.innerHTML = "Front to back: " + parseFloat(Math.round(frontToBack * 100) / 100).toFixed(2)
+            + "<br>Left to Right: " + parseFloat(Math.round(leftToRight * 100) / 100).toFixed(2)
+            + "<br>Rotate Degrees: " + parseFloat(Math.round(rotateDegrees * 100) / 100).toFixed(2)
+            + "<br>True North: " + trueNorth;
     }
-
 
     function createObject(obj) {
         demo.innerHTML += "<br>Name: " + obj.name + " ";

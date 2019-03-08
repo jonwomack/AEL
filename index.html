@@ -3,20 +3,12 @@
 <head>
     <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
     <style>
-        a-scene {
-            position: relative;
-            left: 33%;
-            width: 600px;
-            height: 400px;
-        }
-        #a-scene {
-            margin-left: 10 auto;
-            margin-right: 10 auto;
-            display: block;
-        }
-        #camera {
+        #videoElement {
             position: absolute;
-            left: 50px;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            object-fit: fill;
         }
         p {
             position: relative;
@@ -40,7 +32,7 @@
 <button onclick="placeObjects(westObjs)">Place</button>
 <p>Dr.Freeman Objects</p>
 <button onclick="placeObjects(freeman)">Place</button>
-<div id="camera">
+<div class="camera">
     <video  id="videoElement"></video>
 </div>
 

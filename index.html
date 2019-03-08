@@ -14,7 +14,7 @@
             margin-right: 10 auto;
             display: block;
         }
-        #container {
+        #camera {
             position: absolute;
             left: 50px;
         }
@@ -26,6 +26,7 @@
         button {
             position: relative;
             left: 50%;
+            z-index: 1;
         }
         body {
             background-color: #00BFFF;
@@ -35,20 +36,16 @@
 <body>
 <p>First, store your lat/lon by pressing this button.</p>
 <button onclick="getLocation()">Store</button>
-<p>Update position using this button.</p>
-<button onclick="updatePosition()">Update</button>
-<p>Then, place objects by pressing this button</p>
-<button onclick="placeObjects()">Place</button>
-<p>Orientation button</p>
-<button onclick="heading()">Orientation</button>
-
-<div id="container">
-    <video  id="videoElement">
-    </video>
+<p>West Campus Objects</p>
+<button onclick="placeObjects(westObjs)">Place</button>
+<p>Dr.Freeman Objects</p>
+<button onclick="placeObjects(freeman)">Place</button>
+<div id="camera">
+    <video  id="videoElement"></video>
 </div>
 
 <div id="a-scene">
-    <a-scene embedded background="color: black; transparent: true">
+    <a-scene background="color: black; transparent: true">
         <a-assets>
             <a-asset-item id="buzz" src="Buzz_Solid.gltf"></a-asset-item>
             <a-asset-item id="bin" src="Buzz_Solid.bin"></a-asset-item>
@@ -60,12 +57,8 @@
         <a-entity gltf-model="#einstein" position="0 1.6 -10" rotation="0 -90 0" scale="1 1 2"></a-entity>
     </a-scene>
 </div>
-
-<p>To see current position click here</p>
-<button onclick="makeString()">Here</button>
-<p>List Objects</p>
-<button onclick="ARtoString()">List</button>
 <p id="demo"></p>
+
 <script>
     const waffleHouse = new AR(33.776607,-84.389426, 10, "Waffle House");
     const starBucks = new AR(33.776527, -84.388348, 10, "Starbucks");
@@ -79,19 +72,32 @@
     const westVillageDiningCommons = new AR(33.779146, -84.404474, 10, "WVDC", 'black');
     const eighth = new AR(33.779803, -84.403961, 10, "Due North", 'black');
     const coor = new AR(33.779125, -84.403064, 10, "East Point", 'black');
-    const einstein = new AR(33.775203, -84.397774, 10,  "einstein", '')
-    const objs = [waffleHouse, starBucks, ncr
+    const einstein = new AR(33.775203, -84.397774, 10,  "einstein", 'black');
+
+
+    const north = new AR(33.953149972982295, -84.6382802709262, 304, "North", "white");
+    const south = new AR(33.95212652307029, -84.63830172859832, 304, "South", "white");
+    const east = new AR(33.95263379978259, -84.6376687272708, 304, "East", "white");
+    const west = new AR(33.952656048692, -84.63894009434387, 304, "West", "white");
+    const given = new AR(33.95262935, -84.63824272, 304, "Given", "white");
+
+    const freeman = [north, south, east, west, given];
+
+    const westObjs = [waffleHouse, starBucks, ncr
         , westVillage, wingZone, fitten, folk, caldwell, fulmer
-        , westVillageDiningCommons, eighth, coor];
+        , westVillageDiningCommons, eighth, coor, einstein];
     const demo = document.getElementById("demo");
+
     var currLat;
     var currLon;
-    var currAlt;
-    var currHeading;
+    var currAlt = 0;
+    var currHeading = 0;
     var currX = 0;
     var currZ = 0;
 
 
+
+    //Storing Position i.e. starting AR world
     function getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(storePosition);
@@ -99,18 +105,22 @@
             demo.innerHTML = "Geolocation is not supported by this browser.";
         }
     }
-
     function storePosition(position) {
-        demo.innerHTML = "Storing Position";
-        //currLat = position.coords.latitude;
-        //currLon = position.coords.longitude;
-        currLat = 33.779149;
-        currLon = -84.403955;
+        currLat = position.coords.latitude;
+        currLon = position.coords.longitude;
+        //currLat = 33.779149;
+        //currLon = -84.403955;
         currAlt = position.coords.altitude;
-        currHeading = position.coords.heading;
+        //if (position.coords.heading != null) {
+        //    currHeading = position.coords.heading;
+        //} else {
+        calculateHeading();
+        //}
+        setInterval(updatePosition, 5000);
     }
 
 
+    //Updating the Position - Occurs every 5 seconds and only updates if you move more than 10 meters
     function updatePosition() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(updatePositionHelper);
@@ -130,7 +140,7 @@
             currLon = position.coords.longitude;
             currAlt = position.coords.altitude;
             currX = currX + changeInDistance * Math.cos(toRadians(changeInBearing));
-            currZ = currZ + changeInDistance * Math.sin(toRadians(changeInBearing))
+            currZ = currZ + changeInDistance * Math.sin(toRadians(changeInBearing));
             cam.setAttribute('position', {
                 x: currX,
                 y: currAlt,
@@ -139,44 +149,16 @@
         }
     }
 
-    function placeObjects() {
-        objs.forEach(function (item, index, array) {
+
+    //Places Objects in AR
+    function placeObjects(array) {
+        array.forEach(function (item, index, array) {
             createObject(item);
         });
     }
-
-    function heading() {
-        demo.innerHTML = "Running";
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener("deviceorientation", function (event) {
-                // alpha: rotation around z-axis
-                var rotateDegrees = event.alpha;
-                // gamma: left to right
-                var leftToRight = event.gamma;
-                // beta: front back motion
-                var frontToBack = event.beta;
-                if(event.webkitCompassHeading) {
-                    // Apple works only with this, alpha doesn't work
-                    var compass = event.webkitCompassHeading;
-                }
-                var trueNorth = event.absolute;
-                handleOrientationEvent(frontToBack, leftToRight, rotateDegrees, trueNorth, compass);
-            }, true);
-        }
-    }
-
-    function handleOrientationEvent(frontToBack, leftToRight, rotateDegrees, trueNorth, compass) {
-        demo.innerHTML = //"Front to back: " + parseFloat(Math.round(frontToBack * 100) / 100).toFixed(2)
-           // + "<br>Left to Right: " + parseFloat(Math.round(leftToRight * 100) / 100).toFixed(2)
-           // + "<br>Rotate Degrees: " + parseFloat(Math.round(rotateDegrees * 100) / 100).toFixed(2)
-            "<br>Compass: " + parseFloat(Math.round(compass * 100) / 100).toFixed(2)
-            + "<br>True North: " + trueNorth;
-    }
-
     function createObject(obj) {
-        demo.innerHTML += "<br>Name: " + obj.name + " ";
         let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon);
-        let bearing = calculateBearing(currLat, obj.lat, currLon, obj.lon);
+        let bearing = currHeading + calculateBearing(currLat, obj.lat, currLon, obj.lon);
         let x = distance * Math.cos(toRadians(bearing));
         let y = obj.alt;
         let z = distance * Math.sin(toRadians(bearing));
@@ -197,14 +179,30 @@
         sceneEl.appendChild(el);
     }
 
-    function makeString() {
-        demo.innerHTML = "Latitude: " + currLat +
-            "<br>Longitude: " + currLon +
-            "<br>Altitude: " + currAlt +
-            "<br>Heading: " + currHeading + "<br><br>";
-    }
 
-    //Calculates the distance between user's location and object's location
+
+
+
+
+//Collection of functions used in determining position of the user.
+
+    //Sets current heading as the difference between North and user heading.
+    function calculateHeading() {
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener("deviceorientation", function (event) {
+                if(event.webkitCompassHeading) {
+                    // Apple works only with this, alpha doesn't work
+                    var compass = event.webkitCompassHeading;
+                }
+                handleOrientationEvent(compass);
+            }, true);
+        }
+    }
+    function handleOrientationEvent(compass) {
+        demo.innerHTML = "<br>Compass: " + parseFloat(Math.round(compass * 100) / 100).toFixed(2);
+        currHeading = compass;
+    }
+    //Calculates the distance between user's location and object's location.
     function calculateDistance(lat1, lat2, lon1, lon2) {
         const radius = 6371e3; // Radius of Earth in Meters
         let lat1radians = toRadians(lat1);
@@ -216,7 +214,6 @@
         let distance = radius * c;
         return distance;
     }
-
     //Calculates angle between user's location and object's location
     function calculateBearing(latB1, latB2, lonB1, lonB2) {
         let dLon = (lonB2-lonB1);
@@ -227,6 +224,11 @@
         return brng;
     }
 
+
+
+
+
+    //Math functions
     function toDegrees(radians) {
         return radians * (180/Math.PI);
     }
@@ -252,17 +254,7 @@
         this.name = name;
         this.color = color;
     }
-
-
-    function ARtoString() {
-        objs.forEach(function (item, index, array) {
-            demo.innerHTML += "<br>Name: " + item.name +
-                "<br>Latitude: " + item.lat +
-                "<br>Longitude: " + item.lon + "<br><br>";
-        })
-    }
 </script>
-
 <script>
     //Enables camera functionality
     var front = false;

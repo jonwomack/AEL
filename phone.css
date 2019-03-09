@@ -15,7 +15,7 @@
     #videoElement {
         position: absolute;
     }
-    #camera {
+    .camera {
         position: absolute;
     }
 }

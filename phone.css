@@ -11,6 +11,7 @@
         z-index: 1;
     }
     body {
+        position: absolute;
         background-color: #00BFFF;
     }
     #videoElement {

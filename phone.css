@@ -1,0 +1,15 @@
+@media screen and (max-width: 900px) {
+    p {
+        position: relative;
+        text-align: center;
+        color: white;
+    }
+    button {
+        position: relative;
+        left: 50%;
+        z-index: 1;
+    }
+    body {
+        background-color: #00BFFF;
+    }
+}

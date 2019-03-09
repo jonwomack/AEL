@@ -1,0 +1,23 @@
+@media screen and (min-width: 900px) {
+    #videoElement {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        object-fit: fill;
+    }
+    p {
+        position: relative;
+        text-align: center;
+        color: white;
+    }
+    button {
+        position: relative;
+        left: 50%;
+        z-index: 1;
+    }
+
+    body {
+        background-color: #00BFFF;
+    }
+}

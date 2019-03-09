@@ -5,7 +5,7 @@
         color: white;
     }
     button {
-        position: relative;
+        position: absolute;
         left: 50%;
         z-index: 1;
     }
@@ -13,6 +13,9 @@
         background-color: #00BFFF;
     }
     #videoElement {
+        position: absolute;
+    }
+    #camera {
         position: absolute;
     }
 }

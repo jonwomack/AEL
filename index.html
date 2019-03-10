@@ -66,6 +66,7 @@
     var currHeading = 0;
     var currX = 0;
     var currZ = 0;
+    var objectsPlaced = false;
 
 
 
@@ -124,9 +125,17 @@
 
     //Places Objects in AR
     function placeObjects(array) {
-        array.forEach(function (item, index, array) {
-            createObject(item);
-        });
+        if (!objectsPlaced) {
+            var counter = 0;
+            while (counter < 5) {
+                updatePosition();
+                counter++;
+            }
+            array.forEach(function (item, index, array) {
+                createObject(item);
+            });
+            objectsPlaced = true;
+        }
     }
     function createObject(obj) {
         let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon);

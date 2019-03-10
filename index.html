@@ -102,7 +102,7 @@
         }
     }
     function updatePositionHelper(position) {
-        demo.innerHTML = "Updating Position";
+        demo.innerHTML = "Updating Position" + position.coords.altitude;
         let cam = document.getElementById("camera");
         let tempLat = position.coords.latitude;
         let tempLon = position.coords.longitude;

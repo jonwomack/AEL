@@ -165,6 +165,8 @@
                 if(event.webkitCompassHeading) {
                     // Apple works only with this, alpha doesn't work
                     var compass = event.webkitCompassHeading;
+                } else {
+                    demo.innerHTML = "<br> No Compass Heading";
                 }
                 handleOrientationEvent(compass);
             }, true);

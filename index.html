@@ -72,8 +72,9 @@
 
 
     //Moving Object
-    setInterval(moveObject, 500);
+    setInterval(moveObject, 100);
     function moveObject() {
+        time += (2*Math.PI)/360;
         let x = currX + Math.cos(time);
         let y = currAlt;
         let z = currZ + Math.sin(time);

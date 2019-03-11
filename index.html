@@ -80,15 +80,7 @@
         let x = currX + 10*Math.cos(time);
         let y = currAlt;
         let z = currZ + 10*Math.sin(time);
-        obj.getAttribute('position', {
-            x: x,
-            y: y,
-            z: z
-        });
-        let sceneEl = document.querySelector('a-scene');
-        sceneEl.appendChild(obj);
-        sceneEl.flushToDOM();
-        obj.flushToDOM();
+        obj.object3D.position.set(x, y, z);
         time += (2*Math.PI)/360;
     }
 

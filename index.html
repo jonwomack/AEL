@@ -12,6 +12,7 @@
 <button onclick="placeObjects(westObjs)">Place</button>
 <p>Dr.Freeman Objects</p>
 <button onclick="placeObjects(freeman)">Place</button>
+<button onclick="moveObject()">Move</button>
 <div class="camera">
     <video  id="videoElement"></video>
 </div>
@@ -67,7 +68,29 @@
     var currX = 0;
     var currZ = 0;
     var objectsPlaced = false;
+    var time = 0;
 
+
+    //Moving Object
+    setInterval(moveObject, 500);
+    function moveObject() {
+        let x = currX + Math.cos(time);
+        let y = currAlt;
+        let z = currZ + Math.sin(time);
+        let el = document.createElement('a-entity');
+        el.setAttribute('geometry', {
+            primitive: 'sphere',
+            radius: 5,
+        });
+        el.setAttribute('material', {
+            color: 'blue'
+        });
+        el.setAttribute('position', {
+            x: x,
+            y: y,
+            z: z
+        });
+    }
 
 
     //Storing Position i.e. starting AR world

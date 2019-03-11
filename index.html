@@ -26,7 +26,9 @@
         </a-assets>
         <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#93648D"></a-plane>
         <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
-        <a-sphere radius="5" position="0 10 0" color="white"></a-sphere>
+        <div id="moving">
+            <a-sphere radius="5" position="0 10 0" color="blue"></a-sphere>
+        </div>
         <a-entity gltf-model="#einstein" position="0 1.6 -10" rotation="0 -90 0" scale="1 1 2"></a-entity>
     </a-scene>
 </div>
@@ -79,14 +81,7 @@
         let x = currX + 10*Math.cos(time);
         let y = currAlt;
         let z = currZ + 10*Math.sin(time);
-        let el = document.createElement('a-entity');
-        el.setAttribute('geometry', {
-            primitive: 'sphere',
-            radius: 5,
-        });
-        el.setAttribute('material', {
-            color: 'blue'
-        });
+        let el = document.getElementById('moving');
         el.setAttribute('position', {
             x: x,
             y: y,

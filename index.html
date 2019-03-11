@@ -87,6 +87,8 @@
         });
         let sceneEl = document.querySelector('a-scene');
         sceneEl.appendChild(obj);
+        sceneEl.flushToDOM();
+        obj.flushToDOM();
         time += (2*Math.PI)/360;
     }
 

@@ -87,7 +87,7 @@
         //if (currLat == null || currLon == null || currAlt == null) {
         //    demo.innerHTML = "Lat, Lon, or Alt isn't storing";
         //}
-        demo.innerHTML = "working";
+        demo.innerHTML = "<br>working";
         //if (position.coords.heading != null) {
         //    currHeading = position.coords.heading;
         //} else {
@@ -114,7 +114,6 @@
         let changeInDistance = calculateDistance(tempLat, currLat, tempLon, currLon, tempAlt, currAlt);
         let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
         if (changeInDistance > 10) {
-            demo.innerHTML = "Altitude: " + position.coords.altitude;
             currLat = position.coords.latitude;
             currLon = position.coords.longitude;
             currAlt = position.coords.altitude;
@@ -182,11 +181,11 @@
                     var compass = event.webkitCompassHeading;
                     handleOrientationEvent(compass);
                 } else {
-                    demo.innerHTML = "Compass Heading Not Working";
+                    demo.innerHTML = "<br>Compass Heading Not Working";
                 }
             }, true);
         } else {
-            demo.innerHTML = "Compass Heading Not Working";
+            demo.innerHTML = "<br>Compass Heading Not Working";
         }
     }
     function handleOrientationEvent(compass) {
@@ -267,7 +266,7 @@
         })
         .catch(function(err) {
             console.log(err.name + ": " + err.message);
-            demo.innerHTML = "<br> Line 237 of code not entered";
+            demo.innerHTML = "<br>Camera Not Working";
         });
 
 </script>

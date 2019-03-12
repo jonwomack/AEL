@@ -74,15 +74,15 @@
 
     //Moving Object
     function moveObject() {
-        setInterval(moveObjectH(el), 1000);
+        setInterval(moveObjectH, 10);
     }
-    function moveObjectH(obj) {
-        let x = currX + 10*Math.cos(time);
+    function moveObjectH() {
+        let x = currX + 100*Math.cos(time);
         let y = currAlt;
-        let z = currZ + 10*Math.sin(time);
-        obj.object3D.position.set(x, y, z);
+        let z = currZ + 100*Math.sin(time);
+        el.object3D.position.set(x, y, z);
         demo.innerHTML = "time: " + time;
-        time += (2*Math.PI)/360;
+        time += (5*Math.PI)/360;
     }
 
 

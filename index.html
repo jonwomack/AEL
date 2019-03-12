@@ -67,10 +67,10 @@
 
     var currLat;
     var currLon;
-    var currAlt = 0;
-    var currHeading = 0;
-    var currX = 0;
-    var currZ = 0;
+    var currAlt;
+    var currHeading;
+    var currX;
+    var currZ;
     var objectsPlaced = false;
     var time = 0;
 
@@ -192,10 +192,10 @@
                 if(event.webkitCompassHeading) {
                     // Apple works only with this, alpha doesn't work
                     var compass = event.webkitCompassHeading;
+                    handleOrientationEvent(compass);
                 } else {
-                    demo.innerHTML = "Compass Heading Not Working";
+                    demo.innerHTML = "Compass Heading Not Working";i
                 }
-                handleOrientationEvent(compass);
             }, true);
         } else {
             demo.innerHTML = "Compass Heading Not Working";

@@ -99,8 +99,6 @@
     function storePosition(position) {
         currLat = position.coords.latitude;
         currLon = position.coords.longitude;
-        //currLat = 33.779149;
-        //currLon = -84.403955;
         currAlt = position.coords.altitude;
         //if (position.coords.heading != null) {
         //    currHeading = position.coords.heading;
@@ -195,10 +193,12 @@
                     // Apple works only with this, alpha doesn't work
                     var compass = event.webkitCompassHeading;
                 } else {
-                    var compass = 0;
+                    demo.innerHTML = "Compass Heading Not Working";
                 }
                 handleOrientationEvent(compass);
             }, true);
+        } else {
+            demo.innerHTML = "Compass Heading Not Working";
         }
     }
     function handleOrientationEvent(compass) {

@@ -81,6 +81,7 @@
         let y = currAlt;
         let z = currZ + 10*Math.sin(time);
         obj.object3D.position.set(x, y, z);
+        demo.innerHTML = "time: " + time;
         time += (2*Math.PI)/360;
     }
 
@@ -117,7 +118,6 @@
         }
     }
     function updatePositionHelper(position) {
-        demo.innerHTML = "Updating Position " + "Altitude: " + position.coords.altitude;
         let cam = document.getElementById("camera");
         let tempLat = position.coords.latitude;
         let tempLon = position.coords.longitude;

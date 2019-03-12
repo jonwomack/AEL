@@ -107,6 +107,7 @@
         //} else {
         calculateHeading();
         //}
+        demo.innerHTML = position.coords.altitude;
         setInterval(updatePosition, 5000);
     }
 
@@ -123,7 +124,8 @@
         let cam = document.getElementById("camera");
         let tempLat = position.coords.latitude;
         let tempLon = position.coords.longitude;
-        let changeInDistance = calculateDistance(tempLat, currLat, tempLon, currLon);
+        let tempAlt = position.coords.longitude;
+        let changeInDistance = calculateDistance(tempLat, currLat, tempLon, currLon, tempAlt, currAlt);
         let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
         if (changeInDistance > 10) {
             demo.innerHTML = "Altitude: " + position.coords.altitude;
@@ -156,7 +158,7 @@
         }
     }
     function createObject(obj) {
-        let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon);
+        let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon, currAlt, obj.alt);
         let bearing = currHeading + calculateBearing(currLat, obj.lat, currLon, obj.lon);
         let x = distance * Math.cos(toRadians(bearing));
         let y = obj.alt;
@@ -203,7 +205,7 @@
         currHeading = compass;
     }
     //Calculates the distance between user's location and object's location.
-    function calculateDistance(lat1, lat2, lon1, lon2) {
+    function calculateDistance(lat1, lat2, lon1, lon2, alt1, alt2) {
         const radius = 6371e3; // Radius of Earth in Meters
         let lat1radians = toRadians(lat1);
         let lat2radians = toRadians(lat2);
@@ -211,8 +213,9 @@
         let deltaLon = toRadians(lon2-lon1);
         let a = Math.sin(deltaLat/2) * Math.sin(deltaLat/2) + Math.cos(lat1radians) * Math.cos(lat2radians) * Math.sin(deltaLon/2) * Math.sin(deltaLon/2);
         let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        let distance = radius * c;
-        return distance;
+        let latlondistance = radius * c;
+        let altDistance = alt1 - alt2;
+        return Math.pow((Math.pow(latlondistance, 2) + Math.pow(altDistance, 2)), .5);
     }
     //Calculates angle between user's location and object's location
     function calculateBearing(latB1, latB2, lonB1, lonB2) {

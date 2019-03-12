@@ -74,7 +74,7 @@
 
     //Moving Object
     function moveObject() {
-        setInterval(moveObjectH, 1000);
+        setInterval(moveObjectH(el), 1000);
     }
     function moveObjectH(obj) {
         let x = currX + 10*Math.cos(time);

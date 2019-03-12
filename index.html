@@ -74,8 +74,14 @@
 
     //Moving Object
     function moveObject() {
-        setInterval(moveObjectH(el), 500);
-        setInterval(moveObject, 500);
+        setInterval( function(obj) {
+            let x = currX + 10*Math.cos(time);
+            let y = currAlt;
+            let z = currZ + 10*Math.sin(time);
+            obj.object3D.position.set(x, y, z);
+            demo.innerHTML = "time: " + time;
+            time += (2*Math.PI)/360;
+        }, 500);
     }
     function moveObjectH(obj) {
         let x = currX + 10*Math.cos(time);
@@ -198,7 +204,6 @@
         }
     }
     function handleOrientationEvent(compass) {
-        demo.innerHTML = "<br>Compass: " + parseFloat(Math.round(compass * 100) / 100).toFixed(2);
         currHeading = compass;
     }
     //Calculates the distance between user's location and object's location.

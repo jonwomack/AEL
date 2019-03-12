@@ -5,49 +5,39 @@
     <link rel="stylesheet" type="text/css" media="screen and (min-width: 900px)" href="mac.css">
     <link rel="stylesheet" type="text/css" media="screen and (max-width: 900px)" href="phone.css">
 </head>
+
 <body>
 <p>First, store your lat/lon by pressing this button.</p>
 <button onclick="getLocation()">Store</button>
 <p>West Campus Objects</p>
 <button onclick="placeObjects(westObjs)">Place</button>
-<p>Dr.Freeman Objects</p>
-<button onclick="placeObjects(freeman)">Place</button>
-<button onclick="moveObject()">Move</button>
+
 <div class="camera">
     <video  id="videoElement"></video>
 </div>
-
 <div id="a-scene">
     <a-scene background="color: black; transparent: true" vr-mode-ui="enabled: false">
         <a-assets>
             <a-asset-item id="buzz" src="Buzz_Solid.gltf"></a-asset-item>
             <a-asset-item id="bin" src="Buzz_Solid.bin"></a-asset-item>
-            <a-asset-item id="einstein" src="Einstein.glb"></a-asset-item>
         </a-assets>
         <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#93648D"></a-plane>
         <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
         <a-sphere id="moving" radius="5" position="0 10 0" color="white"></a-sphere>
-        <a-entity gltf-model="#einstein" position="0 1.6 -10" rotation="0 -90 0" scale="1 1 2"></a-entity>
     </a-scene>
 </div>
 <p id="demo"></p>
 
+
+
+
 <script>
 
-
-    const north = new AR(33.953149972982295, -84.6382802709262, 304, "North", 'red');
-    const south = new AR(33.95212652307029, -84.63830172859832, 304, "South", 'blue');
-    const east = new AR(33.95263379978259, -84.6376687272708, 304, "East", 'yellow');
-    const west = new AR(33.952656048692, -84.63894009434387, 304, "West", 'purple');
-    const given = new AR(33.95262935, -84.63824272, 304, "Given", 'white');
-
     const ym = new AR(33.776998,-84.389803, 292, "Yogli Mogli", 'blue');
-
-    const freeman = [north, south, east, west, given];
-
     const westObjs = [ym];
+
     const demo = document.getElementById("demo");
-    const el = document.getElementById("moving");
+
 
     var currLat;
     var currLon;
@@ -58,18 +48,6 @@
     var objectsPlaced = false;
     var time = 0;
 
-
-    //Moving Object
-    function moveObject() {
-        setInterval(moveObjectH, 20);
-    }
-    function moveObjectH() {
-        let x = currX + 100*Math.cos(time);
-        let y = currAlt;
-        let z = currZ + 100*Math.sin(time);
-        el.object3D.position.set(x, y, z);
-        time += (5*Math.PI)/360;
-    }
 
 
     //Storing Position i.e. starting AR world
@@ -92,10 +70,10 @@
         //if (position.coords.heading != null) {
         //    currHeading = position.coords.heading;
         //} else {
-        calculateHeading();
+        //calculateHeading();
         //}
 
-        setInterval(updatePosition, 5000);
+        //setInterval(updatePosition, 5000);
     }
 
 

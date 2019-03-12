@@ -74,6 +74,7 @@
 
     //Storing Position i.e. starting AR world
     function getLocation() {
+        console.log("Clicked");
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(storePosition);
         } else {

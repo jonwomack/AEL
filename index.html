@@ -100,12 +100,15 @@
         currLat = position.coords.latitude;
         currLon = position.coords.longitude;
         currAlt = position.coords.altitude;
+        if (currLat == null || currLon == null || currAlt == null) {
+            demo.innerHTML = "Lat, Lon, or Alt isn't storing";
+        }
         //if (position.coords.heading != null) {
         //    currHeading = position.coords.heading;
         //} else {
         calculateHeading();
         //}
-        demo.innerHTML = "Altitude: " + position.coords.altitude;
+
         setInterval(updatePosition, 5000);
     }
 

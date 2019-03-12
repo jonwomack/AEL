@@ -74,14 +74,14 @@
 
     //Moving Object
     function moveObject() {
-        setInterval( function(obj) {
+        setInterval(function (obj) {
             let x = currX + 10*Math.cos(time);
             let y = currAlt;
             let z = currZ + 10*Math.sin(time);
             obj.object3D.position.set(x, y, z);
             demo.innerHTML = "time: " + time;
             time += (2*Math.PI)/360;
-        }, 500);
+        }, 50);
     }
     function moveObjectH(obj) {
         let x = currX + 10*Math.cos(time);

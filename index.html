@@ -54,7 +54,7 @@
     const west = new AR(33.952656048692, -84.63894009434387, 304, "West", 'purple');
     const given = new AR(33.95262935, -84.63824272, 304, "Given", 'white');
 
-    const ym = new AR(33.776998,-84.389803, 292, "Yogli Mogli", 'white');
+    const ym = new AR(33.776998,-84.389803, 292, "Yogli Mogli", 'blue');
 
     const freeman = [north, south, east, west, given];
 
@@ -126,6 +126,7 @@
         let changeInDistance = calculateDistance(tempLat, currLat, tempLon, currLon);
         let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
         if (changeInDistance > 10) {
+            demo.innerHTML = "Altitude: " + position.coords.altitude;
             currLat = position.coords.latitude;
             currLon = position.coords.longitude;
             currAlt = position.coords.altitude;

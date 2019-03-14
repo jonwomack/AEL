@@ -17,6 +17,7 @@
     #videoElement {
         position: absolute;
         z-index: -1;
+        height: 100vh;
     }
     .camera {
         position: absolute;

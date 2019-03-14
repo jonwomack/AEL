@@ -11,18 +11,14 @@ const waffleHouse = new AR(33.776607,-84.389426, 10, "Waffle House");
     const eighth = new AR(33.779803, -84.403961, 10, "Due North", 'black');
     const coor = new AR(33.779125, -84.403064, 10, "East Point", 'black');
     const einstein = new AR(33.775203, -84.397774, 10,  "einstein", 'black');
+const ym = new AR(33.776998,-84.389803, 292, "Yogli Mogli", 'blue');
 
-const north = new AR(33.953149972982295, -84.6382802709262, 304, "North", 'red');
-const south = new AR(33.95212652307029, -84.63830172859832, 304, "South", 'blue');
-const east = new AR(33.95263379978259, -84.6376687272708, 304, "East", 'yellow');
-const west = new AR(33.952656048692, -84.63894009434387, 304, "West", 'purple');
-const given = new AR(33.95262935, -84.63824272, 304, "Given", 'white');
 const el = document.getElementById("moving");
 
 <a-entity gltf-model="#einstein" position="0 1.6 -10" rotation="0 -90 0" scale="1 1 2"></a-entity>
 <a-asset-item id="einstein" src="Einstein.glb"></a-asset-item>
 
-const freeman = [north, south, east, west, given];
+
 
 
 <p>Dr.Freeman Objects</p>

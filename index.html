@@ -10,7 +10,9 @@
 <p>First, store your lat/lon by pressing this button.</p>
 <button onclick="getLocation()">Store</button>
 <p>West Campus Objects</p>
-<button onclick="placeObjects(westObjs)">Place</button>
+<button onclick="placeObjects(freeman)">Place</button>
+<p>Florida Objects</p>
+<button onclick="placeObjects(florida)">Place (Fl)</button>
 
 <div class="camera">
     <video  id="videoElement"></video>
@@ -18,8 +20,6 @@
 <div id="a-scene">
     <a-scene background="color: black; transparent: true" vr-mode-ui="enabled: false">
         <a-assets>
-            <a-asset-item id="buzz" src="Buzz_Solid.gltf"></a-asset-item>
-            <a-asset-item id="bin" src="Buzz_Solid.bin"></a-asset-item>
         </a-assets>
         <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#93648D"></a-plane>
         <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
@@ -32,12 +32,16 @@
 
 
 <script>
-
-    const ym = new AR(33.776998,-84.389803, 292, "Yogli Mogli", 'blue');
+    const north = new AR(33.953149972982295, -84.6382802709262, 304, "North", 'red');
+    const south = new AR(33.95212652307029, -84.63830172859832, 304, "South", 'blue');
+    const east = new AR(33.95263379978259, -84.6376687272708, 304, "East", 'yellow');
+    const west = new AR(33.952656048692, -84.63894009434387, 304, "West", 'purple');
+    const given = new AR(33.95262935, -84.63824272, 304, "Given", 'white');
     const westObjs = [ym];
+    const freeman = [north, south, east, west, given];
 
     const demo = document.getElementById("demo");
-
+    const cam = document.getElementById("camera");
 
     var currLat;
     var currLon;
@@ -52,7 +56,6 @@
 
     //Storing Position i.e. starting AR world
     function getLocation() {
-        console.log("Clicked");
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(storePosition);
         } else {
@@ -63,21 +66,26 @@
         currLat = position.coords.latitude;
         currLon = position.coords.longitude;
         currAlt = position.coords.altitude;
-        //if (currLat == null || currLon == null || currAlt == null) {
-        //    demo.innerHTML = "Lat, Lon, or Alt isn't storing";
-        //}
+        if (currLat == null || currLon == null || currAlt == null) {
+            demo.innerHTML = "Lat, Lon, or Alt isn't storing";
+        }
         demo.innerHTML = "<br>working";
         //if (position.coords.heading != null) {
         //    currHeading = position.coords.heading;
         //} else {
-        //calculateHeading();
+        calculateHeading();
+        cam.setAttribute('position', {
+            x: 0,
+            y: currAlt,
+            z: 0
+        });
         //}
 
-        //setInterval(updatePosition, 5000);
+        setInterval(updatePosition, 5000);
     }
 
 
-    //Updating the Position - Occurs every 5 seconds and only updates if you move more than 10 meters
+    //Updating the Position - Occurs every 5 seconds and only updates if you move more than 7 meters
     function updatePosition() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(updatePositionHelper);
@@ -86,13 +94,12 @@
         }
     }
     function updatePositionHelper(position) {
-        let cam = document.getElementById("camera");
         let tempLat = position.coords.latitude;
         let tempLon = position.coords.longitude;
         let tempAlt = position.coords.longitude;
         let changeInDistance = calculateDistance(tempLat, currLat, tempLon, currLon, tempAlt, currAlt);
         let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
-        if (changeInDistance > 10) {
+        if (changeInDistance > 7) {
             currLat = position.coords.latitude;
             currLon = position.coords.longitude;
             currAlt = position.coords.altitude;
@@ -156,7 +163,6 @@
         if (window.DeviceOrientationEvent) {
             window.addEventListener("deviceorientation", function (event) {
                 if(event.webkitCompassHeading) {
-                    // Apple works only with this, alpha doesn't work
                     var compass = event.webkitCompassHeading;
                     handleOrientationEvent(compass);
                 } else {

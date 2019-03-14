@@ -37,7 +37,7 @@
     const east = new AR(33.95263379978259, -84.6376687272708, 304, "East", 'yellow');
     const west = new AR(33.952656048692, -84.63894009434387, 304, "West", 'purple');
     const given = new AR(33.95262935, -84.63824272, 304, "Given", 'white');
-    const westObjs = [ym];
+    const westObjs = [];
     const freeman = [north, south, east, west, given];
 
     const demo = document.getElementById("demo");
@@ -69,7 +69,6 @@
         if (currLat == null || currLon == null || currAlt == null) {
             demo.innerHTML = "Lat, Lon, or Alt isn't storing";
         }
-        demo.innerHTML = "<br>working";
         //if (position.coords.heading != null) {
         //    currHeading = position.coords.heading;
         //} else {
@@ -80,7 +79,8 @@
             z: 0
         });
         //}
-
+        updatePosition();
+        demo.innerHTML = "<br>working";
         setInterval(updatePosition, 5000);
     }
 

@@ -16,9 +16,14 @@
     }
     #videoElement {
         position: absolute;
+        z-index: -1;
     }
     .camera {
         position: absolute;
         top: 0px;
+    }
+    a-scene {
+        position: absolute;
+        z-index: 5;
     }
 }

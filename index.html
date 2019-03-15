@@ -165,6 +165,10 @@
                 if(event.webkitCompassHeading) {
                     var compass = event.webkitCompassHeading;
                     handleOrientationEvent(compass);
+                } else if (event.absolute == true) {
+                    var compass = event.alpha;
+                    handleOrientationEvent(compass);
+                    demo.innerHTML = "<br> Heading: " + compass;
                 } else {
                     demo.innerHTML = "<br>Compass Heading Not Working";
                 }

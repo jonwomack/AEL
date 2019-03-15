@@ -167,8 +167,8 @@
                     handleOrientationEvent(compass);
                 } else if (event.absolute == false) {
                     var compass = event.alpha;
-                    handleOrientationEvent(compass);
                     demo.innerHTML = "<br> Heading: " + compass;
+                    handleOrientationEvent(compass);
                 } else {
                     demo.innerHTML = "<br>Compass Heading Not Working";
                 }

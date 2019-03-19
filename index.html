@@ -66,7 +66,8 @@
     function storePosition(position) {
         currLat = position.coords.latitude;
         currLon = position.coords.longitude;
-        currAlt = position.coords.altitude;
+        //currAlt = position.coords.altitude;
+        currAlt = 1;
         if (currLat == null || currLon == null || currAlt == null) {
             demo.innerHTML = "Lat, Lon, or Alt isn't storing";
         }
@@ -103,7 +104,8 @@
         if (changeInDistance > 7) {
             currLat = position.coords.latitude;
             currLon = position.coords.longitude;
-            currAlt = position.coords.altitude;
+            //currAlt = position.coords.altitude;
+            currAlt = 1;
             currX = currX + changeInDistance * Math.cos(toRadians(changeInBearing));
             currZ = currZ + changeInDistance * Math.sin(toRadians(changeInBearing));
             cam.setAttribute('position', {
@@ -132,6 +134,7 @@
     function createObject(obj) {
         let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon, currAlt, obj.alt);
         let bearing = currHeading + calculateBearing(currLat, obj.lat, currLon, obj.lon);
+        console.log("bearing: " + bearing);
         let x = distance * Math.cos(toRadians(bearing));
         let y = obj.alt;
         let z = distance * Math.sin(toRadians(bearing));
@@ -191,8 +194,7 @@
         let a = Math.sin(deltaLat/2) * Math.sin(deltaLat/2) + Math.cos(lat1radians) * Math.cos(lat2radians) * Math.sin(deltaLon/2) * Math.sin(deltaLon/2);
         let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         let latlondistance = radius * c;
-        let altDistance = alt1 - alt2;
-        return Math.pow((Math.pow(latlondistance, 2) + Math.pow(altDistance, 2)), .5);
+        return latlondistance;
     }
     //Calculates angle between user's location and object's location
     function calculateBearing(latB1, latB2, lonB1, lonB2) {

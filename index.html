@@ -47,7 +47,7 @@
     var currLat;
     var currLon;
     var currAlt;
-    var currHeading;
+    var currHeading = 0;
     var currX;
     var currZ;
     var objectsPlaced = false;
@@ -74,7 +74,7 @@
         //if (position.coords.heading != null) {
         //    currHeading = position.coords.heading;
         //} else {
-        calculateHeading();
+        //calculateHeading();
         cam.setAttribute('position', {
             x: 0,
             y: currAlt,

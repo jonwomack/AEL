@@ -9,7 +9,7 @@
 <body>
 <p>First, store your lat/lon by pressing this button.</p>
 <button onclick="getLocation()">Store</button>
-<p>West Campus Objects</p>
+<p>Atlanta</p>
 <button onclick="placeObjects(freeman)">Place</button>
 <p>Florida Objects</p>
 <button onclick="placeObjects(florida)">Place (Fl)</button>
@@ -32,13 +32,14 @@
 
 
 <script>
-    const north = new AR(33.953149972982295, -84.6382802709262, 304, "North", 'red');
-    const south = new AR(33.95212652307029, -84.63830172859832, 304, "South", 'blue');
-    const east = new AR(33.95263379978259, -84.6376687272708, 304, "East", 'yellow');
-    const west = new AR(33.952656048692, -84.63894009434387, 304, "West", 'purple');
-    const given = new AR(33.95262935, -84.63824272, 304, "Given", 'white');
+
+    const north = new AR(27.656908, -80.389372, 1, "north", 'red');
+    const south = new AR(27.654716, -80.389366, 1, "south", 'blue');
+    const east = new AR(27.655869, -80.388180, 1, "east", 'yellow');
+    const west = new AR(27.655852, -80.390410, 1, "wezt", 'purple');
+    const house = new AR(27.6555439, -80.3894948, 1, "given", 'white');
     const westObjs = [];
-    const freeman = [north, south, east, west, given];
+    const florida = [north, south, east, west, house];
 
     const demo = document.getElementById("demo");
     const cam = document.getElementById("camera");

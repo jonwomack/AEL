@@ -181,6 +181,7 @@
     }
     function handleOrientationEvent(compass) {
         currHeading = compass;
+        demo.innerHTML = "<br>Heading: " + currHeading;
     }
     //Calculates the distance between user's location and object's location.
     function calculateDistance(lat1, lat2, lon1, lon2, alt1, alt2) {

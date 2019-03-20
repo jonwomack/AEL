@@ -47,7 +47,7 @@
     var currLat;
     var currLon;
     var currAlt;
-    var currHeading = 0;
+    var currHeading;
     var currX;
     var currZ;
     var objectsPlaced = false;
@@ -66,24 +66,23 @@
     function storePosition(position) {
         currLat = position.coords.latitude;
         currLon = position.coords.longitude;
-        //currAlt = position.coords.altitude;
-        currAlt = 1;
+        currAlt = position.coords.altitude;
         if (currLat == null || currLon == null || currAlt == null) {
             demo.innerHTML = "Lat, Lon, or Alt isn't storing";
         }
         //if (position.coords.heading != null) {
         //    currHeading = position.coords.heading;
         //} else {
-        //calculateHeading();
+        calculateHeading();
         cam.setAttribute('position', {
             x: 0,
             y: currAlt,
             z: 0
         });
         //}
-        //updatePosition();
+        updatePosition();
         demo.innerHTML = "<br>Alt: " + currAlt + "<br>Lat: " + currLat + "<br> Long: " + currLon;
-        //setInterval(updatePosition, 5000);
+        setInterval(updatePosition, 5000);
     }
 
 
@@ -99,15 +98,15 @@
         let tempLat = position.coords.latitude;
         let tempLon = position.coords.longitude;
         let tempAlt = position.coords.longitude;
-        let changeInDistance = calculateDistance(tempLat, currLat, tempLon, currLon, tempAlt, currAlt);
+        let changeInXDistance = calculateDistance(tempLat, currLat, tempLon, currLon, tempAlt, currAlt);
+        let changeInTotalDistance = Math.pow(changeInXDistance, 2) + Math.pow((tempAlt - currAlt), 2);
         let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
-        if (changeInDistance > 7) {
+        if ((Math.pow(changeInTotalDistance, .5) > 7)) {
             currLat = position.coords.latitude;
             currLon = position.coords.longitude;
-            //currAlt = position.coords.altitude;
-            currAlt = 1;
-            currX = currX + changeInDistance * Math.cos(toRadians(changeInBearing));
-            currZ = currZ + changeInDistance * Math.sin(toRadians(changeInBearing));
+            currAlt = position.coords.altitude;
+            currX = currX + changeInXDistance * Math.cos(toRadians(changeInBearing));
+            currZ = currZ + changeInXDistance * Math.sin(toRadians(changeInBearing));
             cam.setAttribute('position', {
                 x: currX,
                 y: currAlt,
@@ -133,8 +132,7 @@
     }
     function createObject(obj) {
         let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon, currAlt, obj.alt);
-        let bearing = currHead ing + calculateBearing(currLat, obj.lat, currLon, obj.lon);
-        console.log("bearing: " + bearing);
+        let bearing = currHeading + calculateBearing(currLat, obj.lat, currLon, obj.lon);
         let x = distance * Math.cos(toRadians(bearing));
         let y = obj.alt;
         let z = distance * Math.sin(toRadians(bearing));
@@ -169,7 +167,7 @@
                 if(event.webkitCompassHeading) {
                     var compass = event.webkitCompassHeading;
                     handleOrientationEvent(compass);
-                } else if (event.absolute == false) {
+                } else if (event.absolute == true) {
                     var compass = event.alpha;
                     demo.innerHTML = "<br> Heading: " + compass;
                     handleOrientationEvent(compass);

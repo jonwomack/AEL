@@ -98,7 +98,7 @@
         let tempLat = position.coords.latitude;
         let tempLon = position.coords.longitude;
         let tempAlt = position.coords.longitude;
-        let changeInXDistance = calculateDistance(tempLat, currLat, tempLon, currLon, tempAlt, currAlt);
+        let changeInXDistance = calculateDistance(tempLat, currLat, tempLon, currLon);
         let changeInTotalDistance = Math.pow(changeInXDistance, 2) + Math.pow((tempAlt - currAlt), 2);
         let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
         if ((Math.pow(changeInTotalDistance, .5) > 7)) {
@@ -121,7 +121,7 @@
         if (!objectsPlaced) {
             var counter = 0;
             while (counter < 5) {
-                //updatePosition();
+                updatePosition();
                 counter++;
             }
             array.forEach(function (item, index, array) {
@@ -131,7 +131,7 @@
         }
     }
     function createObject(obj) {
-        let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon, currAlt, obj.alt);
+        let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon);
         let bearing = currHeading + calculateBearing(currLat, obj.lat, currLon, obj.lon);
         let x = distance * Math.cos(toRadians(bearing));
         let y = obj.alt;
@@ -184,7 +184,7 @@
         demo.innerHTML += "<br>Heading: " + currHeading;
     }
     //Calculates the distance between user's location and object's location.
-    function calculateDistance(lat1, lat2, lon1, lon2, alt1, alt2) {
+    function calculateDistance(lat1, lat2, lon1, lon2) {
         const radius = 6371e3; // Radius of Earth in Meters
         let lat1radians = toRadians(lat1);
         let lat2radians = toRadians(lat2);

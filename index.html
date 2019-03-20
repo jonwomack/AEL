@@ -135,9 +135,9 @@
         let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon);
         let bearing = currHeading + calculateBearing(currLat, obj.lat, currLon, obj.lon);
         demo.innerHTML = "<"
-        let x = distance * Math.sin(toRadians(bearing));
+        let x = distance * Math.cos(toRadians(bearing));
         let y = obj.alt;
-        let z = distance * Math.cos(toRadians(bearing));
+        let z = distance * Math.sin(toRadians(bearing));
         let el = document.createElement('a-entity');
         el.setAttribute('geometry', {
             primitive: 'sphere',

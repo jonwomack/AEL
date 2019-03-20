@@ -83,7 +83,7 @@
         //}
         updatePosition();
         demo.innerHTML = "<br>Alt: " + currAlt + "<br>Lat: " + currLat + "<br> Long: " + currLon;
-        //setInterval(updatePosition, 5000);
+        setInterval(updatePosition, 5000);
     }
 
 
@@ -133,7 +133,7 @@
     }
     function createObject(obj) {
         let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon, currAlt, obj.alt);
-        let bearing = currHeading + calculateBearing(currLat, obj.lat, currLon, obj.lon);
+        let bearing = currHead ing + calculateBearing(currLat, obj.lat, currLon, obj.lon);
         console.log("bearing: " + bearing);
         let x = distance * Math.cos(toRadians(bearing));
         let y = obj.alt;

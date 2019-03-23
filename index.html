@@ -133,6 +133,7 @@
     function createObject(obj) {
         let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon);
         let bearing = currHeading + calculateBearing(currLat, obj.lat, currLon, obj.lon);
+        demo.innerHTML = "<br>Bearing: " + currHeading;
         let x = distance * Math.sin(toRadians(bearing));
         let y = obj.alt;
         let z = distance * Math.cos(toRadians(bearing));

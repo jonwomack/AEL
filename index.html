@@ -52,7 +52,7 @@
         var x = document.getElementById("form1");
         let username = x.elements[0].value;
         let password = x.elements[1].value;
-        writeUserData("username","password")
+        writeUserData("womackj","135838Jw")
     }
     function loginUser() {
         var x = document.getElementById("form1");
@@ -60,11 +60,7 @@
         let password = x.elements[1].value;
         let users = firebase.database().ref('/users/');
         users.on('value', function(snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                let childData = JSON.stringify(childSnapshot.val());
-                childData.replace("", "");
-                demo.innerHTML += childData;
-            });
+
             demo.innerHTML += JSON.stringify(snapshot.val());
         });
     }

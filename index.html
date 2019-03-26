@@ -61,12 +61,12 @@
         let users = firebase.database().ref('/users/');
         users.once('value').then(function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
-               demo.innerHTML += childSnapshot.val();
-               demo.innerHTML += childSnapshot.key;
+               demo.innerHTML += "1 " + childSnapshot.val();
+               demo.innerHTML += "2 " + childSnapshot.key;
             });
-            demo.innerHTML += snapshot.key;
-            demo.innerHTML += snapshot.child('womackj/password').val();
-            demo.innerHTML += JSON.stringify(snapshot.val());
+            demo.innerHTML += "3 " + snapshot.key;
+            demo.innerHTML += "4 " + snapshot.child('womackj/password').val();
+            demo.innerHTML += "5 " + JSON.stringify(snapshot.val());
         });
     }
 

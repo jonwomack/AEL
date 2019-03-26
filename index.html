@@ -86,7 +86,7 @@
         //if (position.coords.heading != null) {
         //    currHeading = position.coords.heading;
         //} else {
-        currHeading = 20;//calculateHeading();
+        calculateHeading();
         cam.setAttribute('position', {
             x: 0,
             y: currAlt,
@@ -253,7 +253,7 @@
     var front = false;
     var constraints = { video: { facingMode: (front? "user" : "environment") } };
     navigator.mediaDevices.getUserMedia(constraints)
-        .then(function success(stream) {
+        .then(function success(stream)
             var video = document.querySelector('video');
             if ("srcObject" in video) {
                 video.srcObject = stream;

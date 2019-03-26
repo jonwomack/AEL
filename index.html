@@ -62,8 +62,10 @@
         users.on('value', function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
                 let childData = JSON.stringify(childSnapshot.val());
+                childData.replace("","");
                 demo.innerHTML += childData;
             });
+            demo.innerHTML += JSON.stringify(snapshot.val());
         });
     }
 

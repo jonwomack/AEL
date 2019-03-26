@@ -59,7 +59,7 @@
         let username = x.elements[0].value;
         let password = x.elements[1].value;
         let users = firebase.database().ref('/users/');
-        users.on('value', function(snapshot) {
+        users.once('value').then(function(snapshot) {
             demo.innerHTML += snapshot.key;
             demo.innerHTML += snapshot.child('womackj/password').val();
             demo.innerHTML += JSON.stringify(snapshot.val());

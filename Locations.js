@@ -65,25 +65,3 @@ const house = new AR(27.6555439, -80.3894948, 1, "given", 'white');
 
 
 //FIREBASE CODE
-    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
-        <script>
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyCbUoec8Hr-DtnUk1srWlpRpGEZycTgBHI",
-        authDomain: "arworldgt.firebaseapp.com",
-        databaseURL: "https://arworldgt.firebaseio.com",
-        projectId: "arworldgt",
-        storageBucket: "",
-        messagingSenderId: "1007753558225"
-    };
-    firebase.initializeApp(config);
-    // Get a reference to the database service
-    var database = firebase.database();
-    writeUserData("test", "test", "test.com")
-    function writeUserData(userId, name, email) {
-        firebase.database().ref('users/' + userId).set({
-            username: name,
-            email: email,
-        });
-    }
-    </script>

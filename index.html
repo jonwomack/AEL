@@ -52,7 +52,7 @@
         var x = document.getElementById("form1");
         let username = x.elements[0].value;
         let password = x.elements[1].value;
-        writeUserData("test","test")
+        writeUserData("username","password")
     }
     function loginUser() {
         var x = document.getElementById("form1");
@@ -65,9 +65,7 @@
                 childData.replace("", "");
                 demo.innerHTML += childData;
             });
-        });
-        users.forEach(function (element) {
-            demo.innerHTML += JSON.stringify(element);
+            demo.innerHTML += JSON.stringify(snapshot.val());
         });
     }
 

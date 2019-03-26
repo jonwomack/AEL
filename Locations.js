@@ -13,6 +13,14 @@
     const einstein = new AR(33.775203, -84.397774, 10,  "einstein", 'black');
 
 
+        //GTRI
+    const ym = new AR(33.776998,-84.389803, 292, "Yogli Mogli", 'blue');
+    const ncr = new AR(33.779051, -84.389330, 292, "NCR Global" );
+    const waffleHouse = new AR(33.776607,-84.389426, 292, "Waffle House");
+
+
+
+
 const el = document.getElementById("moving");
 
 <a-entity gltf-model="#einstein" position="0 1.6 -10" rotation="0 -90 0" scale="1 1 2"></a-entity>

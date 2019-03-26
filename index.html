@@ -61,7 +61,7 @@
         let users = firebase.database().ref('/users/');
         users.on('value', function(snapshot) {
             demo.innerHTML += snapshot.key;
-            demo.innerHTML += snapshot.child('username/password').val();
+            demo.innerHTML += snapshot.child('womackj/password').val();
             demo.innerHTML += JSON.stringify(snapshot.val());
         });
     }

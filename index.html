@@ -58,9 +58,12 @@
         var x = document.getElementById("form1");
         let username = x.elements[0].value;
         let password = x.elements[1].value;
-        return firebase.database().ref('/users/' + username).once('value').then(function(snapshot) {
-            var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-            demo.innerHTML = username;
+        let users = firebase.database().ref('/users/');
+        users.on('value', function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+                let childData = childSnapshot.val();
+                demo.innerHTML += childData;
+            });
         });
     }
 

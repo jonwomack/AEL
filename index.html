@@ -86,7 +86,7 @@
         //if (position.coords.heading != null) {
         //    currHeading = position.coords.heading;
         //} else {
-        calculateHeading();
+        currHeading = 20;//calculateHeading();
         cam.setAttribute('position', {
             x: 0,
             y: currAlt,
@@ -148,7 +148,7 @@
         demo.innerHTML = "<br>Bearing: " + currHeading;
         let x = distance * Math.sin(toRadians(bearing));
         let y = obj.alt;
-        let z = distance * Math.cos(toRadians(bearing));
+        let z = distance * -1 * Math.cos(toRadians(bearing));
         let el = document.createElement('a-entity');
         el.setAttribute('geometry', {
             primitive: 'sphere',

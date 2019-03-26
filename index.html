@@ -61,7 +61,7 @@
         let users = firebase.database().ref('/users/');
         users.on('value', function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
-                let childData = childSnapshot.val();
+                let childData = JSON.stringify(childSnapshot.val());
                 demo.innerHTML += childData;
             });
         });

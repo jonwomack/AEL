@@ -10,7 +10,7 @@
 <p>First, store your lat/lon by pressing this button.</p>
 <button onclick="getLocation()">Store</button>
 <p>Atlanta</p>
-<button onclick="placeObjects(freeman)">Place</button>
+<button onclick="placeObjects(westObjs)">Place</button>
 <p>Florida Objects</p>
 <button onclick="placeObjects(florida)">Place (Fl)</button>
 
@@ -39,7 +39,10 @@
     const west = new AR(27.655852, -80.390410, 1, "wezt", 'purple');
     const house = new AR(27.6555439, -80.3894948, 1, "given", 'white');
     const forest = new AR(30.073855, -81.389983, 4, "maggies", 'purple');
-    const westObjs = [];
+    const ym = new AR(33.776998,-84.389803, 292, "Yogli Mogli", 'blue');
+    const ncr = new AR(33.779051, -84.389330, 292, "NCR Global" );
+    const waffleHouse = new AR(33.776607,-84.389426, 292, "Waffle House");
+    const westObjs = [ym, ncr, waffleHouse];
     const florida = [north, south, east, west, house, forest];
 
     const demo = document.getElementById("demo");

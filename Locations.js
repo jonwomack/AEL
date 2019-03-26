@@ -1,6 +1,6 @@
-const waffleHouse = new AR(33.776607,-84.389426, 10, "Waffle House");
+
     const starBucks = new AR(33.776527, -84.388348, 10, "Starbucks");
-    const ncr = new AR(33.779051, -84.389330, 10, "NCR Global" );
+
     const westVillage = new AR(33.779457, -84.404843, 10, "West Village", 'black');
     const wingZone = new AR(33.779466, -84.405400, 10, "Wing Zone", 'black');
     const fitten = new AR(33.778210, -84.403753, 10, "Fitten", 'black');
@@ -11,7 +11,7 @@ const waffleHouse = new AR(33.776607,-84.389426, 10, "Waffle House");
     const eighth = new AR(33.779803, -84.403961, 10, "Due North", 'black');
     const coor = new AR(33.779125, -84.403064, 10, "East Point", 'black');
     const einstein = new AR(33.775203, -84.397774, 10,  "einstein", 'black');
-const ym = new AR(33.776998,-84.389803, 292, "Yogli Mogli", 'blue');
+
 
 const el = document.getElementById("moving");
 
@@ -40,13 +40,14 @@ function moveObjectH() {
     time += (5*Math.PI)/360;
 }
 
+//Dr.Freeman Objects
 const north = new AR(33.953149972982295, -84.6382802709262, 304, "North", 'red');
 const south = new AR(33.95212652307029, -84.63830172859832, 304, "South", 'blue');
 const east = new AR(33.95263379978259, -84.6376687272708, 304, "East", 'yellow');
 const west = new AR(33.952656048692, -84.63894009434387, 304, "West", 'purple');
 const given = new AR(33.95262935, -84.63824272, 304, "Given", 'white');
 
-
+//Florida House
 const north = new AR(27.656908, -80.389372, 1, "north", 'red');
 const south = new AR(27.654716, -80.389366, 1, "south", 'blue');
 const east = new AR(27.655869, -80.388180, 1, "east", 'yellow');

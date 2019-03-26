@@ -111,14 +111,14 @@
         let tempLon = position.coords.longitude;
         let tempAlt = position.coords.longitude;
         let changeInXDistance = calculateDistance(tempLat, currLat, tempLon, currLon);
-        let changeInTotalDistance = Math.pow(changeInXDistance, 2) + Math.pow((tempAlt - currAlt), 2);
+        let changeInTotalDistance = Math.sqrt(Math.pow(changeInXDistance, 2) + Math.pow((tempAlt - currAlt), 2));
         let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
         if ((Math.pow(changeInTotalDistance, .5) > 7)) {
             currLat = position.coords.latitude;
             currLon = position.coords.longitude;
             currAlt = position.coords.altitude;
-            currX = currX + changeInXDistance * Math.cos(toRadians(changeInBearing));
-            currZ = currZ + changeInXDistance * Math.sin(toRadians(changeInBearing));
+            currX = currX + changeInXDistance * Math.sin(toRadians(changeInBearing));
+            currZ = currZ + changeInXDistance * -1 * Math.cos(toRadians(changeInBearing));
             cam.setAttribute('position', {
                 x: currX,
                 y: currAlt,
@@ -195,7 +195,7 @@
     function handleOrientationEvent(compass) {
         currHeading = compass;
     }
-    //Calculates the distance between user's location and object's location.
+    //Calculates the distance between user's location and object's location in 2D.
     function calculateDistance(lat1, lat2, lon1, lon2) {
         const radius = 6371e3; // Radius of Earth in Meters
         let lat1radians = toRadians(lat1);
@@ -207,6 +207,7 @@
         let latlondistance = radius * c;
         return latlondistance;
     }
+
     //Calculates angle between user's location and object's location
     function calculateBearing(latB1, latB2, lonB1, lonB2) {
         let dLon = (lonB2-lonB1);

@@ -60,6 +60,7 @@
             let creator = snapshot.child(objUsername).val(); //Username of creator
             console.log(creator);
             if (objPrivacy === false) {
+                console.log("object is private");
                 let creatorGroups = firebase.database().ref('/groups/');
                 creatorGroups.once('value').then(function (child2Snapshot) {
                     child2Snapshot.forEach(function (child3Snapshot) {

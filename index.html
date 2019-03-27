@@ -61,9 +61,13 @@
         let users = firebase.database().ref('/users/');
         users.once('value').then(function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
-               console.log(childSnapshot.key);
+               let usernameDB = childSnapshot.key;
                let temp =`${childSnapshot.key}/password`;
-               console.log(snapshot.child(temp).val());
+               let passwordDB = snapshot.child(temp).val();
+               if (usernameDB === username && passwordDB === password) {
+                   location.assign('/arworld.html');
+               }
+
             });
         });
     }

@@ -60,7 +60,9 @@
                     let members = firebase.database().ref(temp);
                     members.once('value').then(function (child4Snapshot) {
                         let memberNames = child4Snapshot.key;
-                        console.log(memberNames);
+                        child4Snapshot.forEach(function (child5Snapshot) {
+                           let person = child5Snapshot.val();
+                        });
                     });
                 });
             });

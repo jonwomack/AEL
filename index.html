@@ -43,8 +43,6 @@
     firebase.initializeApp(config);
     // Get a reference to the database service
     var database = firebase.database();
-    //writeUserData("test", "test", "test.com")
-    //location.assign('/VideoExample.html');
 </script>
 
 <script>
@@ -86,9 +84,7 @@
                }
             });
         });
-        if (!loggedIn) {
-            demo.innerHTML += "Username or Password is incorrect.";
-        }
+        console.log(loggedIn);
     }
 
     function writeUserData(username, password) {

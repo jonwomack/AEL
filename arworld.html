@@ -56,12 +56,11 @@
                 child2Snapshot.forEach(function (child3Snapshot) {
                     let groupnames = child3Snapshot.key;
                     console.log(groupnames);
-                    let userGroups = firebase.database().ref('/users/');
-                    userGroups.once('value').then(function (child4Snapshot) {
-                        child4Snapshot.forEach(function (child4Snapshot) {
-                            console.log(child4Snapshot.key);
-                        });
-                    });
+                    let temp = `/groups/${groupnames}/members`;
+                    let members = firebase.database().ref(temp);
+                    members.once('value').then(function (child4Snapshot) {
+                        let memberNames = child4Snapshot.key;
+                    }
                 });
             });
         });

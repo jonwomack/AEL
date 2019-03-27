@@ -110,8 +110,6 @@
             groups: groups
         });
     }
-    writeUserData("womackj", "135838Jw", "pioneers");
-    writeUserData("Braxton", "Jh27:$5@$-", "pioneers");
     function updateUserPosition(username, latitude, longitude, altitude, groups) {
         firebase.database().ref('users/' + username).set({
             latitude: latitude,

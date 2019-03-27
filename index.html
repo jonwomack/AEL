@@ -81,10 +81,9 @@
                let passwordDB = snapshot.child(temp).val();
                if (usernameDB === username && passwordDB === password) {
                    location.assign('arworld.html');
-               } else {
-                   demo.innerHTML = "Username or Password Incorrect";
                }
             });
+            demo.innerHTML += "Username or Password is incorrect."
         });
     }
 

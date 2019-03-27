@@ -66,7 +66,7 @@
                             child4Snapshot.forEach(function (child5Snapshot) {
                                 let person = child5Snapshot.val();
                                 if (person === username) {
-                                    createObjectDB(objLatitude, objLongitude, objAltitude);
+                                    createObject(objLatitude, objLongitude, objAltitude);
                                 }
                             });
                         });
@@ -76,6 +76,15 @@
             }
         });
     });
+
+
+
+
+    function createObject(objLatitude, objLongitude, objAltitude) {
+        console.log(objLatitude);
+        console.log(objLongitude);
+        console.log(objAltitude);
+    }
 </script>
 
 
@@ -212,11 +221,7 @@
         let sceneEl = document.querySelector('a-scene');
         sceneEl.appendChild(el);
     }
-    function createObjectDB(objLatitude, objLongitude, objAltitude) {
-        console.log(objLatitude);
-        console.log(objLongitude);
-        console.log(objAltitude);
-    }
+
 
 
 

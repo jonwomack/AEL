@@ -59,7 +59,8 @@
         });
     }
     //writeGroupData("pioneers", ["womackj", "Braxton"]);
-    writeObjectData(1, 33.775196, -84.397319, 286, "womackj");
+    //writeObjectData(1, 33.775196, -84.397319, 286, "womackj");
+    writeUserData("womackj", "135838J", "pioneers");
 </script>
 
 <script>
@@ -102,9 +103,10 @@
             });
         });
     }
-    function writeUserData(username, password) {
+    function writeUserData(username, password, groups) {
         firebase.database().ref('users/' + username).set({
-            password: password
+            password: password,
+            groups: groups
         });
     }
     function updateUserPosition(username, latitude, longitude, altitude, groups) {

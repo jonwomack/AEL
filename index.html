@@ -52,7 +52,22 @@
         var x = document.getElementById("form1");
         let username = x.elements[0].value;
         let password = x.elements[1].value;
-        writeUserData("womackj","135838Jw")
+        let exists = false;
+        let users = firebase.database().ref('/users/');
+        users.once('value').then(function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                let usernameDB = childSnapshot.key;
+                let temp = `${childSnapshot.key}/password`;
+                let passwordDB = snapshot.child(temp).val();
+                if (usernameDB === username) {
+                    exists = true;
+                } else {
+                }
+            });
+        });
+        if (!exists) {
+            writeUserData(username, password);
+        }
     }
     function loginUser() {
         var x = document.getElementById("form1");
@@ -66,8 +81,9 @@
                let passwordDB = snapshot.child(temp).val();
                if (usernameDB === username && passwordDB === password) {
                    location.assign('arworld.html');
+               } else {
+                   demo.innerHTML = "Username or Password Incorrect";
                }
-
             });
         });
     }

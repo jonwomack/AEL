@@ -44,13 +44,12 @@
     // Get a reference to the database service
     var database = firebase.database();
     let objects = firebase.database().ref('/objects/');
-    function writeObjectData(number, latitude, longitude, altitude, username, groups) {
+    function writeObjectData(number, latitude, longitude, altitude, username) {
         firebase.database().ref('/objects/' + number).set({
             longitude: longitude,
             latitude: latitude,
             altitude: altitude,
-            username: username,
-            groups: groups
+            username: username
         });
     }
     let groups = firebase.database().ref('/groups/');
@@ -108,11 +107,12 @@
             password: password
         });
     }
-    function updateUserPosition(username, latitude, longitude, altitude) {
+    function updateUserPosition(username, latitude, longitude, altitude, groups) {
         firebase.database().ref('users/' + username).set({
             latitude: latitude,
             longitude: longitude,
-            altitude: altitude
+            altitude: altitude,
+            groups: groups
         });
     }
 </script>

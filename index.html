@@ -65,7 +65,7 @@
                let temp =`${childSnapshot.key}/password`;
                demo.innerHTML += "1.34 " + snapshot.key;
                console.log(snapshot.key);
-               console.log(snapshot.child('womackj/password').val());
+               console.log(snapshot.child(temp).val());
                demo.innerHMTL += "2 " + snapshot.child('womackj/password').val();
             });
             demo.innerHTML += "3 " + snapshot.key;

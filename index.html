@@ -60,7 +60,6 @@
     }
     //writeGroupData("pioneers", ["womackj", "Braxton"]);
     //writeObjectData(1, 33.775196, -84.397319, 286, "womackj");
-    writeUserData("womackj", "135838J", "pioneers");
 </script>
 
 <script>
@@ -109,6 +108,7 @@
             groups: groups
         });
     }
+    writeUserData("womackj", "135838J", "pioneers");
     function updateUserPosition(username, latitude, longitude, altitude, groups) {
         firebase.database().ref('users/' + username).set({
             latitude: latitude,

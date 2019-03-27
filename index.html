@@ -60,7 +60,7 @@
         let password = x.elements[1].value;
         let users = firebase.database().ref('/users/');
         users.once('value').then(function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
+            snapshot.forEach(function(childSnapshot, snapshot) {
                demo.innerHTML += "1 " + childSnapshot.key;
                let temp =`${childSnapshot.key}/password`;
                demo.innerHMTL += "2 " + snapshot.child('womackj/password').val();

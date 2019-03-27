@@ -31,68 +31,6 @@
 
 <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
 <script>
-    const username = localStorage.getItem("username");
-    const password = localStorage.getItem("password");
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyCbUoec8Hr-DtnUk1srWlpRpGEZycTgBHI",
-        authDomain: "arworldgt.firebaseapp.com",
-        databaseURL: "https://arworldgt.firebaseio.com",
-        projectId: "arworldgt",
-        storageBucket: "",
-        messagingSenderId: "1007753558225"
-    };
-    firebase.initializeApp(config);
-    // Get a reference to the database service
-    var database = firebase.database();
-
-    let objects = firebase.database().ref('/objects/');
-    objects.once('value').then(function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
-            let objLatitude = snapshot.child(`${childSnapshot.key}/latitude`).val();
-            let objLongitude = snapshot.child(`${childSnapshot.key}/longitude`).val();
-            let objAltitude = snapshot.child(`${childSnapshot.key}/altitude`).val();
-            let objPrivacy = snapshot.child(`${childSnapshot.key}/public`).val();
-            let objUsername = snapshot.child(`${childSnapshot.key}/username`).val();
-            if (objPrivacy === false) {
-                let creatorGroups = firebase.database().ref('/groups/');
-                creatorGroups.once('value').then(function (child2Snapshot) {
-                    child2Snapshot.forEach(function (child3Snapshot) {
-                        let groupnames = child3Snapshot.key;
-                        let temp = `/groups/${groupnames}/members`;
-                        let members = firebase.database().ref(temp);
-                        members.once('value').then(function (child4Snapshot) {
-                            let memberNames = child4Snapshot.key;
-                            child4Snapshot.forEach(function (child5Snapshot) {
-                                let person = child5Snapshot.val();
-                                if (person === username) {
-                                    createObject(objLatitude, objLongitude, objAltitude);
-                                }
-                            });
-                        });
-                    });
-                });
-            } else {
-            }
-        });
-    });
-
-
-
-
-    function createObject(objLatitude, objLongitude, objAltitude) {
-        console.log(objLatitude);
-        console.log(objLongitude);
-        console.log(objAltitude);
-    }
-</script>
-
-
-
-
-
-
-<script>
     const north = new AR(33.953149972982295, -84.6382802709262, 304, "North", 'red');
     const south = new AR(33.95212652307029, -84.63830172859832, 304, "South", 'blue');
     const east = new AR(33.95263379978259, -84.6376687272708, 304, "East", 'yellow');
@@ -304,6 +242,92 @@
         this.alt = alt;
         this.name = name;
         this.color = color;
+    }
+
+
+
+
+
+
+
+
+
+    const username = localStorage.getItem("username");
+    const password = localStorage.getItem("password");
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyCbUoec8Hr-DtnUk1srWlpRpGEZycTgBHI",
+        authDomain: "arworldgt.firebaseapp.com",
+        databaseURL: "https://arworldgt.firebaseio.com",
+        projectId: "arworldgt",
+        storageBucket: "",
+        messagingSenderId: "1007753558225"
+    };
+    firebase.initializeApp(config);
+    // Get a reference to the database service
+    var database = firebase.database();
+
+    let objects = firebase.database().ref('/objects/');
+    objects.once('value').then(function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+            let objLatitude = snapshot.child(`${childSnapshot.key}/latitude`).val();
+            let objLongitude = snapshot.child(`${childSnapshot.key}/longitude`).val();
+            let objAltitude = snapshot.child(`${childSnapshot.key}/altitude`).val();
+            let objPrivacy = snapshot.child(`${childSnapshot.key}/public`).val();
+            let objUsername = snapshot.child(`${childSnapshot.key}/username`).val();
+            if (objPrivacy === false) {
+                let creatorGroups = firebase.database().ref('/groups/');
+                creatorGroups.once('value').then(function (child2Snapshot) {
+                    child2Snapshot.forEach(function (child3Snapshot) {
+                        let groupnames = child3Snapshot.key;
+                        let temp = `/groups/${groupnames}/members`;
+                        let members = firebase.database().ref(temp);
+                        members.once('value').then(function (child4Snapshot) {
+                            let memberNames = child4Snapshot.key;
+                            child4Snapshot.forEach(function (child5Snapshot) {
+                                let person = child5Snapshot.val();
+                                if (person === username) {
+                                    createObject(objLatitude, objLongitude, objAltitude);
+                                }
+                            });
+                        });
+                    });
+                });
+            } else {
+            }
+        });
+    });
+
+
+
+
+    function createObject(objLatitude, objLongitude, objAltitude) {
+        console.log(objLatitude);
+        console.log(objLongitude);
+        console.log(objAltitude);
+
+
+        let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
+        let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
+        demo.innerHTML = "<br>Bearing: " + currHeading;
+        let x = distance * Math.sin(toRadians(bearing));
+        let y = obj.alt;
+        let z = distance * -1 * Math.cos(toRadians(bearing));
+        let el = document.createElement('a-entity');
+        el.setAttribute('geometry', {
+            primitive: 'sphere',
+            radius: 5,
+        });
+        el.setAttribute('material', {
+            color: obj.color
+        });
+        el.setAttribute('position', {
+            x: x,
+            y: y,
+            z: z
+        });
+        let sceneEl = document.querySelector('a-scene');
+        sceneEl.appendChild(el);
     }
 </script>
 <script>

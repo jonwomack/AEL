@@ -62,8 +62,8 @@
         users.once('value').then(function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
                demo.innerHTML += "1 " + childSnapshot.key;
-               console.log(`${childSnapshot.key}/password`);
-               demo.innerHMTL += "2 " + snapshot.child(`${childSnapshot.key}/password`).val();
+               let temp =`${childSnapshot.key}/password`;
+               demo.innerHMTL += "2 " + snapshot.child('womackj/password').val();
             });
             demo.innerHTML += "3 " + snapshot.key;
             demo.innerHTML += "4 " + snapshot.child('womackj/password').val();

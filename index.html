@@ -88,6 +88,8 @@
                let temp =`${childSnapshot.key}/password`;
                let passwordDB = snapshot.child(temp).val();
                if (usernameDB === username && passwordDB === password) {
+                   localStorage.setItem("username", usernameDB);
+                   localStorage.setItem("password", passwordDB);
                    location.assign('arworld.html');
                }
             });

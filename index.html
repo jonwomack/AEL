@@ -84,9 +84,8 @@
                }
             });
         });
-        console.log(loggedIn);
+        demo.innerHTML += loggedIn;
     }
-
     function writeUserData(username, password) {
         firebase.database().ref('users/' + username).set({
             password: password

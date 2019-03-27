@@ -31,6 +31,10 @@
 
 <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
 <script>
+    const username = localStorage.getItem("username"));
+    const password = localStorage.getItem("password"));
+    console.log(username);
+    console.log(password);
     // Initialize Firebase
     var config = {
         apiKey: "AIzaSyCbUoec8Hr-DtnUk1srWlpRpGEZycTgBHI",
@@ -69,9 +73,6 @@
             });
         });
     });
-
-    window.onload = console.log(localStorage.getItem("username"));
-    window.onload = console.log(localStorage.getItem("password"));
 </script>
 
 

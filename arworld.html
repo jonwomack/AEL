@@ -311,7 +311,7 @@
         let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
         demo.innerHTML = "<br>Bearing: " + currHeading;
         let x = distance * Math.sin(toRadians(bearing));
-        let y = obj.alt;
+        let y = objAltitude;
         let z = distance * -1 * Math.cos(toRadians(bearing));
         let el = document.createElement('a-entity');
         el.setAttribute('geometry', {

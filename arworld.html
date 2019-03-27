@@ -52,28 +52,37 @@
     objects.once('value').then(function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
             let usernameDB = childSnapshot.key; //Object number I need the child of this
-            let temp = `${childSnapshot.key}/username`;
-            let creator = snapshot.child(temp).val(); //Username of creator
+            let objUsername = `${childSnapshot.key}/username`;
+            let objLatitude = snapshot.child(`${childSnapshot.key}/latitude`).val();
+            let objLongitude = snapshot.child(`${childSnapshot.key}/longitude`).val();
+            let objAltitude = snapshot.child(`${childSnapshot.key}/altitude`).val();
+            let objPrivacy = snapshot.child(`${childSnapshot.key}/public`).val();
+            let creator = snapshot.child(objUsername).val(); //Username of creator
             console.log(creator);
-            let creatorGroups = firebase.database().ref('/groups/');
-            creatorGroups.once('value').then(function (child2Snapshot) {
-                child2Snapshot.forEach(function (child3Snapshot) {
-                    let groupnames = child3Snapshot.key;
-                    console.log(groupnames);
-                    let temp = `/groups/${groupnames}/members`;
-                    let members = firebase.database().ref(temp);
-                    members.once('value').then(function (child4Snapshot) {
-                        let memberNames = child4Snapshot.key;
-                        child4Snapshot.forEach(function (child5Snapshot) {
-                           let person = child5Snapshot.val();
-                           console.log(person);
-                           if (person === username) {
-                               console.log("place object yoooo");
-                           }
+            if (objPrivacy === false) {
+                let creatorGroups = firebase.database().ref('/groups/');
+                creatorGroups.once('value').then(function (child2Snapshot) {
+                    child2Snapshot.forEach(function (child3Snapshot) {
+                        let groupnames = child3Snapshot.key;
+                        console.log(groupnames);
+                        let temp = `/groups/${groupnames}/members`;
+                        let members = firebase.database().ref(temp);
+                        members.once('value').then(function (child4Snapshot) {
+                            let memberNames = child4Snapshot.key;
+                            child4Snapshot.forEach(function (child5Snapshot) {
+                                let person = child5Snapshot.val();
+                                console.log(person);
+                                if (person === username) {
+                                    console.log("place object yoooo");
+                                    console.log(snapshot.child(temp).val());
+                                }
+                            });
                         });
                     });
                 });
-            });
+            } else {
+                console.log("object is public");
+            }
         });
     });
 </script>

@@ -66,6 +66,10 @@
                             child4Snapshot.forEach(function (child5Snapshot) {
                                 let person = child5Snapshot.val();
                                 if (person === username) {
+                                    console.log("obj");
+                                    console.log(objLatitude);
+                                    console.log(objLongitude);
+                                    console.log(objAltitude);
                                     createObject(objLatitude, objLongitude, objAltitude);
                                 }
                             });

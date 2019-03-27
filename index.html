@@ -71,7 +71,6 @@
         var x = document.getElementById("form1");
         let username = x.elements[0].value;
         let password = x.elements[1].value;
-        let loggedIn = false;
         let users = firebase.database().ref('/users/');
         users.once('value').then(function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
@@ -79,12 +78,10 @@
                let temp =`${childSnapshot.key}/password`;
                let passwordDB = snapshot.child(temp).val();
                if (usernameDB === username && passwordDB === password) {
-                   loggedIn = true;
                    location.assign('arworld.html');
                }
             });
         });
-        demo.innerHTML += loggedIn;
     }
     function writeUserData(username, password) {
         firebase.database().ref('users/' + username).set({

@@ -49,18 +49,12 @@
     let objects = firebase.database().ref('/objects/');
     objects.once('value').then(function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
-            let lat = `${childSnapshot.key}/latitude`;
-            let objLatitude = snapshot.child(lat).val();
-            let lon = `${childSnapshot.key}/longitude`;
-            let objLongitude = snapshot.child(lon).val();
-            let alt = `${childSnapshot.key}/altitude`;
-            let objAltitude = snapshot.child(alt).val();
-            let priv = `${childSnapshot.key}/public`;
-            let objPrivacy = snapshot.child(priv).val();
-            let user = `${childSnapshot.key}/username`
-            let objUsername = snapshot.child(user).val();
+            let objLatitude = snapshot.child(`${childSnapshot.key}/latitude`).val();
+            let objLongitude = snapshot.child(`${childSnapshot.key}/longitude`).val();
+            let objAltitude = snapshot.child(`${childSnapshot.key}/altitude`).val();
+            let objPrivacy = snapshot.child(`${childSnapshot.key}/public`).val();
+            let objUsername = snapshot.child(`${childSnapshot.key}/username`).val();
             if (objPrivacy === false) {
-                console.log("yay");
                 let creatorGroups = firebase.database().ref('/groups/');
                 creatorGroups.once('value').then(function (child2Snapshot) {
                     child2Snapshot.forEach(function (child3Snapshot) {
@@ -72,10 +66,6 @@
                             child4Snapshot.forEach(function (child5Snapshot) {
                                 let person = child5Snapshot.val();
                                 if (person === username) {
-                                    console.log("obj");
-                                    console.log(objLatitude);
-                                    console.log(objLongitude);
-                                    console.log(objAltitude);
                                     createObject(objLatitude, objLongitude, objAltitude);
                                 }
                             });

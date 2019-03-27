@@ -67,6 +67,9 @@
                         child4Snapshot.forEach(function (child5Snapshot) {
                            let person = child5Snapshot.val();
                            console.log(person);
+                           if (person === username) {
+                               console.log("place object yoooo");
+                           }
                         });
                     });
                 });

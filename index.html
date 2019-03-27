@@ -79,6 +79,7 @@
             });
         });
         if (!exists) {
+            demo.innerHTML = "User Created";
             writeUserData(username, password);
         }
     }
@@ -101,7 +102,9 @@
         });
     }
     function writeUserData(username, password) {
-        writeUserData(username, password, null);
+        firebase.database().ref('users/' + username).set({
+            password: password
+        });
     }
     function writeUserData(username, password, groups) {
         firebase.database().ref('users/' + username).set({

@@ -48,9 +48,10 @@
     objects.once('value').then(function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
             let usernameDB = childSnapshot.key; //Object number I need the child of this
-            let temp = `${childSnapshot.key}/password`;
+            let temp = `${childSnapshot.key}/username`;
             let passwordDB = snapshot.child(temp).val();
             console.log(usernameDB);
+            console.log(passwordDB);
         });
     });
 </script>

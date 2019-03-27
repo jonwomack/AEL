@@ -44,12 +44,13 @@
     // Get a reference to the database service
     var database = firebase.database();
     let objects = firebase.database().ref('/objects/');
-    function writeObjectData(number, latitude, longitude, altitude, username) {
+    function writeObjectData(number, latitude, longitude, altitude, username, pub) {
         firebase.database().ref('/objects/' + number).set({
             longitude: longitude,
             latitude: latitude,
             altitude: altitude,
-            username: username
+            username: username,
+            public: pub
         });
     }
     let groups = firebase.database().ref('/groups/');
@@ -59,7 +60,7 @@
         });
     }
     //writeGroupData("pioneers", ["womackj", "Braxton"]);
-    //writeObjectData(1, 33.775196, -84.397319, 286, "womackj");
+    writeObjectData(1, 33.775196, -84.397319, 286, "womackj", false);
 </script>
 
 <script>

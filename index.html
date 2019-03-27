@@ -44,15 +44,23 @@
     // Get a reference to the database service
     var database = firebase.database();
     let objects = firebase.database().ref('/objects/');
-    function writeObjectData(number, latitude, longitude, altitude, username) {
+    function writeObjectData(number, latitude, longitude, altitude, username, groups) {
         firebase.database().ref('/objects/' + number).set({
             longitude: longitude,
             latitude: latitude,
             altitude: altitude,
-            username: username
+            username: username,
+            groups: groups
         });
     }
-    writeObjectData(0, 33.774577, -84.397340, 286, "womackj");
+    let groups = firebase.database().ref('/groups/');
+    function writeGroupData(name, members) {
+        firebase.database().ref('/groups/' + name).set({
+            members: members
+        });
+    }
+    writeGroupData("pioneers", ["womackj", "Braxton"]);
+    //writeObjectData(0, 33.774577, -84.397340, 286, "womackj");
 </script>
 
 <script>

@@ -49,11 +49,26 @@
         snapshot.forEach(function (childSnapshot) {
             let usernameDB = childSnapshot.key; //Object number I need the child of this
             let temp = `${childSnapshot.key}/username`;
-            let passwordDB = snapshot.child(temp).val();
-            console.log(usernameDB);
-            console.log(passwordDB);
+            let creator = snapshot.child(temp).val(); //Username of creator
+            console.log(creator);
+            let creatorGroups = firebase.database().ref('/groups/');
+            creatorGroups.once('value').then(function (child2Snapshot) {
+                child2Snapshot.forEach(function (child3Snapshot) {
+                    let groupnames = child3Snapshot.key;
+                    console.log(groupnames);
+                    let userGroups = firebase.database().ref('/users/');
+                    userGroups.once('value').then(function (child4Snapshot) {
+                        child4Snapshot.forEach(function (child4Snapshot) {
+                            console.log(child4Snapshot.key);
+                        });
+                    });
+                });
+            });
         });
     });
+
+    window.onload = console.log(localStorage.getItem("username"));
+    window.onload = console.log(localStorage.getItem("password"));
 </script>
 
 
@@ -62,8 +77,6 @@
 
 
 <script>
-    window.onload = console.log(localStorage.getItem("username"));
-    window.onload = console.log(localStorage.getItem("password"));
     const north = new AR(33.953149972982295, -84.6382802709262, 304, "North", 'red');
     const south = new AR(33.95212652307029, -84.63830172859832, 304, "South", 'blue');
     const east = new AR(33.95263379978259, -84.6376687272708, 304, "East", 'yellow');

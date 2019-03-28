@@ -46,15 +46,14 @@
             color: color
         });
     }
-    writeObjectData(0, 33.774577, -84.397340, 286, "womackj", false, 'white');
-    writeObjectData(1, 33.775196, -84.397319, 286, "womackj", false, 'red');
-    writeObjectData(2, 33.774017, -84.397363, 286, "womackj", false, 'blue');
-    writeObjectData(3, 33.774618, -84.396867, 286, "womackj", false, 'yellow');
-    writeObjectData(4, 33.774615, -84.397792, 286, "womackj", false, 'purple');
 
     writeGroupData("pioneers", "Braxton", 1);
     writeGroupData("pioneers", "klasings", 2);
     function writeGroupData(name, member, number) {
+        let path2 = `/groups/${name}`;
+        firebase.datbase().ref(path2).set({
+           number: 3
+        });
         let path = `/groups/${name}/members/`;
         firebase.database().ref(path + number).set({
             member: member

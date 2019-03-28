@@ -52,10 +52,12 @@
     writeObjectData(3, 33.774618, -84.396867, 286, "womackj", false, 'yellow');
     writeObjectData(4, 33.774615, -84.397792, 286, "womackj", false, 'purple');
 
-    let groups = firebase.database().ref('/groups/');
-    function writeGroupData(name, members) {
-        firebase.database().ref('/groups/' + name).set({
-            members: members
+    writeGroupData("pioneers", "womackj");
+    function writeGroupData(name, member) {
+        let number = 0;
+        let path = `/groups/${name}/members/`;
+        firebase.database().ref(path + number).set({
+            member: member;
         });
     }
 </script>
@@ -102,13 +104,13 @@
         });
     }
     function writeUserData(username, password) {
-        writeUserData(username, password, 0)
-    }
-    function writeUserData(username, password, groups) {
         firebase.database().ref('users/' + username).set({
             password: password,
-            groups: groups
+            groups: "groups"
         });
+    }
+    function joinGroup(groupname, username) {
+        firebase.database().ref('users/groups')
     }
     function updateUserPosition(username, latitude, longitude, altitude, groups) {
         firebase.database().ref('users/' + username).set({
@@ -117,6 +119,9 @@
             altitude: altitude,
             groups: groups
         });
+        firebase.database().ref('users/username' + groups).set({
+
+        })
     }
 </script>
 

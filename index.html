@@ -49,10 +49,10 @@
 
     function createGroup(groupname, username) {
         let path = `/groups/${groupname}/`;
-        firebase.database.ref(path).set({
+        firebase.database().ref(path).set({
             number: 0
         });
-        firebase.database.ref(path + 'members/0/').set({
+        firebase.database().ref(path + 'members/0/').set({
             member: username
         });
     }

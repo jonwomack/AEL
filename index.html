@@ -55,7 +55,6 @@
     writeGroupData("pioneers", "Braxton", 1);
     writeGroupData("pioneers", "klasings", 2);
     function writeGroupData(name, member, number) {
-        let number = number;
         let path = `/groups/${name}/members/`;
         firebase.database().ref(path + number).set({
             member: member

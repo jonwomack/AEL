@@ -102,9 +102,7 @@
         });
     }
     function writeUserData(username, password) {
-        firebase.database().ref('users/' + username).set({
-            password: password
-        });
+        writeUserData(username, password, 0)
     }
     function writeUserData(username, password, groups) {
         firebase.database().ref('users/' + username).set({

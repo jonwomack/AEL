@@ -52,10 +52,10 @@
     writeObjectData(3, 33.774618, -84.396867, 286, "womackj", false, 'yellow');
     writeObjectData(4, 33.774615, -84.397792, 286, "womackj", false, 'purple');
 
-    writeGroupData("pioneers", "Braxton");
-    writeGroupData("pioneers", "klasings");
-    function writeGroupData(name, member) {
-        let number = 1;
+    writeGroupData("pioneers", "Braxton", 1);
+    writeGroupData("pioneers", "klasings", 2);
+    function writeGroupData(name, member, number) {
+        let number = number;
         let path = `/groups/${name}/members/`;
         firebase.database().ref(path + number).set({
             member: member

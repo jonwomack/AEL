@@ -317,7 +317,7 @@
         let groupsize = 0;
         let inGroup = false;
         let userExists = false;
-        firebase.database().ref(pathToGroup + 'number').once('value').then(function (snapshot) {
+        firebase.database().ref(pathToGroup + '/number/').once('value').then(function (snapshot) {
             groupsize = snapshot.key;
             console.log(groupsize);
             console.log(snapshot.val());

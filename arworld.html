@@ -352,7 +352,11 @@
                     groupsize:  groupsize + 1
                 });
                 let newMemberRef = firebase.database().ref(pathToGroup).child('users');
-                newMemberRef.push().update({
+                newMemberRef.push().set({
+                    username: userToAdd
+                });
+                let newMemberRef2 = firebase.database().ref(pathToGroup).child('users');
+                newMemberRef2.push().set({
                     username: userToAdd
                 });
             }

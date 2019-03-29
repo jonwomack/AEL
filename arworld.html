@@ -316,10 +316,19 @@
         let pathToGroup = `/groups/${groupname}`;
         let groupsize = 0;
         let inGroup = false;
+        let userExists = false;
         firebase.database().ref(pathToGroup + 'number').once('value').then(function (snapshot) {
-            groupsize = snapshot.val();
+            groupsize = snapshot.key;
             console.log(groupsize);
         });
+        let users = firebase.database().ref('/users/');
+        users.once('value').then(function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                let usernameDB = childSnapshot.key;
+                if (usernameDB === username) {
+                    userExists = true;
+            });
+        };
         let usersInGroup = firebase.database().ref('/groups/members/');
         usersInGroup.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
@@ -328,7 +337,7 @@
                    inGroup = true;
                }
             });
-            if (!inGroup) {
+            if (!inGroup && userExists) {
                 firebase.database().ref(pathToGroup).set({
                     number:  groupsize + 1
                 });

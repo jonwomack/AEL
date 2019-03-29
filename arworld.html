@@ -13,7 +13,10 @@
 <button onclick="placeObjects(tech)">Tech Campus</button>
 <p>Florida Objects</p>
 <button onclick="placeObjects(freeman)">Dr.Freeman</button>
-<input type="button" onclick="createGroup()" value="Group Name">
+<form id="form1" method="get">
+    <input type="button" onclick="createGroup()" value="Group Name">
+    <input type="button" onclick="addUserToGroup()" value="Username">
+</form>
 
 <div class="camera">
     <video  id="videoElement"></video>
@@ -214,10 +217,6 @@
         return brng;
     }
 
-
-
-
-
     //Math functions
     function toDegrees(radians) {
         return radians * (180/Math.PI);
@@ -225,10 +224,6 @@
     function toRadians(degrees) {
         return degrees * (Math.PI/180);
     }
-
-
-
-
 
     //AR Object Constructors
     function AR(lat, lon, alt) {
@@ -253,6 +248,17 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
     const username = localStorage.getItem("username");
     const password = localStorage.getItem("password");
     // Initialize Firebase
@@ -267,6 +273,72 @@
     firebase.initializeApp(config);
     // Get a reference to the database service
     var database = firebase.database();
+
+
+
+
+    function createGroup() {
+        var x = document.getElementById("form1");
+        let groupname = x.elements[0].value;
+        let path = `/groups/${groupname}/`;
+        let groups = firebase.database().ref('/groups/');
+        let exists = false;
+        groups.once('value').then(function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                let groupsDB = childSnapshot.key;
+                if (groupsDB === groupname) {
+                    exists = true;
+                    console.log("exists");
+                    firebase.database().ref(path).set({
+                        number: 1
+                    });
+                    firebase.database().ref(path + 'members/0/').set({
+                        member: username
+                    });
+                    console.log(username);
+                } else {
+                }
+            });
+        });
+    }
+    function addUserToGroup() {
+        var x = document.getElementById("form1");
+        let groupname = x.elements[0].value;
+        let username = x.elements[1].value;
+        let pathToGroup = `/groups/${groupname}`;
+        let groupsize = 0;
+        firebase.database().ref(pathToGroup + 'number').once('value').then(function (snapshot) {
+            groupsize = snapshot.val();
+            console.log(groupsize);
+        });
+        firebase.database().ref(pathToGroup).set({
+            number:  groupsize + 1;
+        });
+        let path = `/groups/${name}/members/`;
+        firebase.database().ref(path + (groupsize - 1)).set({
+            member: username
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     let objects = firebase.database().ref('/objects/');
     objects.once('value').then(function (snapshot) {

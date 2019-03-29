@@ -14,6 +14,10 @@
         position: absolute;
         background-color: #00BFFF;
     }
+    form {
+        position: relative;
+        z-index: 5;
+    }
     #videoElement {
         position: absolute;
         z-index: -1;

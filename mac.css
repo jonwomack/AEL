@@ -21,6 +21,10 @@
     body {
         background-color: #00BFFF;
     }
+    form {
+        position: relative;
+        z-index: 2;
+    }
     a-scene {
         position: absolute;
         z-index: 1;

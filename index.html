@@ -55,15 +55,15 @@
                 } else {
                 }
             });
+            console.log(exists);
+            if (!exists) {
+                demo.innerHTML = "User Created";
+                firebase.database().ref('users/' + username).set({
+                    password: password,
+                    groups: "groups"
+                });
+            }
         });
-        console.log(exists);
-        if (!exists) {
-            demo.innerHTML = "User Created";
-            firebase.database().ref('users/' + username).set({
-                password: password,
-                groups: "groups"
-            });
-        }
     }
 
     function loginUser() {

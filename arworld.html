@@ -6,39 +6,6 @@
     <link rel="stylesheet" type="text/css" media="screen and (max-width: 900px)" href="phone.css">
 </head>
 
-<body>
-<p>First, store your lat/lon by pressing this button.</p>
-<button onclick="getLocation()">Store</button>
-<p>Atlanta</p>
-<button onclick="placeObjects(tech)">Tech Campus</button>
-<p>Florida Objects</p>
-<button onclick="placeObjects(freeman)">Dr.Freeman</button>
-<form id="form1" method="get">
-    Groupname:
-    <input type="text" name="groupname" value="Group Name">
-    <br>
-    <input type="button" onclick="createGroup()" value="Group Name">
-    <br>
-    Add User:
-    <input type="text" name="addUser" value="User Name">
-    <br>
-    <input type="button" onclick="addUserToGroup()" value="Add User to Group">
-</form>
-
-<div class="camera">
-    <video  id="videoElement"></video>
-</div>
-<div id="a-scene">
-    <a-scene background="color: black; transparent: true" vr-mode-ui="enabled: false">
-        <a-assets>
-        </a-assets>
-        <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#93648D"></a-plane>
-        <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
-        <a-sphere id="moving" radius="5" position="0 10 0" color="white"></a-sphere>
-    </a-scene>
-</div>
-<p id="demo"></p>
-
 
 <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
 <script>
@@ -177,7 +144,7 @@
 
 
 
-//Collection of functions used in determining position of the user.
+    //Collection of functions used in determining position of the user.
 
     //Sets current heading as the difference between North and user heading.
     function calculateHeading() {
@@ -337,12 +304,12 @@
         let usersInGroup = firebase.database().ref('/groups/members/');
         usersInGroup.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
-               let usersDB = childSnapshot.val();
-               console.log(usersDB);
-               console.log(userToAdd);
-               if (usersDB === userToAdd) {
-                   inGroup = true;
-               }
+                let usersDB = childSnapshot.val();
+                console.log(usersDB);
+                console.log(userToAdd);
+                if (usersDB === userToAdd) {
+                    inGroup = true;
+                }
             });
             console.log(inGroup);
             console.log(userExists);
@@ -452,6 +419,43 @@
         */
     }
 </script>
+
+
+
+
+<body>
+<p>First, store your lat/lon by pressing this button.</p>
+<button onclick="getLocation()">Store</button>
+<p>Atlanta</p>
+<button onclick="placeObjects(tech)">Tech Campus</button>
+<p>Florida Objects</p>
+<button onclick="placeObjects(freeman)">Dr.Freeman</button>
+<form id="form1" method="get">
+    Groupname:
+    <input type="text" name="groupname" value="Group Name">
+    <br>
+    <input type="button" onclick="createGroup()" value="Group Name">
+    <br>
+    Add User:
+    <input type="text" name="addUser" value="User Name">
+    <br>
+    <input type="button" onclick="addUserToGroup()" value="Add User to Group">
+</form>
+
+<div class="camera">
+    <video  id="videoElement"></video>
+</div>
+<div id="a-scene">
+    <a-scene background="color: black; transparent: true" vr-mode-ui="enabled: false">
+        <a-assets>
+        </a-assets>
+        <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#93648D"></a-plane>
+        <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
+        <a-sphere id="moving" radius="5" position="0 10 0" color="white"></a-sphere>
+    </a-scene>
+</div>
+<p id="demo"></p>
+
 <script>
     //Enables camera functionality
     var front = false;

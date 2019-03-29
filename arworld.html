@@ -19,6 +19,9 @@
     <br>
     <input type="button" onclick="createGroup()" value="Group Name">
     <br>
+    Add User:
+    <input type="text" name="addUser" value="User Name">
+    <br>
     <input type="button" onclick="addUserToGroup()" value="Add User to Group">
 </form>
 
@@ -293,33 +296,49 @@
                 if (groupsDB === groupname) {
                     exists = true;
                     console.log("exists");
-                    firebase.database().ref(path).set({
-                        number: 1
-                    });
-                    firebase.database().ref(path + 'members/0/').set({
-                        member: username
-                    });
-                    console.log(username);
-                } else {
                 }
             });
+            if (!exists) {
+                firebase.database().ref(path).set({
+                    number: 1
+                });
+                firebase.database().ref(path + 'members/0/').set({
+                    member: username
+                });
+                console.log(username);
+            } else {
+                demo.innerHTML = "Group Already Exists";
+            }
         });
     }
     function addUserToGroup() {
         var x = document.getElementById("form1");
         let groupname = x.elements[0].value;
+        let username = x.elements[1].value;
         let pathToGroup = `/groups/${groupname}`;
         let groupsize = 0;
+        let inGroup = false;
         firebase.database().ref(pathToGroup + 'number').once('value').then(function (snapshot) {
             groupsize = snapshot.val();
             console.log(groupsize);
         });
-        firebase.database().ref(pathToGroup).set({
-            number:  groupsize + 1;
-        });
-        let path = `/groups/${name}/members/`;
-        firebase.database().ref(path + (groupsize - 1)).set({
-            member: username
+        let usersInGroup = firebase.database().ref('/groups/members/');
+        usersInGroup.once('value').then(function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+               let usersDB = childSnapshot.val();
+               if (usersDB === username) {
+                   inGroup = true;
+               }
+            });
+            if (!inGroup) {
+                firebase.database().ref(pathToGroup).set({
+                    number:  groupsize + 1;
+                });
+                let path = `/groups/${name}/members/`;
+                firebase.database().ref(path + (groupsize - 1)).set({
+                    member: username
+                });
+            }
         });
     }
 
@@ -342,7 +361,7 @@
 
 
 
-
+    /*
     let objects = firebase.database().ref('/objects/');
     objects.once('value').then(function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
@@ -373,6 +392,7 @@
             }
         });
     });
+    */
 
 
 
@@ -382,7 +402,7 @@
         console.log(objLongitude);
         console.log(objAltitude);
 
-
+        /*
         let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
         let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
         demo.innerHTML = "<br>Bearing: " + currHeading;
@@ -404,6 +424,7 @@
         });
         let sceneEl = document.querySelector('a-scene');
         sceneEl.appendChild(el);
+        */
     }
 </script>
 <script>

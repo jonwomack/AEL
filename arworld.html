@@ -357,6 +357,7 @@
                     title: 'Mercedes',
                     img: 'http://'
                 });
+                let newMemberRef = firebase.database().ref(pathToGroup).child('gallery').push();
                 newMemberRef.set({
                     title: 'BMW',
                     img: 'https://'

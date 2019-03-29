@@ -351,7 +351,7 @@
                     number:  groupsize + 1
                 });
                 let path = `/groups/${name}/members/`;
-                firebase.database().ref(path + (groupsize - 1)).set({
+                firebase.database().ref(path + groupsize.set({
                     member: userToAdd
                 });
             }

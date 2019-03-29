@@ -303,7 +303,8 @@
                 firebase.database().ref(path).set({
                     groupsize: 1
                 });
-                firebase.database().ref(path + '/members/' + `${0}/`).set({
+                let newMemberRef = firebase.database().ref(path).child('users').push();
+                newMemberRef.set({
                     username: username
                 });
             } else {
@@ -350,19 +351,11 @@
                 firebase.database().ref(pathToGroup).set({
                     groupsize:  groupsize + 1
                 });
-                let path = `groups/${groupname}/members/`;
                 console.log(groupsize);
-                let newMemberRef = firebase.database().ref(pathToGroup).child('gallery').push();
+                let newMemberRef = firebase.database().ref(pathToGroup).child('users').push();
                 newMemberRef.set({
-                    title: 'Mercedes',
-                    img: 'http://'
+                    username: userToAdd
                 });
-                let newMemberRef2 = firebase.database().ref(pathToGroup).child('gallery').push();
-                newMemberRef2.set({
-                    title: 'BMW',
-                    img: 'https://'
-                });
-
             }
         });
     }

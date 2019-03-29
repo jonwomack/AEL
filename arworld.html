@@ -14,6 +14,8 @@
 <p>Florida Objects</p>
 <button onclick="placeObjects(freeman)">Dr.Freeman</button>
 <form id="form1" method="get">
+    Groupname:<br>
+    <input type="text" name="groupname" value="Group Name">
     <input type="button" onclick="createGroup()" value="Group Name">
     <input type="button" onclick="addUserToGroup()" value="Username">
 </form>
@@ -304,7 +306,6 @@
     function addUserToGroup() {
         var x = document.getElementById("form1");
         let groupname = x.elements[0].value;
-        let username = x.elements[1].value;
         let pathToGroup = `/groups/${groupname}`;
         let groupsize = 0;
         firebase.database().ref(pathToGroup + 'number').once('value').then(function (snapshot) {

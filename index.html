@@ -71,6 +71,7 @@
         var x = document.getElementById("form1");
         let username = x.elements[0].value;
         let password = x.elements[1].value;
+        let loggedin = false;
         let users = firebase.database().ref('/users/');
         users.once('value').then(function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
@@ -78,11 +79,15 @@
                 let temp =`${childSnapshot.key}/password`;
                 let passwordDB = snapshot.child(temp).val();
                 if (usernameDB === username && passwordDB === password) {
+                    loggedin = true;
                     localStorage.setItem("username", usernameDB);
                     localStorage.setItem("password", passwordDB);
                     location.assign('arworld.html');
                 }
             });
+            if (!loggedin) {
+                demo.innerHTML = "Incorrect Username or Password";
+            }
         });
     }
 

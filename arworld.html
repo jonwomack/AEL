@@ -352,7 +352,7 @@
                 });
                 let path = `groups/${groupname}/members/`;
                 console.log(groupsize);
-                let newMemberRef = firebase.database().ref(path).child('gallery').push();
+                let newMemberRef = firebase.database().ref(pathToGroup).child('gallery').push();
                 newMemberRef.set({
                     title: 'Mercedes',
                     img: 'http://'

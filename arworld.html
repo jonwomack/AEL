@@ -314,7 +314,7 @@
     function addUserToGroup() {
         var x = document.getElementById("form1");
         let groupname = x.elements[0].value;
-        let username = x.elements[1].value;
+        let userToAdd = x.elements[1].value;
         let pathToGroup = `/groups/${groupname}`;
         let groupsize = 0;
         let userNumber = 0;
@@ -328,7 +328,7 @@
             snapshot.forEach(function (childSnapshot) {
                 let usernameDB = childSnapshot.key;
                 console.log(usernameDB);
-                if (usernameDB === username) {
+                if (usernameDB === userToAdd) {
                     userExists = true;
                 }
             });
@@ -338,7 +338,7 @@
             snapshot.forEach(function (childSnapshot) {
                let usersDB = childSnapshot.val();
                console.log(usersDB);
-               if (usersDB === username) {
+               if (usersDB === userToAdd) {
                    inGroup = true;
                }
             });
@@ -350,7 +350,7 @@
                 });
                 let path = `/groups/${name}/members/`;
                 firebase.database().ref(path + (groupsize - 1)).set({
-                    member: username
+                    member: userToAdd
                 });
             }
         });

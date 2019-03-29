@@ -295,7 +295,6 @@
                 let groupsDB = childSnapshot.key;
                 if (groupsDB === groupname) {
                     exists = true;
-                    console.log("exists");
                 }
             });
             if (!exists) {
@@ -305,7 +304,6 @@
                 firebase.database().ref(path + 'members/0/').set({
                     member: username
                 });
-                console.log(username);
             } else {
                 demo.innerHTML = "Group Already Exists";
             }

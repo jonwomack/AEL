@@ -302,8 +302,7 @@
                     groupsize: 1
                 });
                 let newMemberRef = firebase.database().ref(path).child('users');
-                newMemberRef.push();
-                newMemberRef.set({
+                newMemberRef.push().set({
                     username: username
                 });
             } else {
@@ -311,6 +310,8 @@
             }
         });
     }
+
+
     function addUserToGroup() {
         var x = document.getElementById("form1");
         let groupname = x.elements[0].value;
@@ -352,8 +353,7 @@
                 });
                 console.log(groupsize);
                 let newMemberRef = firebase.database().ref(pathToGroup).child('users');
-                newMemberRef.push();
-                newMemberRef.set({
+                newMemberRef.push().set({
                     username: userToAdd
                 });
             }

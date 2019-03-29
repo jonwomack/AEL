@@ -301,9 +301,11 @@
             });
             if (!exists) {
                 firebase.database().ref(path + '/members/').push().set({
-                    name: 1,
-                    "member": username
+                    member: username
                 });
+                firebase.database().ref(path + '/groupsize/').set({
+                    groupsize: 1
+                })
             } else {
                 demo.innerHTML = "Group Already Exists";
             }
@@ -318,7 +320,7 @@
         let userNumber = 0;
         let inGroup = false;
         let userExists = false;
-        firebase.database().ref(pathToGroup + '/number/').once('value').then(function (snapshot) {
+        firebase.database().ref(pathToGroup + '/groupsize/').once('value').then(function (snapshot) {
             groupsize = snapshot.val();
         });
         let users = firebase.database().ref('/users/');
@@ -346,7 +348,7 @@
             console.log(userExists);
             if (!inGroup && userExists) {
                 firebase.database().ref(pathToGroup).set({
-                    number:  groupsize + 1
+                    groupsize:  groupsize + 1
                 });
                 let path = `groups/${groupname}/members/`;
                 console.log(groupsize);

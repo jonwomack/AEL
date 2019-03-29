@@ -332,7 +332,7 @@
             });
             if (!inGroup) {
                 firebase.database().ref(pathToGroup).set({
-                    number:  groupsize + 1;
+                    number:  groupsize + 1
                 });
                 let path = `/groups/${name}/members/`;
                 firebase.database().ref(path + (groupsize - 1)).set({

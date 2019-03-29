@@ -352,9 +352,16 @@
                 });
                 let path = `groups/${groupname}/members/`;
                 console.log(groupsize);
-                firebase.database().ref(path).child(`${groupsize}`).set({
-                    username: userToAdd
+                let newMemberRef = firebase.database().ref(path).child('gallery').push();
+                newMemberRef.set({
+                    title: 'Mercedes',
+                    img: 'http://'
                 });
+                newMemberRef.set({
+                    title: 'BMW',
+                    img: 'https://'
+                });
+
             }
         });
     }

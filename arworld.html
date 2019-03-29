@@ -320,7 +320,9 @@
         firebase.database().ref(pathToGroup + 'number').once('value').then(function (snapshot) {
             groupsize = snapshot.key;
             console.log(groupsize);
+            console.log(snapshot.val());
         });
+        /*
         let users = firebase.database().ref('/users/');
         users.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
@@ -348,6 +350,7 @@
                 });
             }
         });
+        */
     }
 
 

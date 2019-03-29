@@ -300,12 +300,12 @@
                 }
             });
             if (!exists) {
+                firebase.database().ref(path).set({
+                    groupsize: 1
+                });
                 firebase.database().ref(path + '/members/').push().set({
                     member: username
                 });
-                firebase.database().ref(path).set({
-                    groupsize: 1
-                })
             } else {
                 demo.innerHTML = "Group Already Exists";
             }

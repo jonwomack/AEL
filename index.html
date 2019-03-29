@@ -51,10 +51,8 @@
                 let passwordDB = snapshot.child(temp).val();
                 if (usernameDB === username) {
                     exists = true;
-                } else {
                 }
             });
-            console.log(exists);
             if (!exists) {
                 demo.innerHTML = "User Created";
                 firebase.database().ref('users/' + username).set({

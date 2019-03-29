@@ -51,7 +51,6 @@
                 let passwordDB = snapshot.child(temp).val();
                 if (usernameDB === username) {
                     exists = true;
-                    console.log("exists");
                 } else {
                 }
             });
@@ -62,6 +61,8 @@
                     password: password,
                     groups: "groups"
                 });
+            } else {
+                demo.innerHTML = "User Already Exists";
             }
         });
     }

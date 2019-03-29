@@ -315,8 +315,9 @@
         let username = x.elements[1].value;
         let pathToGroup = `/groups/${groupname}`;
         let groupsize = 0;
+        let userNumber = 0;
         let inGroup = false;
-        let userExists = false;
+        let userExists = false
         firebase.database().ref(pathToGroup + '/number/').once('value').then(function (snapshot) {
             groupsize = snapshot.val();
         });
@@ -337,6 +338,8 @@
                    inGroup = true;
                }
             });
+            console.log(inGroup);
+            console.log(userExists);
             if (!inGroup && userExists) {
                 firebase.database().ref(pathToGroup).set({
                     number:  groupsize + 1

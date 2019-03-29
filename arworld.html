@@ -300,11 +300,9 @@
                 }
             });
             if (!exists) {
-                firebase.database().ref(path).set({
-                    number: 1
-                });
-                firebase.database().ref(path + 'members/0/').set({
-                    member: username
+                firebase.database().ref(path + '/members/').push().set({
+                    name: 1,
+                    "member": username
                 });
             } else {
                 demo.innerHTML = "Group Already Exists";
@@ -352,8 +350,9 @@
                 });
                 let path = `groups/${groupname}/members/`;
                 console.log(groupsize);
-                firebase.database().ref(path).child(`${groupsize}`).set({
-                    member: userToAdd
+                firebase.database().ref(path).push().set({
+                    name: groupsize,
+                    "member": userToAdd
                 });
             }
         });

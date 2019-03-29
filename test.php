@@ -56,24 +56,7 @@ let objects = firebase.database().ref('/objects/');
 
         })
     }
-    function loginUser() {
-        var x = document.getElementById("form1");
-        let username = x.elements[0].value;
-        let password = x.elements[1].value;
-        let users = firebase.database().ref('/users/');
-        users.once('value').then(function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
-               let usernameDB = childSnapshot.key;
-               let temp =`${childSnapshot.key}/password`;
-               let passwordDB = snapshot.child(temp).val();
-               if (usernameDB === username && passwordDB === password) {
-                   localStorage.setItem("username", usernameDB);
-                   localStorage.setItem("password", passwordDB);
-                   location.assign('arworld.html');
-               }
-            });
-        });
-    }
+
     function updateUserPosition(username, latitude, longitude, altitude, groups) {
         firebase.database().ref('users/' + username).set({
             latitude: latitude,

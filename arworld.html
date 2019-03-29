@@ -325,6 +325,7 @@
         users.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 let usernameDB = childSnapshot.key;
+                console.log(usernameDB);
                 if (usernameDB === username) {
                     userExists = true;
                 }
@@ -334,6 +335,7 @@
         usersInGroup.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                let usersDB = childSnapshot.val();
+               console.log(usersDB);
                if (usersDB === username) {
                    inGroup = true;
                }

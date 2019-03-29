@@ -328,6 +328,7 @@
             snapshot.forEach(function (childSnapshot) {
                 let usernameDB = childSnapshot.key;
                 console.log(usernameDB);
+                console.log(userToAdd);
                 if (usernameDB === userToAdd) {
                     userExists = true;
                 }
@@ -338,6 +339,7 @@
             snapshot.forEach(function (childSnapshot) {
                let usersDB = childSnapshot.val();
                console.log(usersDB);
+               console.log(userToAdd)
                if (usersDB === userToAdd) {
                    inGroup = true;
                }

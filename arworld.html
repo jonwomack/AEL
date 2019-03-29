@@ -327,8 +327,9 @@
                 let usernameDB = childSnapshot.key;
                 if (usernameDB === username) {
                     userExists = true;
+                }
             });
-        };
+        });
         let usersInGroup = firebase.database().ref('/groups/members/');
         usersInGroup.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {

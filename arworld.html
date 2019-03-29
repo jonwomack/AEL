@@ -284,7 +284,6 @@
     var database = firebase.database();
 
 
-    const newMemberRef = firebase.database().ref(`/groups/${groupname}/`).child('users');
     function createGroup() {
         var x = document.getElementById("form1");
         let groupname = x.elements[0].value;
@@ -302,6 +301,7 @@
                 firebase.database().ref(path).set({
                     groupsize: 1
                 });
+                let newMemberRef = firebase.database().ref(path).child('users');
                 newMemberRef.push();
                 newMemberRef.set({
                     username: username
@@ -351,6 +351,7 @@
                     groupsize:  groupsize + 1
                 });
                 console.log(groupsize);
+                let newMemberRef = firebase.database().ref(pathToGroup).child('users');
                 newMemberRef.push();
                 newMemberRef.set({
                     username: userToAdd

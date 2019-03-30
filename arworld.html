@@ -394,18 +394,19 @@
                     inGroup = true;
                 }
             });
-            console.log(inGroup);
-            console.log(userExists);
-            if (!inGroup && userExists && groupExists) {
-                firebase.database().ref(pathToGroup).update({
-                    groupsize:  groupsize + 1
-                });
-                let newMemberRef = firebase.database().ref(pathToGroup + 'members/');
-                newMemberRef.update({
-                    [userToAdd]: groupsize
-                });
-            }
         });
+        console.log(inGroup);
+        console.log(userExists);
+        console.log(groupExists);
+        if (!inGroup && userExists && groupExists) {
+            firebase.database().ref(pathToGroup).update({
+                groupsize:  groupsize + 1
+            });
+            let newMemberRef = firebase.database().ref(pathToGroup + 'members/');
+            newMemberRef.update({
+                [userToAdd]: groupsize
+            });
+        }
     }
 
 

@@ -393,7 +393,7 @@
                 });
                 let newMemberRef = firebase.database().ref(pathToGroup + 'members/');
                 newMemberRef.update({
-                    [userToAdd]: groupsize - 1
+                    [userToAdd]: groupsize
                 });
             }
         });

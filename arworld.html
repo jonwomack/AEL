@@ -359,7 +359,6 @@
         let userToAdd = x.elements[2].value;
         let pathToGroup = `/groups/${groupname}/`;
         let groupsize = 0;
-        let userNumber = 0;
         let inGroup = false;
         let userExists = false;
         firebase.database().ref(pathToGroup + '/groupsize/').once('value').then(function (snapshot) {
@@ -376,7 +375,7 @@
                 }
             });
         });
-        let usersInGroup = firebase.database().ref('/groups/members/');
+        let usersInGroup = firebase.database().ref('/groups/');
         usersInGroup.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 let usersDB = childSnapshot.val();

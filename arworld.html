@@ -380,6 +380,8 @@
         usersInGroup.once('value').then(function (snapshot) {
            snapshot.forEach(function (childSnapshot) {
               let groupnameDB = childSnapshot.key;
+              console.log(groupnameDB);
+              console.log(groupname);
               if (groupnameDB == groupname) {
                   groupExists = true;
               }

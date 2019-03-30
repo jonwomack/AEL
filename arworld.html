@@ -385,7 +385,7 @@
                     username: userToAdd
                 });
                 let newMemberRef2 = firebase.database().ref(pathToGroup).child('users');
-                newMemberRef2.push().set({
+                newMemberRef2.push().update({
                     username: userToAdd
                 });
             }

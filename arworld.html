@@ -343,7 +343,7 @@
                     groupsize: 1
                 });
                 let newMemberRef = firebase.database().ref(path);
-                newMemberRef.set({
+                newMemberRef.update({
                     [username]: 0
                 });
             } else {

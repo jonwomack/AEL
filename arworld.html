@@ -116,7 +116,7 @@
     function updatePositionHelper(position) {
         let tempLat = position.coords.latitude;
         let tempLon = position.coords.longitude;
-        let tempAlt = position.coords.longitude;
+        let tempAlt = position.coords.altitude;
         let changeInXDistance = calculateDistance(tempLat, currLat, tempLon, currLon);
         let changeInTotalDistance = Math.sqrt(Math.pow(changeInXDistance, 2) + Math.pow((tempAlt - currAlt), 2));
         let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
@@ -288,12 +288,12 @@
 
     function addUserLocation() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(addUserLocation);
+            navigator.geolocation.getCurrentPosition(addUserLocationH);
         } else {
             demo.innerHTML = "Geolocation is not supported by this browser.";
         }
     }
-    function addUserLocation(position) {
+    function addUserLocationH(position) {
         currLat = position.coords.latitude;
         currLon = position.coords.longitude;
         //currAlt = position.coords.altitude;

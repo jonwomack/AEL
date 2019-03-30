@@ -11,7 +11,7 @@
 <p>First, store your lat/lon by pressing this button.</p>
 <button onclick="getLocation()">Store</button>
 <p>Atlanta</p>
-<button onclick="placeObjects(tech)">Tech Campus</button>
+<button onclick="placeObjects(tech)">Ryan Click Here</button>
 <p>Florida Objects</p>
 <button onclick="placeObjects(freeman)">Dr.Freeman</button>
 <form id="form1" method="get">
@@ -47,6 +47,7 @@
     const east = new AR(33.95263379978259, -84.6376687272708, 304, "East", 'yellow');
     const west = new AR(33.952656048692, -84.63894009434387, 304, "West", 'purple');
     const given = new AR(33.95262935, -84.63824272, 304, "Center", 'white');
+    const ryan = new AR(30.435449, -84.308163, 27,"Center",'blue');
 
     const n = new AR(33.775196, -84.397319, 286, "North", 'red');
     const s = new AR(33.774017, -84.397363, 286, "South", 'blue');
@@ -56,7 +57,7 @@
 
 
 
-    const tech = [n,s,e,w,g];
+    const tech = [ryan];
     const freeman = [north, south, east, west, given];
 
     const demo = document.getElementById("demo");

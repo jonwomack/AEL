@@ -389,9 +389,11 @@
         });
         let usersInGroup = firebase.database().ref(`/groups/${groupname}/members/`);
         usersInGroup.once('value').then(function (snapshot) {
-            console.log(snapshot);
             snapshot.forEach(function (childSnapshot){
-                console.log(childSnapshot.key);
+                let userInGroup = childSnapshot.key;
+                if (userToAdd === userInGroup) {
+                    inGroup = true;
+                }
             });
         });
         if (!inGroup && userExists && groupExists) {

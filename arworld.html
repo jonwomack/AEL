@@ -298,13 +298,14 @@
         currAlt = position.coords.altitude;
         if (currLat == null || currLon == null || currAlt == null) {
             demo.innerHTML = "Lat, Lon, or Alt isn't storing";
+        } else {
+            let user = firebase.database().ref(`/users/${username}`);
+            user.update({
+                latitude: currLat,
+                longitude: currLon,
+                altitude: currAlt
+            });
         }
-        let user = firebase.database().ref(`/users/${username}`);
-        user.update({
-            latitude: currLat,
-            longitude: currLon,
-            altitude: currAlt
-        });
     }
 
 

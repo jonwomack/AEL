@@ -304,11 +304,21 @@
         } else {
             let user = firebase.database().ref(`/users/${username}`);
             user.update({
-                latitude: currLat,
-                longitude: currLon,
-                altitude: currAlt
+                location: true
             });
+            writeObjectData(username, currLat, currLon, currAlt, username, false, 'black');
         }
+    }
+
+    function writeObjectData(name, latitude, longitude, altitude, username, pub, color) {
+        firebase.database().ref('/objects/' + name).set({
+            longitude: longitude,
+            latitude: latitude,
+            altitude: altitude,
+            username: username,
+            public: pub,
+            color: color
+        });
     }
 
 
@@ -379,7 +389,7 @@
                 firebase.database().ref(pathToGroup).set({
                     groupsize:  groupsize + 1
                 });
-                let newMemberRef = firebase.database().ref(pathToGroup + `users/`);
+                let newMemberRef = firebase.database().ref(pathToGroup);
                 newMemberRef.update({
                     [userToAdd]: groupsize + 1
                 });

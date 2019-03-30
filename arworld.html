@@ -296,8 +296,8 @@
     function addUserLocationH(position) {
         currLat = position.coords.latitude;
         currLon = position.coords.longitude;
-        currAlt = position.coords.altitude;
-        if (currLat == null || currLon == null || currAlt == null) {
+        //currAlt = position.coords.altitude;
+        if (currLat == null || currLon == null /*|| currAlt == null*/) {
             currLat = 0;
             currLon = 0;
             currAlt = 0;
@@ -306,7 +306,7 @@
             user.update({
                 location: true
             });
-            writeObjectData(username, currLat, currLon, currAlt, username, false, 'black');
+            writeObjectData(username, currLat, currLon, 0/*currAlt*/, username, false, 'black');
         }
     }
 

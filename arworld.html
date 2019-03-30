@@ -359,33 +359,24 @@
         let userToAdd = x.elements[2].value;
         let pathToGroup = `/groups/${groupname}/`;
         let groupsize = 0;
-        let inGroup = false;
-        let userExists = false;
-        let groupExists = false;
+        let inGroup = inGroup(groupsize);
+        let userExists = userExists(userToAdd);
+        let groupExists = groupExists(groupname);
 
+        if (!inGroup && userExists && groupExists) {
+            firebase.database().ref(pathToGroup).update({
+                groupsize: groupsize + 1
+            });
+            let newMemberRef = firebase.database().ref(pathToGroup + 'members/');
+            newMemberRef.update({
+                [userToAdd]: groupsize
+            });
+        }
+    }
 
+    function inGroup(groupsize) {
         firebase.database().ref(pathToGroup + '/groupsize/').once('value').then(function (snapshot) {
             groupsize = snapshot.val();
-        });
-        let users = firebase.database().ref('/users/');
-        users.once('value').then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                let usernameDB = childSnapshot.key;
-                if (usernameDB === userToAdd) {
-                    userExists = true;
-                    console.log("userexists");
-                }
-            });
-        });
-        let groups = firebase.database().ref('/groups/');
-        groups.once('value').then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                let groupnameDB = childSnapshot.key;
-                if (groupnameDB == groupname) {
-                    groupExists = true;
-                    console.log("groupexists");
-                }
-            });
         });
         let usersInGroup = firebase.database().ref(`/groups/${groupname}/members/`);
         usersInGroup.once('value').then(function (snapshot) {
@@ -396,15 +387,29 @@
                 }
             });
         });
-        if (!inGroup && userExists && groupExists) {
-            firebase.database().ref(pathToGroup).update({
-                groupsize: groupsize + 1
+    }
+    function userExists(userToAdd) {
+        let users = firebase.database().ref('/users/');
+        users.once('value').then(function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                let usernameDB = childSnapshot.key;
+                if (usernameDB === userToAdd) {
+                    return true;
+                }
             });
-            let newMemberRef = firebase.database().ref(pathToGroup + 'members/');
-            newMemberRef.update({
-                [userToAdd]: groupsize
+        });
+    }
+
+    function groupExists(groupname) {
+        let groups = firebase.database().ref('/groups/');
+        groups.once('value').then(function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                let groupnameDB = childSnapshot.key;
+                if (groupnameDB === groupname) {
+                    return true;
+                }
             });
-        }
+        });
     }
 
 

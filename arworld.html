@@ -390,8 +390,10 @@
         let usersInGroup = firebase.database().ref('/groups/members/');
         usersInGroup.once('value').then(function (snapshot) {
             let usersDB2 = snapshot.key;
-            console.log("accessed");
-            console.log(usersDB2);
+            usersDB2.forEach(function (childSnapshot){
+                console.log(childSnapshot.key);
+            }
+
             if (usersDB2 === userToAdd) {
                 inGroup = true;
                 console.log("userInGroup");

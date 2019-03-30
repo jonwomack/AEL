@@ -329,9 +329,9 @@
                 firebase.database().ref(path).set({
                     groupsize: 1
                 });
-                let newMemberRef = firebase.database().ref(path + `users/${username}/`);
+                let newMemberRef = firebase.database().ref(path + `users/`);
                 newMemberRef.set({
-                    usernumber: 0
+                    [username]: 0
                 });
             } else {
                 demo.innerHTML = "Group Already Exists";
@@ -381,7 +381,7 @@
                 });
                 let newMemberRef = firebase.database().ref(pathToGroup + `users/`);
                 newMemberRef.update({
-                    `${userToAdd}`: groupsize + 1;
+                    [userToAdd]: groupsize + 1;
                 });
             }
         });

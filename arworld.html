@@ -389,6 +389,7 @@
         });
         let usersInGroup = firebase.database().ref('/groups/members/');
         usersInGroup.once('value').then(function (snapshot) {
+            console.log(snapshot);
             snapshot.forEach(function (childSnapshot){
                 console.log(childSnapshot);
             });

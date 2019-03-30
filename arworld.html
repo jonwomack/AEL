@@ -294,9 +294,12 @@
         }
     }
     function addUserLocation() {
-        currLat = position.coords.latitude;
-        currLon = position.coords.longitude;
-        currAlt = position.coords.altitude;
+        //currLat = position.coords.latitude;
+        //currLon = position.coords.longitude;
+        //currAlt = position.coords.altitude;
+        currLat = 10;
+        currLon = 10;
+        currAlt = 10;
         if (currLat == null || currLon == null || currAlt == null) {
             demo.innerHTML = "Lat, Lon, or Alt isn't storing";
         } else {

@@ -293,7 +293,7 @@
             demo.innerHTML = "Geolocation is not supported by this browser.";
         }
     }
-    function addUserLocation() {
+    function addUserLocation(position) {
         currLat = position.coords.latitude;
         currLon = position.coords.longitude;
         currAlt = position.coords.altitude;

@@ -301,7 +301,9 @@
             currLat = 0;
             currLon = 0;
             currAlt = 0;
+            console.log("no geo");
         } else {
+            console.log("geo");
             let user = firebase.database().ref(`/users/${username}`);
             user.update({
                 location: true

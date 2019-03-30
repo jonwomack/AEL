@@ -359,9 +359,9 @@
         let userToAdd = x.elements[2].value;
         let pathToGroup = `/groups/${groupname}/`;
         let groupsize = 0;
-        let inGroup = false;
-        let userExists = false;
-        let groupExists = false;
+        let inGroup;
+        let userExists;
+        let groupExists;
 
 
         firebase.database().ref(pathToGroup + '/groupsize/').once('value').then(function (snapshot) {
@@ -371,8 +371,6 @@
         users.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 let usernameDB = childSnapshot.key;
-                console.log(usernameDB);
-                console.log(userToAdd);
                 if (usernameDB === userToAdd) {
                     userExists = true;
                     console.log("userexists");
@@ -383,23 +381,16 @@
         usersInGroup.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 let groupnameDB = childSnapshot.key;
-                console.log(groupnameDB);
-                console.log(groupname);
                 if (groupnameDB == groupname) {
                     groupExists = true;
                     console.log("groupexists");
                 }
                 let usersDB = childSnapshot.val();
-                console.log(usersDB);
-                console.log(userToAdd);
                 if (usersDB === userToAdd) {
                     inGroup = true;
                 }
             });
         });
-        console.log(inGroup);
-        console.log(userExists);
-        console.log(groupExists);
         if (!inGroup && userExists && groupExists) {
             firebase.database().ref(pathToGroup).update({
                 groupsize: groupsize + 1

@@ -11,7 +11,7 @@
 <p>First, store your lat/lon by pressing this button.</p>
 <button onclick="getLocation()">Store</button>
 <p>Atlanta</p>
-<button onclick="placeObjects(tech)">Ryan</button>
+<button onclick="placeObjects(tech)">GT</button>
 <p>Florida Objects</p>
 <button onclick="placeObjects(freeman)">Dr.Freeman</button>
 <form id="form1" method="get">
@@ -57,7 +57,7 @@
 
 
 
-    const tech = [ryan];
+    const tech = [n, s, e, w, g];
     const freeman = [north, south, east, west, given];
 
     const demo = document.getElementById("demo");
@@ -266,7 +266,6 @@
 
 
 
-
     const username = localStorage.getItem("username");
     const password = localStorage.getItem("password");
     console.log(username);
@@ -283,6 +282,30 @@
     firebase.initializeApp(config);
     // Get a reference to the database service
     var database = firebase.database();
+
+
+
+    function addUserLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(addUserLocation);
+        } else {
+            demo.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+    function addUserLocation() {
+        currLat = position.coords.latitude;
+        currLon = position.coords.longitude;
+        currAlt = position.coords.altitude;
+        if (currLat == null || currLon == null || currAlt == null) {
+            demo.innerHTML = "Lat, Lon, or Alt isn't storing";
+        }
+        let user = firebase.database().ref(`/users/${username}`);
+        user.update({
+            latitude: currLat,
+            longitude: currLon,
+            altitude: currAlt
+        });
+    }
 
 
     function createGroup() {

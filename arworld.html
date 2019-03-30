@@ -387,7 +387,7 @@
                 }
             });
         });
-        let usersInGroup = firebase.database().ref('/groups/members/');
+        let usersInGroup = firebase.database().ref(`/groups/${groupname}/members/`);
         usersInGroup.once('value').then(function (snapshot) {
             console.log(snapshot);
             snapshot.forEach(function (childSnapshot){

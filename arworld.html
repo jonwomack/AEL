@@ -389,15 +389,13 @@
         });
         let usersInGroup = firebase.database().ref('/groups/members/');
         usersInGroup.once('value').then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                let usersDB2 = snapshot.key;
-                console.log("accessed");
-                console.log(usersDB2);
-                if (usersDB2 === userToAdd) {
-                    inGroup = true;
-                    console.log("userInGroup");
-                }
-            });
+            let usersDB2 = snapshot.key;
+            console.log("accessed");
+            console.log(usersDB2);
+            if (usersDB2 === userToAdd) {
+                inGroup = true;
+                console.log("userInGroup");
+            }
         });
         if (!inGroup && userExists && groupExists) {
             firebase.database().ref(pathToGroup).update({

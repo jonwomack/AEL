@@ -383,7 +383,7 @@
             snapshot.forEach(function (childSnapshot){
                 let userInGroup = childSnapshot.key;
                 if (userToAdd === userInGroup) {
-                    inGroup = true;
+                    return true;
                 }
             });
         });

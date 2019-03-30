@@ -388,7 +388,7 @@
             console.log(inGroup);
             console.log(userExists);
             if (!inGroup && userExists) {
-                firebase.database().ref(pathToGroup).set({
+                firebase.database().ref(pathToGroup).update({
                     groupsize:  groupsize + 1
                 });
                 let newMemberRef = firebase.database().ref(pathToGroup);

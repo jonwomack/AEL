@@ -377,15 +377,21 @@
                 }
             });
         });
-        let usersInGroup = firebase.database().ref('/groups/');
-        usersInGroup.once('value').then(function (snapshot) {
+        let groups = firebase.database().ref('/groups/');
+        groups.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 let groupnameDB = childSnapshot.key;
                 if (groupnameDB == groupname) {
                     groupExists = true;
                     console.log("groupexists");
                 }
-                let usersDB = childSnapshot.val();
+            });
+        });
+        let usersInGroup = firebase.database().ref('/groups/members/');
+        usersInGroup.once('value').then(function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                let usersDB = childSnapshot.key();
+                console.log(usersDB);
                 if (usersDB === userToAdd) {
                     inGroup = true;
                     console.log("userInGroup");

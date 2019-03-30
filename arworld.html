@@ -359,9 +359,9 @@
         let userToAdd = x.elements[2].value;
         let pathToGroup = `/groups/${groupname}/`;
         let groupsize = 0;
-        let inGroup;
-        let userExists;
-        let groupExists;
+        let inGroup = false;
+        let userExists = false;
+        let groupExists = false;
 
 
         firebase.database().ref(pathToGroup + '/groupsize/').once('value').then(function (snapshot) {

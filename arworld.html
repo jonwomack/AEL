@@ -391,7 +391,9 @@
         usersInGroup.once('value').then(function (snapshot) {
             console.log(snapshot);
             snapshot.forEach(function (childSnapshot){
-                console.log(childSnapshot);
+                childSnapshot.forEach(function (childSnapshot2){
+                   console.log(childSnapshot2);
+                });
             });
         });
         if (!inGroup && userExists && groupExists) {

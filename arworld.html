@@ -367,6 +367,7 @@
                 }
             });
         });
+        console.log("ingroup - accessed");
     }
     function userExists(userToAdd) {
         let users = firebase.database().ref('/users/');
@@ -394,6 +395,7 @@
                 }
             });
         });
+        console.log("groupexists - accessed");
     }
 
     function addUserToGroup() {

@@ -355,6 +355,7 @@
 
 
     function inGroup(groupsize, userToAdd) {
+        /*
         firebase.database().ref(pathToGroup + '/groupsize/').once('value').then(function (snapshot) {
             groupsize = snapshot.val();
         });
@@ -367,8 +368,11 @@
                 }
             });
         });
+        */
+        return true;
     }
     function userExists(userToAdd) {
+        /*
         let users = firebase.database().ref('/users/');
         users.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
@@ -378,10 +382,13 @@
                 }
             });
         });
+        */
+        return true;
     }
 
     function groupExists(groupname) {
-        let groups = firebase.database().ref('/groups/');
+        return true;
+        /*let groups = firebase.database().ref('/groups/');
         groups.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 let groupnameDB = childSnapshot.key;
@@ -390,6 +397,7 @@
                 }
             });
         });
+        */
     }
 
     function addUserToGroup() {

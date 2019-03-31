@@ -414,7 +414,9 @@
                     }
                 });
             });
-            return resolve(exists);
+            if (exists) {
+                return resolve(true);
+            }
         });
     }
 

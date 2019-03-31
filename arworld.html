@@ -414,7 +414,12 @@
                     }
                 });
             });
-            resolve(exists);
+            if (exists) {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+
         });
     }
 

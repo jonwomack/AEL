@@ -395,9 +395,7 @@
         let result = await groupExistsH(groupname);
         console.log(result);
         return new Promise(resolve => {
-            setTimeout(() => {
-                resolve(result);
-            }, 3000);
+            resolve(result);
         });
     }
     function groupExistsH(groupname) {
@@ -410,16 +408,12 @@
                     exists = true;
                     console.log("group exists");
                     return new Promise(resolve => {
-                        setTimeout(() => {
-                            resolve(exists);
-                        }, 1000);
+                        resolve(exists);
                     });
                 }
             });
             return new Promise(resolve => {
-                setTimeout(() => {
-                    resolve(false);
-                }, 1000);
+                resolve(false);
             })
         });
     }

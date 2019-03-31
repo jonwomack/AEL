@@ -390,9 +390,9 @@
         return true;
     }
 
-    function groupExists(groupname, callback) {
-        return callback(groupname);
-        console.log("groupexists - accessed");
+    async function groupExists(groupname, callback) {
+        var result = await callback(groupname);
+        console.log(result);
     }
     function groupExistsH(groupname) {
         let exists = false;
@@ -403,7 +403,11 @@
                 let groupnameDB = childSnapshot.key;
                 if (groupnameDB === groupname) {
                     exists = true;
-                    return true;
+                    return new Promise(resolve => {
+                        setTimeout(() => {
+                            resolve(exists);
+                        }, 2000);
+                    });
                 }
             });
         });

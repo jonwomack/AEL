@@ -404,7 +404,7 @@
         console.log(userExists(userToAdd));
         console.log(groupExists(groupname));
         if (!inGroup(groupsize, userToAdd, pathToGroup, groupname) && userExists(userToAdd) && groupExists(groupname)) {
-            console.log("accessed"):
+            console.log("accessed");
             firebase.database().ref(pathToGroup).update({
                 groupsize: groupsize + 1
             });

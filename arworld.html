@@ -366,8 +366,9 @@
                     return true;
                 }
             });
+            return false;
         });
-        console.log("ingroup - accessed");
+
     }
     function userExists(userToAdd) {
         let users = firebase.database().ref('/users/');

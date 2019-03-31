@@ -391,7 +391,9 @@
     }
 
     async function groupExists(groupname, callback) {
-        return result = await callback(groupname);
+        result = await callback(groupname);
+        console.log(result);
+        return result;
     }
     function groupExistsH(groupname) {
         let exists = false;

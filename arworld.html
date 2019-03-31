@@ -390,7 +390,7 @@
         return true;
     }
 
-    function groupExists(groupname) {
+    function groupExists(groupname, callback) {
         let exists = false;
         let groups = firebase.database().ref('/groups/');
         console.log("gourpexists");
@@ -402,8 +402,8 @@
                     return true;
                 }
             });
-            return exists;
         });
+        callback(exists);
         console.log("groupexists - accessed");
     }
 

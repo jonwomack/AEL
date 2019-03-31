@@ -362,11 +362,11 @@
             snapshot.forEach(function (childSnapshot){
                 let userInGroup = childSnapshot.key;
                 if (userToAdd === userInGroup) {
+                    console.log("useringroup");
                     return true;
                 }
             });
         });
-        return false;
     }
     function userExists(userToAdd) {
         let users = firebase.database().ref('/users/');
@@ -374,11 +374,11 @@
             snapshot.forEach(function (childSnapshot) {
                 let usernameDB = childSnapshot.key;
                 if (usernameDB === userToAdd) {
+                    console.log("userexists");
                     return true;
                 }
             });
         });
-        return false;
     }
 
     function groupExists(groupname) {
@@ -387,11 +387,11 @@
             snapshot.forEach(function (childSnapshot) {
                 let groupnameDB = childSnapshot.key;
                 if (groupnameDB === groupname) {
+                    console.log("groupexists");
                     return true;
                 }
             });
         });
-        return false;
     }
 
     function addUserToGroup() {

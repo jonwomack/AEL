@@ -354,6 +354,7 @@
 
 
     function inGroup(groupsize, userToAdd, pathToGroup, groupname) {
+        /*
         firebase.database().ref(pathToGroup + '/groupsize/').once('value').then(function (snapshot) {
             groupsize = snapshot.val();
         });
@@ -368,9 +369,11 @@
             });
             return false;
         });
-
+        */
+        return true;
     }
     function userExists(userToAdd) {
+        /*
         let users = firebase.database().ref('/users/');
         users.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
@@ -383,9 +386,12 @@
                 }
             });
         });
+        */
+        return true;
     }
 
     function groupExists(groupname) {
+        /*
         let groups = firebase.database().ref('/groups/');
         console.log("gourpexists");
         groups.once('value').then(function (snapshot) {
@@ -398,6 +404,8 @@
             });
         });
         console.log("groupexists - accessed");
+        */
+        return true;
     }
 
     function addUserToGroup() {
@@ -406,9 +414,11 @@
         let userToAdd = x.elements[2].value;
         let pathToGroup = `/groups/${groupname}/`;
         let groupsize = 0;
+        /*
         console.log(userExists(userToAdd));
         console.log(inGroup(groupsize, userToAdd, pathToGroup, groupname));
         console.log(groupExists(groupname));
+        */
         /*if (!inGroup(groupsize, userToAdd, pathToGroup, groupname) && userExists(userToAdd) && groupExists(groupname)) {
             console.log("accessed");
             firebase.database().ref(pathToGroup).update({
@@ -420,6 +430,15 @@
             });
         }
         */
+
+
+        if (inGroup(groupsize, userToAdd, pathToGroup, groupname)) {
+            if (userExists(userToAdd)) {
+                if (groupExists(groupname)) {
+                    console.log("accessed");
+                }
+            }
+        }
     }
 
 

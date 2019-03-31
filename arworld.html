@@ -411,15 +411,12 @@
                     if (groupnameDB === groupname) {
                         exists = true;
                         console.log("group exists");
+                        resolve(true);
                     }
                 });
-            });
-            wait(4000);
-            if (exists) {
-                resolve(true);
-            } else {
                 resolve(false);
-            }
+            });
+
         });
     }
     function wait(ms)

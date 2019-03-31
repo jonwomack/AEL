@@ -411,9 +411,10 @@
                     if (groupnameDB === groupname) {
                         exists = true;
                         console.log("group exists");
-                        resolve(true);
+                        return exists;
                     }
                 });
+                resolve(exists);
             });
         });
     }

@@ -374,6 +374,8 @@
             snapshot.forEach(function (childSnapshot) {
                 let usernameDB = childSnapshot.key;
                 if (usernameDB === userToAdd) {
+                    console.log(usernameDB);
+                    console.log(userToAdd);
                     console.log("userexists");
                     return true;
                 }

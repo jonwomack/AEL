@@ -402,32 +402,20 @@
         */
     }
     function groupExistsH(groupname) {
-        let exists = false;
-        let groups = firebase.database().ref('/groups/');
-        groups.once('value').then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                let groupnameDB = childSnapshot.key;
-                if (groupnameDB === groupname) {
-                    exists = true;
-                    console.log("group exists");
-                    return new Promise(resolve => {
-                        setTimeout(() => {
-                            resolve(exists);
-                        }, 1000);
-                    });
-                }
-            });
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    resolve(false);
-                }, 1000);
-            })
-        });
-        /*
         return new Promise(resolve => {
-            resolve(true);
+            let exists = false;
+            let groups = firebase.database().ref('/groups/');
+            groups.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    let groupnameDB = childSnapshot.key;
+                    if (groupnameDB === groupname) {
+                        exists = true;
+                        console.log("group exists");
+                    }
+                });
+            });
+            resolve(exists);
         });
-        */
     }
 
     async function addUserToGroup() {

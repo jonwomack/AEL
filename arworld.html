@@ -387,6 +387,7 @@
 
     function groupExists(groupname) {
         let groups = firebase.database().ref('/groups/');
+        console.log("gourpexists");
         groups.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 let groupnameDB = childSnapshot.key;

@@ -353,7 +353,6 @@
     }
 
 
-
     function inGroup(groupsize, userToAdd) {
         /*
         firebase.database().ref(pathToGroup + '/groupsize/').once('value').then(function (snapshot) {
@@ -410,6 +409,7 @@
         let userExists = userExists(userToAdd);
         let groupExists = groupExists(groupname);
 
+        /*
         if (!inGroup && userExists && groupExists) {
             firebase.database().ref(pathToGroup).update({
                 groupsize: groupsize + 1
@@ -419,6 +419,7 @@
                 [userToAdd]: groupsize
             });
         }
+        */
     }
 
 

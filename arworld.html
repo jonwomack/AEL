@@ -391,11 +391,17 @@
     }
 
     async function groupExists(groupname, callback) {
-        result = await callback(groupname);
+        console.log('calling');
+        var result = await resolveAfter2Seconds();
+        console.log(result);
+        // expected output: 'resolved'
+        /*result = await callback(groupname);
         console.log(result);
         return result;
+        */
     }
     function groupExistsH(groupname) {
+        /*
         let exists = false;
         let groups = firebase.database().ref('/groups/');
         groups.once('value').then(function (snapshot) {
@@ -416,6 +422,12 @@
                     resolve(false);
                 }, 1000);
             })
+        });
+        */
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve('resolved');
+            }, 2000);
         });
     }
 

@@ -391,17 +391,19 @@
     }
 
     function groupExists(groupname) {
+        let exists = false;
         let groups = firebase.database().ref('/groups/');
         console.log("gourpexists");
         groups.once('value').then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 let groupnameDB = childSnapshot.key;
                 if (groupnameDB === groupname) {
-                    console.log("groupexists");
+                    exists = true;
                     return true;
                 }
             });
         });
+        return exists;
         console.log("groupexists - accessed");
     }
 
@@ -411,6 +413,7 @@
         let userToAdd = x.elements[2].value;
         let pathToGroup = `/groups/${groupname}/`;
         let groupsize = 0;
+
         /*
         console.log(userExists(userToAdd));
         console.log(inGroup(groupsize, userToAdd, pathToGroup, groupname));

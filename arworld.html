@@ -394,6 +394,7 @@
         console.log('calling');
         var result = await groupExistsH();
         console.log(result);
+        return result;
         // expected output: 'resolved'
         /*result = await callback(groupname);
         console.log(result);
@@ -426,7 +427,7 @@
         */
         return new Promise(resolve => {
             setTimeout(() => {
-                resolve('resolved');
+                resolve(false);
             }, 2000);
         });
     }

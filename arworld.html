@@ -391,6 +391,10 @@
     }
 
     function groupExists(groupname, callback) {
+        callback(groupname);
+        console.log("groupexists - accessed");
+    }
+    function groupExistsH(groupname) {
         let exists = false;
         let groups = firebase.database().ref('/groups/');
         console.log("gourpexists");
@@ -403,8 +407,6 @@
                 }
             });
         });
-        callback(exists);
-        console.log("groupexists - accessed");
     }
 
     function addUserToGroup() {
@@ -434,7 +436,7 @@
 
         if (inGroup(groupsize, userToAdd, pathToGroup, groupname)) {
             if (userExists(userToAdd)) {
-                if (groupExists(groupname)) {
+                if (groupExists(groupname, groupExistsH)) {
                     console.log("accessed");
                 }
             }

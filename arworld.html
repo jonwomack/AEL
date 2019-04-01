@@ -372,7 +372,7 @@
         */
         return true;
     }
-    function userExists(userToAdd) {
+    async function userExists(userToAdd) {
         /*
         let users = firebase.database().ref('/users/');
         users.once('value').then(function (snapshot) {
@@ -387,7 +387,29 @@
             });
         });
         */
-        return true;
+        console.log('calling');
+        let result = await userExistsH(userToAdd);
+        return result;
+    }
+    async function userExistsH(userToAdd) {
+        let promise = new Promise(resolve => {
+            let exists = false;
+            let users = firebase.database().ref('/users/');
+            users.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    let usernameDB = childSnapshot.key;
+                    console.log(usernameDB);
+                    console.log(userToAdd);
+                    if (usernameDB === userToAdd) {
+                        exists = true;
+                        console.log("userexists");
+                    }
+                });
+            });
+            setTimeout(() => resolve(exists), 2000);
+        });
+        let value = await promise;
+        return value;
     }
 
     async function groupExists(groupname) {
@@ -431,6 +453,7 @@
         let pathToGroup = `/groups/${groupname}/`;
         let groupsize = 0;
         let result = await groupExists(groupname, groupExistsH());
+        let result2 = await userExists(userToAdd);
         /*
         console.log(userExists(userToAdd));
         console.log(inGroup(groupsize, userToAdd, pathToGroup, groupname));
@@ -450,7 +473,7 @@
 
 
         if (inGroup(groupsize, userToAdd, pathToGroup, groupname)) {
-            if (userExists(userToAdd)) {
+            if (result2) {
                 if (result) {
                     console.log("accessed");
                 }

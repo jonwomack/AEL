@@ -447,7 +447,7 @@
         firebase.database().ref(pathToGroup + '/groupsize/').once('value').then(function (snapshot) {
             groupsize = snapshot.val();
         });
-        let result3 = inGroup(groupsize, userToAdd, pathToGroup, groupname);
+        let result3 = await inGroup(groupsize, userToAdd, pathToGroup, groupname);
         /*
         console.log(userExists(userToAdd));
         console.log(inGroup(groupsize, userToAdd, pathToGroup, groupname));
@@ -464,7 +464,6 @@
             });
         }
         */
-
 
         if (!result3) {
             if (result2) {

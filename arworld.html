@@ -353,40 +353,30 @@
     }
 
 
-    function inGroup(groupsize, userToAdd, pathToGroup, groupname) {
-        /*
-        firebase.database().ref(pathToGroup + '/groupsize/').once('value').then(function (snapshot) {
-            groupsize = snapshot.val();
-        });
-        let usersInGroup = firebase.database().ref(`/groups/${groupname}/members/`);
-        usersInGroup.once('value').then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot){
-                let userInGroup = childSnapshot.key;
-                if (userToAdd === userInGroup) {
-                    console.log("useringroup");
-                    return true;
-                }
+    async function inGroup(groupsize, userToAdd, pathToGroup, groupname) {
+        console.log('calling');
+        let result = await inGroupH();
+        return result;
+    }
+    async function inGroupH() {
+        let promise = new Promise(resolve => {
+            let member = false;
+            let usersInGroup = firebase.database().ref(`/groups/${groupname}/members/`);
+            usersInGroup.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot){
+                    let userInGroup = childSnapshot.key;
+                    if (userToAdd === userInGroup) {
+                        console.log("useringroup");
+                        member = true;
+                    }
+                });
             });
-            return false;
+            setTimeout(() => resolve(member), 2000);
         });
-        */
-        return true;
+        let value = await promise;
+        return value;
     }
     async function userExists(userToAdd) {
-        /*
-        let users = firebase.database().ref('/users/');
-        users.once('value').then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                let usernameDB = childSnapshot.key;
-                console.log(usernameDB);
-                console.log(userToAdd);
-                if (usernameDB === userToAdd) {
-                    console.log("userexists");
-                    return true;
-                }
-            });
-        });
-        */
         console.log('calling');
         let result = await userExistsH(userToAdd);
         return result;
@@ -454,6 +444,10 @@
         let groupsize = 0;
         let result = await groupExists(groupname, groupExistsH());
         let result2 = await userExists(userToAdd);
+        firebase.database().ref(pathToGroup + '/groupsize/').once('value').then(function (snapshot) {
+            groupsize = snapshot.val();
+        });
+        let result3 = inGroup(groupsize, userToAdd, pathToGroup, groupname);
         /*
         console.log(userExists(userToAdd));
         console.log(inGroup(groupsize, userToAdd, pathToGroup, groupname));
@@ -472,7 +466,7 @@
         */
 
 
-        if (inGroup(groupsize, userToAdd, pathToGroup, groupname)) {
+        if (!result3) {
             if (result2) {
                 if (result) {
                     console.log("accessed");

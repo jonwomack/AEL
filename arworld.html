@@ -355,10 +355,10 @@
 
     async function inGroup(groupsize, userToAdd, pathToGroup, groupname) {
         console.log('calling');
-        let result = await inGroupH();
+        let result = await inGroupH(groupsize, userToAdd, pathToGroup, groupname);
         return result;
     }
-    async function inGroupH() {
+    async function inGroupH(groupsize, userToAdd, pathToGroup, groupname) {
         let promise = new Promise(resolve => {
             let member = false;
             let usersInGroup = firebase.database().ref(`/groups/${groupname}/members/`);

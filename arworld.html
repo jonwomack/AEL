@@ -402,6 +402,7 @@
         */
     }
     async function groupExistsH(groupname) {
+            /*
             let value = await new Promise(resolve => {
                 let exists = false;
                 let groups = firebase.database().ref('/groups/');
@@ -415,6 +416,13 @@
                     });
                 });
                 resolve(exists);
+                */
+        let promise = new Promise((resolve, reject) => {
+            setTimeout(() => resolve(true), 1000) // resolve
+        });
+
+        // wait for the promise to resolve
+        let value = await promise;
             return value;
         });
     }

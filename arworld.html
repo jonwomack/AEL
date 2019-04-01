@@ -402,28 +402,24 @@
         */
     }
     async function groupExistsH(groupname) {
-            /*
-            let value = await new Promise(resolve => {
-                let exists = false;
-                let groups = firebase.database().ref('/groups/');
-                groups.once('value').then(function (snapshot) {
-                    snapshot.forEach(function (childSnapshot) {
-                        let groupnameDB = childSnapshot.key;
-                        if (groupnameDB === groupname) {
-                            exists = true;
-                            console.log("group exists");
-                        }
-                    });
+        let promise = new Promise(resolve => {
+            let exists = false;
+            let groups = firebase.database().ref('/groups/');
+            groups.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    let groupnameDB = childSnapshot.key;
+                    if (groupnameDB === groupname) {
+                        exists = true;
+                        console.log("group exists");
+                    }
                 });
-                resolve(exists);
-                */
-        let promise = new Promise((resolve, reject) => {
-            setTimeout(() => resolve(true), 1000) // resolve
+            });
+            setTimeout(() => resolve(exists), 1000) // resolve
         });
 
         // wait for the promise to resolve
         let value = await promise;
-            return value;
+        return value;
     }
 
 

@@ -402,7 +402,7 @@
         */
     }
     function groupExistsH(groupname) {
-        return new Promise(resolve => {
+        let promise = new Promise(resolve => {
             let exists = false;
             let groups = firebase.database().ref('/groups/');
             groups.once('value').then(function (snapshot) {
@@ -415,6 +415,8 @@
                 });
             });
             resolve(exists);
+            let value = await promise;
+            return value;
         });
     }
 

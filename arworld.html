@@ -401,7 +401,7 @@
         return result;
         */
     }
-    function groupExistsH(groupname) {
+    async function groupExistsH(groupname) {
         let promise = new Promise(resolve => {
             let exists = false;
             let groups = firebase.database().ref('/groups/');

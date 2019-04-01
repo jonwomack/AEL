@@ -371,7 +371,7 @@
                     }
                 });
             });
-            setTimeout(() => resolve(member), 2000);
+            setTimeout(() => resolve(member), 1000);
         });
         let value = await promise;
         return value;
@@ -396,7 +396,7 @@
                     }
                 });
             });
-            setTimeout(() => resolve(exists), 2000);
+            setTimeout(() => resolve(exists), 1000);
         });
         let value = await promise;
         return value;
@@ -427,7 +427,7 @@
                     }
                 });
             });
-            setTimeout(() => resolve(exists), 2000) // resolve
+            setTimeout(() => resolve(exists), 1000) // resolve
         });
 
         // wait for the promise to resolve

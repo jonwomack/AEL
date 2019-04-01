@@ -427,7 +427,7 @@
                     }
                 });
             });
-            resolve(exists); // resolve
+            setTimeout(() => resolve(exists), 1000); // resolve
         });
 
         // wait for the promise to resolve

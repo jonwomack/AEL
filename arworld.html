@@ -427,7 +427,7 @@
                     }
                 });
             });
-            setTimeout(() => resolve(exists), 1000) // resolve
+            resolve(exists); // resolve
         });
 
         // wait for the promise to resolve
@@ -449,11 +449,6 @@
         });
         let result3 = await inGroup(groupsize, userToAdd, pathToGroup, groupname);
         /*
-        console.log(userExists(userToAdd));
-        console.log(inGroup(groupsize, userToAdd, pathToGroup, groupname));
-        console.log(groupExists(groupname));
-        */
-        /*if (!inGroup(groupsize, userToAdd, pathToGroup, groupname) && userExists(userToAdd) && groupExists(groupname)) {
             console.log("accessed");
             firebase.database().ref(pathToGroup).update({
                 groupsize: groupsize + 1
@@ -462,7 +457,7 @@
             newMemberRef.update({
                 [userToAdd]: groupsize
             });
-        }
+
         */
 
         if (!result3) {

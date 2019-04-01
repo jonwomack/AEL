@@ -354,7 +354,6 @@
 
 
     async function inGroup(groupsize, userToAdd, pathToGroup, groupname) {
-        console.log('calling');
         let result = await inGroupH(groupsize, userToAdd, pathToGroup, groupname);
         return result;
     }
@@ -377,7 +376,6 @@
         return value;
     }
     async function userExists(userToAdd) {
-        console.log('calling');
         let result = await userExistsH(userToAdd);
         return result;
     }
@@ -388,8 +386,6 @@
             users.once('value').then(function (snapshot) {
                 snapshot.forEach(function (childSnapshot) {
                     let usernameDB = childSnapshot.key;
-                    console.log(usernameDB);
-                    console.log(userToAdd);
                     if (usernameDB === userToAdd) {
                         exists = true;
                         console.log("userexists");
@@ -403,7 +399,6 @@
     }
 
     async function groupExists(groupname) {
-        console.log('calling');
         let result = await groupExistsH(groupname);
         return result;
         // expected output: 'resolved'
@@ -419,8 +414,6 @@
             groups.once('value').then(function (snapshot) {
                 snapshot.forEach(function (childSnapshot) {
                     let groupnameDB = childSnapshot.key;
-                    console.log(groupnameDB);
-                    console.log(groupname);
                     if (groupnameDB === groupname) {
                         exists = true;
                         console.log("group exists");
@@ -448,22 +441,18 @@
             groupsize = snapshot.val();
         });
         let result3 = await inGroup(groupsize, userToAdd, pathToGroup, groupname);
-        /*
-            console.log("accessed");
-            firebase.database().ref(pathToGroup).update({
-                groupsize: groupsize + 1
-            });
-            let newMemberRef = firebase.database().ref(pathToGroup + 'members/');
-            newMemberRef.update({
-                [userToAdd]: groupsize
-            });
-
-        */
 
         if (!result3) {
             if (result2) {
                 if (result) {
                     console.log("accessed");
+                    firebase.database().ref(pathToGroup).update({
+                        groupsize: groupsize + 1
+                    });
+                    let newMemberRef = firebase.database().ref(pathToGroup + 'members/');
+                    newMemberRef.update({
+                        [userToAdd]: groupsize
+                    });
                 }
             }
         }

@@ -403,20 +403,26 @@
     }
     function groupExistsH(groupname) {
         return new Promise(resolve => {
-            let exists = false;
-            let groups = firebase.database().ref('/groups/');
-            groups.once('value').then(function (snapshot) {
-                snapshot.forEach(function (childSnapshot) {
-                    let groupnameDB = childSnapshot.key;
-                    if (groupnameDB === groupname) {
-                        exists = true;
-                        console.log("group exists");
-                    }
-                });
-            });
-            resolve(true);
+            let exists = await groupExistsH2(groupname);
+            resolve(exists);
         });
     }
+
+    function groupExistsH2(groupname) {
+        let bool = false;
+        let groups = firebase.database().ref('/groups/');
+        groups.once('value').then(function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                let groupnameDB = childSnapshot.key;
+                if (groupnameDB === groupname) {
+                    bool = true;
+                    console.log("group exists");
+                }
+            });
+        });
+        return bool;
+    }
+
 
     async function addUserToGroup() {
         var x = document.getElementById("form1");

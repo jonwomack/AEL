@@ -17,6 +17,11 @@
         position: relative;
         left: 50%;
         z-index: 2;
+        background-color: #00BFFF;
+    }
+    input {
+        position: relative;
+        background-color: #00BFFF;
     }
     body {
         background-color: #00BFFF;

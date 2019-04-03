@@ -9,6 +9,7 @@
 
 <body>
 <button onclick="addUserLocation()">Create User Object</button>
+<button onclick="updatePosition()">Update Position</button>
 <p>First, store your lat/lon by pressing this button.</p>
 <button onclick="getLocation()">Store</button>
 <p>Atlanta</p>
@@ -33,10 +34,11 @@
 <div id="a-scene">
     <a-scene background="color: black; transparent: true" vr-mode-ui="enabled: false">
         <a-assets>
+            <a-asset-item id="einstein" src="Einstein.glb"></a-asset-item>
         </a-assets>
         <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#93648D"></a-plane>
         <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
-        <a-sphere id="moving" radius="5" position="0 10 0" color="white"></a-sphere>
+        <a-sphere id="moving" radius="2.5" position="0 10 0" color="white"></a-sphere>
     </a-scene>
 </div>
 <p id="demo"></p>
@@ -50,15 +52,21 @@
     const given = new AR(33.95262935, -84.63824272, 304, "Center", 'white');
     const ryan = new AR(30.435449, -84.308163, 27,"Center",'blue');
 
-    const n = new AR(33.775196, -84.397319, 286, "North", 'red');
-    const s = new AR(33.774017, -84.397363, 286, "South", 'blue');
-    const e = new AR(33.774618, -84.396867, 286, "East", 'yellow');
-    const w = new AR(33.774615, -84.397792, 286, "West", 'purple');
-    const g = new AR(33.774577, -84.397340, 286, "Center", 'white');
+    const n = new AR(33.775197, -84.397288, 286, "North", 'red', false, "");
+    const s = new AR(33.774012, -84.397322, 286, "South", 'blue', false, "");
+    const e = new AR(33.774618, -84.396867, 286, "East", 'yellow', false, "");
+    const w = new AR(33.774615, -84.397792, 286, "West", 'purple', false, "");
+    const g = new AR(33.774577, -84.397340, 286, "Center", 'white', false, "");
+    const tl = new AR(33.775202, -84.397764, 283, "Top Left", 'black', false, "");
+    const tr = new AR(33.775192, -84.396863, 283, "Top Right", 'black', false, "");
+    const bl = new AR(33.774025, -84.397806, 283, "Bottom Left", 'black', false, "");
+    const br = new AR(33.774002, -84.396867, 283, "Bottom Right", 'black', false, "");
+    const einstein2 = new AR(33.77509, -84.39786, 283, "Actual Ein", 'white', true, 'Einstein.glb');
+    const einstein = new AR(33.774577, -84.397340, 295 , "ein", 'white', true, 'Einstein.glb');
 
 
-
-    const tech = [n, s, e, w, g];
+// einstein,
+    const tech = [n, s, e, w, g, tl, tr, bl, br, einstein2];
     const freeman = [north, south, east, west, given];
 
     const demo = document.getElementById("demo");
@@ -119,11 +127,11 @@
         let tempAlt = position.coords.altitude;
         let changeInXDistance = calculateDistance(tempLat, currLat, tempLon, currLon);
         let changeInTotalDistance = Math.sqrt(Math.pow(changeInXDistance, 2) + Math.pow((tempAlt - currAlt), 2));
-        let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
-        if ((Math.pow(changeInTotalDistance, .5) > 7)) {
-            currLat = position.coords.latitude;
-            currLon = position.coords.longitude;
-            currAlt = position.coords.altitude;
+        if ((Math.pow(changeInTotalDistance, .5) > 3)) {
+            currLat = tempLat;
+            currLon = tempLon;
+            currAlt = tempAlt;
+            let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
             currX = currX + changeInXDistance * Math.sin(toRadians(changeInBearing));
             currZ = currZ + changeInXDistance * -1 * Math.cos(toRadians(changeInBearing));
             cam.setAttribute('position', {
@@ -157,13 +165,18 @@
         let y = obj.alt;
         let z = distance * -1 * Math.cos(toRadians(bearing));
         let el = document.createElement('a-entity');
-        el.setAttribute('geometry', {
-            primitive: 'sphere',
-            radius: 5,
-        });
-        el.setAttribute('material', {
-            color: obj.color
-        });
+        if (obj.gltf) {
+            el.setAttribute('gltf-model', `${obj.gltfPath}`);
+            //el.object3D.scale.set(.1, .1, .1);
+        } else {
+            el.setAttribute('geometry', {
+                primitive: 'sphere',
+                radius: 2.5,
+            });
+            el.setAttribute('material', {
+                color: obj.color
+            });
+        }
         el.setAttribute('position', {
             x: x,
             y: y,
@@ -241,15 +254,15 @@
     function AR(lat, lon, alt, name) {
         AR(lat, lon, alt, '' + name, 'white');
     }
-    function AR(lat, lon, alt, name, color) {
+    function AR(lat, lon, alt, name, color, gltf, gltfPath) {
         this.lat = lat;
         this.lon = lon;
         this.alt = alt;
         this.name = name;
         this.color = color;
+        this.gltf = gltf;
+        this.gltfPath = gltfPath;
     }
-
-
 
 
 

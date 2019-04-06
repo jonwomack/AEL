@@ -24,7 +24,7 @@ foreach ($result as $entry) {
  }
  }
  if ($loggedIn !== true) {
-     header('Location: test.php');r
+     header('Location: test.php');
      exit;
  }
 

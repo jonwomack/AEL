@@ -4,9 +4,33 @@
     <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
     <link rel="stylesheet" type="text/css" media="screen and (min-width: 900px)" href="mac.css">
     <link rel="stylesheet" type="text/css" media="screen and (max-width: 900px)" href="phone.css">
+    <script type="text/javascript" src="camera.js"></script>
+    <script type="text/javascript" src="calculations.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script>
+        var config = {
+            apiKey: "AIzaSyCbUoec8Hr-DtnUk1srWlpRpGEZycTgBHI",
+            authDomain: "arworldgt.firebaseapp.com",
+            databaseURL: "https://arworldgt.firebaseio.com",
+            projectId: "arworldgt",
+            storageBucket: "",
+            messagingSenderId: "1007753558225"
+        };
+        firebase.initializeApp(config);
+        // Get a reference to the database service
+        var database = firebase.database();
 
+        const username = localStorage.getItem("username");
+        const password = localStorage.getItem("password");
+        console.log(username);
+        console.log(password);
+        // Initialize Firebase
+
+        function toDatabase() {
+            location.assign('database.html');
+        }
         //Storing Position i.e. starting AR world
+        var stored;
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(storePosition);
@@ -14,25 +38,26 @@
                 demo.innerHTML = "Geolocation is not supported by this browser.";
             }
         }
+        var currHeading;
         function storePosition(position) {
-            currLat = position.coords.latitude;
-            currLon = position.coords.longitude;
-            currAlt = position.coords.altitude;
+            currLat = 33.774577;//position.coords.latitude;
+            currLon = -84.397340;//position.coords.longitude;
+            currAlt = 286;//position.coords.altitude;
             if (currLat == null || currLon == null || currAlt == null) {
                 demo.innerHTML = "Lat, Lon, or Alt isn't storing";
             }
             //if (position.coords.heading != null) {
             //    currHeading = position.coords.heading;
             //} else {
-            calculateHeading();
+            currHeading = 0; //calculateHeading();
             cam.setAttribute('position', {
                 x: 0,
                 y: currAlt,
                 z: 0
             });
             //}
-            updatePosition();
-            setInterval(updatePosition, 5000);
+            //updatePosition();
+            //setInterval(updatePosition, 5000);
         }
 
 
@@ -64,7 +89,23 @@
                 });
             }
         }
-        window.onload = getLocation;
+
+        function placeObjs() {
+            var objects = firebase.database().ref('objects');
+            objects.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    let objectName = childSnapshot.key;
+                    let object = `${childSnapshot.key}`;
+                    if (snapshot.child(object + '/public').val()) {
+                        let latitude = snapshot.child(object + '/latitude').val();
+                        let longitude = snapshot.child(object + '/longitude').val();
+                        let altitude = snapshot.child(object + '/altitude').val();
+                        let color = snapshot.child(object + '/color').val();
+                        createObject(latitude, longitude, altitude, color, false);
+                    }
+                });
+            });
+        }
     </script>
 </head>
 
@@ -72,11 +113,7 @@
 <body>
 
 <button onclick="updatePosition()">Update Position</button>
-<p>Atlanta</p>
-<button onclick="placeObjects(tech)">GT</button>
-<p>Florida Objects</p>
-<button onclick="placeObjects(freeman)">Dr.Freeman</button>
-<button onclick="toDatabase()">To Database</button>
+<button onclick="toDatabase()">Settings</button>
 
 
 <div class="camera">
@@ -93,40 +130,27 @@
     </a-scene>
 </div>
 <p id="demo"></p>
-
-<script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
 <script>
-    const north = new AR(33.953149972982295, -84.6382802709262, 304, "North", 'red');
-    const south = new AR(33.95212652307029, -84.63830172859832, 304, "South", 'blue');
-    const east = new AR(33.95263379978259, -84.6376687272708, 304, "East", 'yellow');
-    const west = new AR(33.952656048692, -84.63894009434387, 304, "West", 'purple');
-    const given = new AR(33.95262935, -84.63824272, 304, "Center", 'white');
-    const ryan = new AR(30.435449, -84.308163, 27,"Center",'blue');
+    var cam = document.getElementById("camera");
+    getLocation();
+    placeObjs();
 
-    const n = new AR(33.775197, -84.397288, 286, "North", 'red', false, "");
-    const s = new AR(33.774012, -84.397322, 286, "South", 'blue', false, "");
-    const e = new AR(33.774618, -84.396867, 286, "East", 'yellow', false, "");
-    const w = new AR(33.774615, -84.397792, 286, "West", 'purple', false, "");
-    const g = new AR(33.774577, -84.397340, 286, "Center", 'white', false, "");
-    const tl = new AR(33.775202, -84.397764, 283, "Top Left", 'black', false, "");
-    const tr = new AR(33.775192, -84.396863, 283, "Top Right", 'black', false, "");
-    const bl = new AR(33.774025, -84.397806, 283, "Bottom Left", 'black', false, "");
-    const br = new AR(33.774002, -84.396867, 283, "Bottom Right", 'black', false, "");
+
+
+
+
+
     const einstein2 = new AR(33.77509, -84.39786, 283, "Actual Ein", 'white', true, 'Einstein.glb');
     const einstein = new AR(33.774577, -84.397340, 295 , "ein", 'white', true, 'Einstein.glb');
 
 
-// einstein,
-    const tech = [n, s, e, w, g, tl, tr, bl, br, einstein2];
-    const freeman = [north, south, east, west, given];
-
     const demo = document.getElementById("demo");
-    const cam = document.getElementById("camera");
+
 
     var currLat;
     var currLon;
     var currAlt;
-    var currHeading;
+    var currHeading = 0;
     var currX;
     var currZ;
     var objectsPlaced = false;
@@ -138,46 +162,37 @@
 
 
     //Places Objects in AR
-    function placeObjects(array) {
-        if (!objectsPlaced) {
-            var counter = 0;
-            while (counter < 5) {
-                //updatePosition();
-                counter++;
+
+    function createObject(objLatitude, objLongitude, objAltitude, objColor, objGltf) {
+
+        let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
+        if (distance < 125) {
+            let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
+            demo.innerHTML = "<br>Bearing: " + currHeading;
+            let x = distance * Math.sin(toRadians(bearing));
+            let y = objAltitude;
+            let z = distance * -1 * Math.cos(toRadians(bearing));
+            let el = document.createElement('a-entity');
+            if (objGltf) {
+                el.setAttribute('gltf-model', `${objGltf}`);
+                //el.object3D.scale.set(.1, .1, .1);
+            } else {
+                el.setAttribute('geometry', {
+                    primitive: 'sphere',
+                    radius: 2.5,
+                });
+                el.setAttribute('material', {
+                    color: objColor
+                });
             }
-            array.forEach(function (item, index, array) {
-                createObject(item);
+            el.setAttribute('position', {
+                x: x,
+                y: y,
+                z: z
             });
-            objectsPlaced = true;
+            let sceneEl = document.querySelector('a-scene');
+            sceneEl.appendChild(el);
         }
-    }
-    function createObject(obj) {
-        let distance = calculateDistance(currLat, obj.lat, currLon, obj.lon);
-        let bearing = currHeading + calculateBearing(currLat, obj.lat, currLon, obj.lon);
-        demo.innerHTML = "<br>Bearing: " + currHeading;
-        let x = distance * Math.sin(toRadians(bearing));
-        let y = obj.alt;
-        let z = distance * -1 * Math.cos(toRadians(bearing));
-        let el = document.createElement('a-entity');
-        if (obj.gltf) {
-            el.setAttribute('gltf-model', `${obj.gltfPath}`);
-            //el.object3D.scale.set(.1, .1, .1);
-        } else {
-            el.setAttribute('geometry', {
-                primitive: 'sphere',
-                radius: 2.5,
-            });
-            el.setAttribute('material', {
-                color: obj.color
-            });
-        }
-        el.setAttribute('position', {
-            x: x,
-            y: y,
-            z: z
-        });
-        let sceneEl = document.querySelector('a-scene');
-        sceneEl.appendChild(el);
     }
 
 
@@ -211,35 +226,7 @@
         currHeading = compass;
     }
     //Calculates the distance between user's location and object's location in 2D.
-    function calculateDistance(lat1, lat2, lon1, lon2) {
-        const radius = 6371e3; // Radius of Earth in Meters
-        let lat1radians = toRadians(lat1);
-        let lat2radians = toRadians(lat2);
-        let deltaLat = toRadians(lat2-lat1);
-        let deltaLon = toRadians(lon2-lon1);
-        let a = Math.sin(deltaLat/2) * Math.sin(deltaLat/2) + Math.cos(lat1radians) * Math.cos(lat2radians) * Math.sin(deltaLon/2) * Math.sin(deltaLon/2);
-        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        let latlondistance = radius * c;
-        return latlondistance;
-    }
 
-    //Calculates angle between user's location and object's location
-    function calculateBearing(latB1, latB2, lonB1, lonB2) {
-        let dLon = (lonB2-lonB1);
-        let y = Math.sin(dLon) * Math.cos(latB2);
-        let x = Math.cos(latB1)*Math.sin(latB2) - Math.sin(latB1)*Math.cos(latB2)*Math.cos(dLon);
-        let brng = toDegrees((Math.atan2(y, x)));
-        brng = (360 - ((brng + 360) % 360));
-        return brng;
-    }
-
-    //Math functions
-    function toDegrees(radians) {
-        return radians * (180/Math.PI);
-    }
-    function toRadians(degrees) {
-        return degrees * (Math.PI/180);
-    }
 
     //AR Object Constructors
     function AR(lat, lon, alt) {
@@ -257,68 +244,6 @@
         this.gltf = gltf;
         this.gltfPath = gltfPath;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    const username = localStorage.getItem("username");
-    const password = localStorage.getItem("password");
-    console.log(username);
-    console.log(password);
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyCbUoec8Hr-DtnUk1srWlpRpGEZycTgBHI",
-        authDomain: "arworldgt.firebaseapp.com",
-        databaseURL: "https://arworldgt.firebaseio.com",
-        projectId: "arworldgt",
-        storageBucket: "",
-        messagingSenderId: "1007753558225"
-    };
-    firebase.initializeApp(config);
-    // Get a reference to the database service
-    var database = firebase.database();
-
-
-
-
-
-    function toDatabase() {
-        location.assign('database.html');
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /*
@@ -353,66 +278,6 @@
         });
     });
     */
-
-
-
-/*
-    function createObject(objLatitude, objLongitude, objAltitude) {
-        console.log(objLatitude);
-        console.log(objLongitude);
-        console.log(objAltitude);
-        */
-
-        /*
-        let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
-        let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
-        demo.innerHTML = "<br>Bearing: " + currHeading;
-        let x = distance * Math.sin(toRadians(bearing));
-        let y = objAltitude;
-        let z = distance * -1 * Math.cos(toRadians(bearing));
-        let el = document.createElement('a-entity');
-        el.setAttribute('geometry', {
-            primitive: 'sphere',
-            radius: 5,
-        });
-        el.setAttribute('material', {
-            color: 'white'
-        });
-        el.setAttribute('position', {
-            x: x,
-            y: y,
-            z: z
-        });
-        let sceneEl = document.querySelector('a-scene');
-        sceneEl.appendChild(el);
-        */
-    //}
-</script>
-
-<script>
-    //Enables camera functionality
-    var front = false;
-    var constraints = { video: { facingMode: (front? "user" : "environment") } };
-    navigator.mediaDevices.getUserMedia(constraints)
-        .then(function success(stream) {
-            var video = document.querySelector('video');
-            if ("srcObject" in video) {
-                video.srcObject = stream;
-            } //else {
-                //video.src = window.URL.createObjectURL(stream);
-            //}
-            video.setAttribute('autoplay', '');
-            video.setAttribute('muted', '');
-            video.setAttribute('playsinline', '');
-            video.onloadedmetadata = function(e) {
-                video.play();
-            };
-        })
-        .catch(function(err) {
-            console.log(err.name + ": " + err.message);
-            demo.innerHTML = "<br>Camera Not Working";
-        });
-
 </script>
 </body>
 </html>

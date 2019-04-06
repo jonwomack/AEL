@@ -62,6 +62,16 @@ const east = new AR(27.655869, -80.388180, 1, "east", 'yellow');
 const west = new AR(27.655852, -80.390410, 1, "wezt", 'purple');
 const house = new AR(27.6555439, -80.3894948, 1, "given", 'white');
 
-
+    const n = new AR(33.775197, -84.397288, 286, "North", 'red', false, "");
+    const s = new AR(33.774012, -84.397322, 286, "South", 'blue', false, "");
+    const e = new AR(33.774618, -84.396867, 286, "East", 'yellow', false, "");
+    const w = new AR(33.774615, -84.397792, 286, "West", 'purple', false, "");
+    const g = new AR(33.774577, -84.397340, 286, "Center", 'white', false, "");
+    const tl = new AR(33.775202, -84.397764, 283, "Top Left", 'black', false, "");
+    const tr = new AR(33.775192, -84.396863, 283, "Top Right", 'black', false, "");
+    const bl = new AR(33.774025, -84.397806, 283, "Bottom Left", 'black', false, "");
+    const br = new AR(33.774002, -84.396867, 283, "Bottom Right", 'black', false, "");
 
 //FIREBASE CODE
+
+    const ryan = new AR(30.435449, -84.308163, 27,"Center",'blue');

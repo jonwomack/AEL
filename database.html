@@ -16,22 +16,77 @@
     <input type="button" onclick="addUserToGroup()" value="Add User to Group">
 </form>
 <br>
-<button onclick="addUserLocation()">Create User Object</button>
+
+<p>Share Location:
+    <label class="switch">
+        <input class="switch-input" type="checkbox" />
+        <span class="switch-label" data-on="Yes" data-off="No"></span>
+        <span class="switch-handle"></span>
+    </label>
+</p>
+
+<br>
+
+
+<form id="form2" method="get">
+    Object Name:
+    <input type="text" name="objectname" value="Name">
+    <br>
+    Latitude:
+    <input type="text" name="lat" value="33.774577">
+    <br>
+    Longitude:
+    <input type="text" name="lon" value="-84.397340">
+    <br>
+    Altitude (Meters):
+    <input type="text" name="alt" value="286">
+    <br>
+    Color:
+    <input type="text" name="color" value="black">
+    <br>
+    Public:
+    <label class="switch2">
+        <input class="switch-input2" type="checkbox" />
+        <span class="switch-label2" data-on="Yes" data-off="No"></span>
+        <span class="switch-handle2"></span>
+    </label>
+    <br>
+    <script>
+        var bool2 = false;
+        var myVar3;
+        var myVar4;
+        (function() {
+            $(document).ready(function() {
+                $('.switch-input2').on('change', function() {
+                    var isChecked = $(this).is(':checked');
+                    if (isChecked) {
+                        clearInterval();
+                        bool2 = true;
+                        myVar3 = setInterval(addUserLocation, 1000);
+                    } else {
+                        clearInterval();
+                        bool2 = false;
+                        myVar4 = setInterval(addUserLocation, 1000);
+                    }
+                });
+            });
+        })();
+    </script>
+    <input type="button" onclick="writeObjectData2(bool2)" value="Create Object">
+    <br>
+</form>
+
+
+
+
+
 <button onclick="goBack()">Back</button>
 
-<p>Share Location</p>
-<label class="switch">
-    <input class="switch-input" type="checkbox" />
-    <span class="switch-label" data-on="Yes" data-off="No"></span>
-    <span class="switch-handle"></span>
-</label>
-
 <p id="demo"></p>
+
+
 <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
 <script>
-
-    var bool = false;
-
     function addUserLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(addUserLocationH);
@@ -50,7 +105,6 @@
             //alert("no geo");
         } else {
             if (bool) {
-                console.log("geo");
                 let user = firebase.database().ref(`/users/${username}`);
                 user.update({
                     location: true
@@ -65,6 +119,37 @@
             }
         }
     }
+    async function objExists(name) {
+        let promise = new Promise(resolve => {
+            let object = false;
+            let objects = firebase.database().ref(`objects`);
+            objects.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot){
+                    let objectName = childSnapshot.key;
+                    if (name === objectName) {
+                        object = true;
+                    }
+                });
+            });
+            setTimeout(() => resolve(object), 500);
+        });
+        let value = await promise;
+        return value;
+    }
+    async function writeObjectData2(bool2) {
+        let x = document.getElementById("form2");
+        let name = x.elements[0].value;
+        let lat = x.elements[1].value;
+        let lon = x.elements[2].value;
+        let alt = x.elements[3].value;
+        let color = x.elements[4].value;
+        let exists = await objExists(name);
+        if (!exists) {
+            writeObjectData(name, lat, lon, alt, username, bool2, color);
+        } else {
+            alert("Object Already Exists");
+        }
+    }
 
     function writeObjectData(name, latitude, longitude, altitude, username, pub, color) {
         firebase.database().ref('/objects/' + name).set({
@@ -77,19 +162,21 @@
         });
     }
 
+    var bool = false;
+    var myVar;
+    var myVar2;
     (function() {
         $(document).ready(function() {
             $('.switch-input').on('change', function() {
                 var isChecked = $(this).is(':checked');
-                console.log('isChecked: ' + isChecked);
                 if (isChecked) {
                     clearInterval();
                     bool = true;
-                    var myVar = setInterval(addUserLocation, 1000);
+                    myVar = setInterval(addUserLocation, 1000);
                 } else {
                     clearInterval();
                     bool = false;
-                    var myVar2 = setInterval(addUserLocation, 1000);
+                    myVar2 = setInterval(addUserLocation, 1000);
                 }
             });
         });
@@ -107,10 +194,8 @@
     firebase.initializeApp(config);
     const username = localStorage.getItem("username");
     const password = localStorage.getItem("password");
-    console.log(username);
-    console.log(password);
     function createGroup() {
-        var x = document.getElementById("form1");
+        let x = document.getElementById("form1");
         let groupname = x.elements[0].value;
         let path = `/groups/${groupname}/`;
         let groups = firebase.database().ref('/groups/');

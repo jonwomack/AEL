@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <head>
     <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+    <script type="text/javascript" src="firebase.js"></script>
 </head>
 <body>
 
@@ -85,7 +87,6 @@
 <p id="demo"></p>
 
 
-<script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
 <script>
     function addUserLocation() {
         if (navigator.geolocation) {
@@ -183,15 +184,6 @@
 
     })();
 
-    var config = {
-        apiKey: "AIzaSyCbUoec8Hr-DtnUk1srWlpRpGEZycTgBHI",
-        authDomain: "arworldgt.firebaseapp.com",
-        databaseURL: "https://arworldgt.firebaseio.com",
-        projectId: "arworldgt",
-        storageBucket: "",
-        messagingSenderId: "1007753558225"
-    };
-    firebase.initializeApp(config);
     const username = localStorage.getItem("username");
     const password = localStorage.getItem("password");
     function createGroup() {

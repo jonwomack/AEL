@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<head>
+    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+</head>
+<body>
+
+<form id="form1" method="get">
+    Groupname:
+    <input type="text" name="groupname" value="Group Name">
+    <br>
+    <input type="button" onclick="createGroup()" value="Group Name">
+    <br>
+    Add User:
+    <input type="text" name="addUser" value="User Name">
+    <br>
+    <input type="button" onclick="addUserToGroup()" value="Add User to Group">
+</form>
+<br>
+<button onclick="addUserLocation()">Create User Object</button>
+<button onclick="goBack()">Back</button>
+
+<p>Share Location</p>
+<label class="switch">
+    <input class="switch-input" type="checkbox" />
+    <span class="switch-label" data-on="Yes" data-off="No"></span>
+    <span class="switch-handle"></span>
+</label>
+
+<p id="demo"></p>
+<script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+<script>
+
+    var bool = false;
+
+    function addUserLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(addUserLocationH);
+        } else {
+            demo.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+    function addUserLocationH(position) {
+        currLat = position.coords.latitude;
+        currLon = position.coords.longitude;
+        currAlt = 0//position.coords.altitude;
+        if (currLat == null || currLon == null || currAlt == null) {
+            currLat = 0;
+            currLon = 0;
+            currAlt = 0;
+            //alert("no geo");
+        } else {
+            if (bool) {
+                console.log("geo");
+                let user = firebase.database().ref(`/users/${username}`);
+                user.update({
+                    location: true
+                });
+                writeObjectData(username, currLat, currLon, currAlt, username, true, 'black');
+            } else {
+                let user = firebase.database().ref(`/users/${username}`);
+                user.update({
+                    location: true
+                });
+                writeObjectData(username, currLat, currLon, currAlt, username, false, 'black');
+            }
+        }
+    }
+
+    function writeObjectData(name, latitude, longitude, altitude, username, pub, color) {
+        firebase.database().ref('/objects/' + name).set({
+            longitude: longitude,
+            latitude: latitude,
+            altitude: altitude,
+            username: username,
+            public: pub,
+            color: color
+        });
+    }
+
+    (function() {
+        $(document).ready(function() {
+            $('.switch-input').on('change', function() {
+                var isChecked = $(this).is(':checked');
+                console.log('isChecked: ' + isChecked);
+                if (isChecked) {
+                    clearInterval();
+                    bool = true;
+                    var myVar = setInterval(addUserLocation, 1000);
+                } else {
+                    clearInterval();
+                    bool = false;
+                    var myVar2 = setInterval(addUserLocation, 1000);
+                }
+            });
+        });
+
+    })();
+
+    var config = {
+        apiKey: "AIzaSyCbUoec8Hr-DtnUk1srWlpRpGEZycTgBHI",
+        authDomain: "arworldgt.firebaseapp.com",
+        databaseURL: "https://arworldgt.firebaseio.com",
+        projectId: "arworldgt",
+        storageBucket: "",
+        messagingSenderId: "1007753558225"
+    };
+    firebase.initializeApp(config);
+    const username = localStorage.getItem("username");
+    const password = localStorage.getItem("password");
+    console.log(username);
+    console.log(password);
+    function createGroup() {
+        var x = document.getElementById("form1");
+        let groupname = x.elements[0].value;
+        let path = `/groups/${groupname}/`;
+        let groups = firebase.database().ref('/groups/');
+        let exists = false;
+        groups.once('value').then(function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                let groupsDB = childSnapshot.key;
+                if (groupsDB === groupname) {
+                    exists = true;
+                }
+            });
+            if (!exists) {
+                firebase.database().ref(path).set({
+                    groupsize: 1
+                });
+                let newMemberRef = firebase.database().ref(path + 'members/');
+                newMemberRef.update({
+                    [username]: 0
+                });
+            } else {
+                demo.innerHTML = "Group Already Exists";
+            }
+        });
+    }
+
+    function goBack() {
+        location.assign('arworld.html');
+    }
+    async function inGroup(groupsize, userToAdd, pathToGroup, groupname) {
+        let result = await inGroupH(groupsize, userToAdd, pathToGroup, groupname);
+        return result;
+    }
+    async function inGroupH(groupsize, userToAdd, pathToGroup, groupname) {
+        let promise = new Promise(resolve => {
+            let member = false;
+            let usersInGroup = firebase.database().ref(`/groups/${groupname}/members/`);
+            usersInGroup.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot){
+                    let userInGroup = childSnapshot.key;
+                    if (userToAdd === userInGroup) {
+                        console.log("useringroup");
+                        member = true;
+                    }
+                });
+            });
+            setTimeout(() => resolve(member), 500);
+        });
+        let value = await promise;
+        return value;
+    }
+    async function userExists(userToAdd) {
+        let result = await userExistsH(userToAdd);
+        return result;
+    }
+    async function userExistsH(userToAdd) {
+        let promise = new Promise(resolve => {
+            let exists = false;
+            let users = firebase.database().ref('/users/');
+            users.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    let usernameDB = childSnapshot.key;
+                    if (usernameDB === userToAdd) {
+                        exists = true;
+                        console.log("userexists");
+                    }
+                });
+            });
+            setTimeout(() => resolve(exists), 500);
+        });
+        let value = await promise;
+        return value;
+    }
+
+    async function groupExists(groupname) {
+        let result = await groupExistsH(groupname);
+        return result;
+        // expected output: 'resolved'
+        /*result = await callback(groupname);
+        console.log(result);
+        return result;
+        */
+    }
+    async function groupExistsH(groupname) {
+        let promise = new Promise(resolve => {
+            let exists = false;
+            let groups = firebase.database().ref('/groups/');
+            groups.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    let groupnameDB = childSnapshot.key;
+                    if (groupnameDB === groupname) {
+                        exists = true;
+                        console.log("group exists");
+                    }
+                });
+            });
+            setTimeout(() => resolve(exists), 500); // resolve
+        });
+
+        // wait for the promise to resolve
+        let value = await promise;
+        return value;
+    }
+
+
+    async function addUserToGroup() {
+        var x = document.getElementById("form1");
+        let groupname = x.elements[0].value;
+        let userToAdd = x.elements[2].value;
+        let pathToGroup = `/groups/${groupname}/`;
+        let groupsize = 0;
+        let result = await groupExists(groupname, groupExistsH());
+        let result2 = await userExists(userToAdd);
+        firebase.database().ref(pathToGroup + '/groupsize/').once('value').then(function (snapshot) {
+            groupsize = snapshot.val();
+        });
+        let result3 = await inGroup(groupsize, userToAdd, pathToGroup, groupname);
+
+        if (!result3) {
+            if (result2) {
+                if (result) {
+                    console.log("accessed");
+                    firebase.database().ref(pathToGroup).update({
+                        groupsize: groupsize + 1
+                    });
+                    let newMemberRef = firebase.database().ref(pathToGroup + 'members/');
+                    newMemberRef.update({
+                        [userToAdd]: groupsize
+                    });
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

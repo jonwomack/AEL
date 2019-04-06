@@ -4,29 +4,80 @@
     <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
     <link rel="stylesheet" type="text/css" media="screen and (min-width: 900px)" href="mac.css">
     <link rel="stylesheet" type="text/css" media="screen and (max-width: 900px)" href="phone.css">
+    <script>
+
+        //Storing Position i.e. starting AR world
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(storePosition);
+            } else {
+                demo.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        function storePosition(position) {
+            currLat = position.coords.latitude;
+            currLon = position.coords.longitude;
+            currAlt = position.coords.altitude;
+            if (currLat == null || currLon == null || currAlt == null) {
+                demo.innerHTML = "Lat, Lon, or Alt isn't storing";
+            }
+            //if (position.coords.heading != null) {
+            //    currHeading = position.coords.heading;
+            //} else {
+            calculateHeading();
+            cam.setAttribute('position', {
+                x: 0,
+                y: currAlt,
+                z: 0
+            });
+            //}
+            updatePosition();
+            setInterval(updatePosition, 5000);
+        }
+
+
+        //Updating the Position - Occurs every 5 seconds and only updates if you move more than 7 meters
+        function updatePosition() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(updatePositionHelper);
+            } else {
+                demo.innerHTML = "Geolocation cannot be updated.";
+            }
+        }
+        function updatePositionHelper(position) {
+            let tempLat = position.coords.latitude;
+            let tempLon = position.coords.longitude;
+            let tempAlt = position.coords.altitude;
+            let changeInXDistance = calculateDistance(tempLat, currLat, tempLon, currLon);
+            let changeInTotalDistance = Math.sqrt(Math.pow(changeInXDistance, 2) + Math.pow((tempAlt - currAlt), 2));
+            if ((Math.pow(changeInTotalDistance, .5) > 5)) {
+                currLat = tempLat;
+                currLon = tempLon;
+                currAlt = tempAlt;
+                let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
+                currX = currX + changeInXDistance * Math.sin(toRadians(changeInBearing));
+                currZ = currZ + changeInXDistance * -1 * Math.cos(toRadians(changeInBearing));
+                cam.setAttribute('position', {
+                    x: currX,
+                    y: currAlt,
+                    z: currZ
+                });
+            }
+        }
+        window.onload = getLocation;
+    </script>
 </head>
 
 
 <body>
-<button onclick="addUserLocation()">Create User Object</button>
+
 <button onclick="updatePosition()">Update Position</button>
-<p>First, store your lat/lon by pressing this button.</p>
-<button onclick="getLocation()">Store</button>
 <p>Atlanta</p>
 <button onclick="placeObjects(tech)">GT</button>
 <p>Florida Objects</p>
 <button onclick="placeObjects(freeman)">Dr.Freeman</button>
-<form id="form1" method="get">
-    Groupname:
-    <input type="text" name="groupname" value="Group Name">
-    <br>
-    <input type="button" onclick="createGroup()" value="Group Name">
-    <br>
-    Add User:
-    <input type="text" name="addUser" value="User Name">
-    <br>
-    <input type="button" onclick="addUserToGroup()" value="Add User to Group">
-</form>
+<button onclick="toDatabase()">To Database</button>
+
 
 <div class="camera">
     <video  id="videoElement"></video>
@@ -83,64 +134,7 @@
 
 
 
-    //Storing Position i.e. starting AR world
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(storePosition);
-        } else {
-            demo.innerHTML = "Geolocation is not supported by this browser.";
-        }
-    }
-    function storePosition(position) {
-        currLat = position.coords.latitude;
-        currLon = position.coords.longitude;
-        currAlt = position.coords.altitude;
-        if (currLat == null || currLon == null || currAlt == null) {
-            demo.innerHTML = "Lat, Lon, or Alt isn't storing";
-        }
-        //if (position.coords.heading != null) {
-        //    currHeading = position.coords.heading;
-        //} else {
-        calculateHeading();
-        cam.setAttribute('position', {
-            x: 0,
-            y: currAlt,
-            z: 0
-        });
-        //}
-        //updatePosition();
-        //setInterval(updatePosition, 5000);
-    }
 
-
-    //Updating the Position - Occurs every 5 seconds and only updates if you move more than 7 meters
-    function updatePosition() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(updatePositionHelper);
-        } else {
-            demo.innerHTML = "Geolocation cannot be updated.";
-        }
-    }
-    function updatePositionHelper(position) {
-        let tempLat = position.coords.latitude;
-        let tempLon = position.coords.longitude;
-        let tempAlt = position.coords.altitude;
-        let changeInXDistance = calculateDistance(tempLat, currLat, tempLon, currLon);
-        let changeInTotalDistance = Math.sqrt(Math.pow(changeInXDistance, 2) + Math.pow((tempAlt - currAlt), 2));
-        if ((Math.pow(changeInTotalDistance, .5) > 3)) {
-            currLat = tempLat;
-            currLon = tempLon;
-            currAlt = tempAlt;
-            let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
-            currX = currX + changeInXDistance * Math.sin(toRadians(changeInBearing));
-            currZ = currZ + changeInXDistance * -1 * Math.cos(toRadians(changeInBearing));
-            cam.setAttribute('position', {
-                x: currX,
-                y: currAlt,
-                z: currZ
-            });
-        }
-    }
 
 
     //Places Objects in AR
@@ -299,177 +293,14 @@
 
 
 
-    function addUserLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(addUserLocationH);
-        } else {
-            demo.innerHTML = "Geolocation is not supported by this browser.";
-        }
-    }
-    function addUserLocationH(position) {
-        console.log("here");
-        currLat = position.coords.latitude;
-        currLon = position.coords.longitude;
-        currAlt = position.coords.altitude;
-        if (currLat == null || currLon == null || currAlt == null) {
-            currLat = 0;
-            currLon = 0;
-            currAlt = 0;
-            console.log("no geo");
-        } else {
-            console.log("geo");
-            let user = firebase.database().ref(`/users/${username}`);
-            user.update({
-                location: true
-            });
-            writeObjectData(username, currLat, currLon, currAlt, username, false, 'black');
-        }
-    }
 
-    function writeObjectData(name, latitude, longitude, altitude, username, pub, color) {
-        firebase.database().ref('/objects/' + name).set({
-            longitude: longitude,
-            latitude: latitude,
-            altitude: altitude,
-            username: username,
-            public: pub,
-            color: color
-        });
+
+    function toDatabase() {
+        location.assign('database.html');
     }
 
 
-    function createGroup() {
-        var x = document.getElementById("form1");
-        let groupname = x.elements[0].value;
-        let path = `/groups/${groupname}/`;
-        let groups = firebase.database().ref('/groups/');
-        let exists = false;
-        groups.once('value').then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                let groupsDB = childSnapshot.key;
-                if (groupsDB === groupname) {
-                    exists = true;
-                }
-            });
-            if (!exists) {
-                firebase.database().ref(path).set({
-                    groupsize: 1
-                });
-                let newMemberRef = firebase.database().ref(path + 'members/');
-                newMemberRef.update({
-                    [username]: 0
-                });
-            } else {
-                demo.innerHTML = "Group Already Exists";
-            }
-        });
-    }
 
-
-    async function inGroup(groupsize, userToAdd, pathToGroup, groupname) {
-        let result = await inGroupH(groupsize, userToAdd, pathToGroup, groupname);
-        return result;
-    }
-    async function inGroupH(groupsize, userToAdd, pathToGroup, groupname) {
-        let promise = new Promise(resolve => {
-            let member = false;
-            let usersInGroup = firebase.database().ref(`/groups/${groupname}/members/`);
-            usersInGroup.once('value').then(function (snapshot) {
-                snapshot.forEach(function (childSnapshot){
-                    let userInGroup = childSnapshot.key;
-                    if (userToAdd === userInGroup) {
-                        console.log("useringroup");
-                        member = true;
-                    }
-                });
-            });
-            setTimeout(() => resolve(member), 500);
-        });
-        let value = await promise;
-        return value;
-    }
-    async function userExists(userToAdd) {
-        let result = await userExistsH(userToAdd);
-        return result;
-    }
-    async function userExistsH(userToAdd) {
-        let promise = new Promise(resolve => {
-            let exists = false;
-            let users = firebase.database().ref('/users/');
-            users.once('value').then(function (snapshot) {
-                snapshot.forEach(function (childSnapshot) {
-                    let usernameDB = childSnapshot.key;
-                    if (usernameDB === userToAdd) {
-                        exists = true;
-                        console.log("userexists");
-                    }
-                });
-            });
-            setTimeout(() => resolve(exists), 500);
-        });
-        let value = await promise;
-        return value;
-    }
-
-    async function groupExists(groupname) {
-        let result = await groupExistsH(groupname);
-        return result;
-        // expected output: 'resolved'
-        /*result = await callback(groupname);
-        console.log(result);
-        return result;
-        */
-    }
-    async function groupExistsH(groupname) {
-        let promise = new Promise(resolve => {
-            let exists = false;
-            let groups = firebase.database().ref('/groups/');
-            groups.once('value').then(function (snapshot) {
-                snapshot.forEach(function (childSnapshot) {
-                    let groupnameDB = childSnapshot.key;
-                    if (groupnameDB === groupname) {
-                        exists = true;
-                        console.log("group exists");
-                    }
-                });
-            });
-            setTimeout(() => resolve(exists), 500); // resolve
-        });
-
-        // wait for the promise to resolve
-        let value = await promise;
-        return value;
-    }
-
-
-    async function addUserToGroup() {
-        var x = document.getElementById("form1");
-        let groupname = x.elements[0].value;
-        let userToAdd = x.elements[2].value;
-        let pathToGroup = `/groups/${groupname}/`;
-        let groupsize = 0;
-        let result = await groupExists(groupname, groupExistsH());
-        let result2 = await userExists(userToAdd);
-        firebase.database().ref(pathToGroup + '/groupsize/').once('value').then(function (snapshot) {
-            groupsize = snapshot.val();
-        });
-        let result3 = await inGroup(groupsize, userToAdd, pathToGroup, groupname);
-
-        if (!result3) {
-            if (result2) {
-                if (result) {
-                    console.log("accessed");
-                    firebase.database().ref(pathToGroup).update({
-                        groupsize: groupsize + 1
-                    });
-                    let newMemberRef = firebase.database().ref(pathToGroup + 'members/');
-                    newMemberRef.update({
-                        [userToAdd]: groupsize
-                    });
-                }
-            }
-        }
-    }
 
 
 

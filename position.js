@@ -15,23 +15,35 @@ const password = localStorage.getItem("password");
 
 
 //Storing Position i.e. starting AR world
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(storePosition);
-    } else {
-        demo.innerHTML = "Geolocation is not supported by this browser.";
-    }
+async function getLocation() {
+    let promise = new Promise(resolve => {
+        let exists = false;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(storePosition);
+            if (currLat != null && currLon != null && currAlt != null) {
+                exists = true;
+            }
+        } else {
+            demo.innerHTML = "Geolocation is not supported by this browser.";
+        }
+        setTimeout(() => resolve(exists), 500); // resolve
+    });
+
+    // wait for the promise to resolve
+    let value = await promise;
+    return value;
 }
 function storePosition(position) {
-    currLat = position.coords.latitude;
-    currLon = position.coords.longitude;
-    currAlt = position.coords.altitude;
+    currLat = position.coords.latitude;//33.774577;
+    currLon =position.coords.longitude;//-84.397340;
+    currAlt = position.coords.altitude;//286;
     if (currLat == null || currLon == null || currAlt == null) {
         demo.innerHTML = "Lat, Lon, or Alt isn't storing";
     }
     //if (position.coords.heading != null) {
     //    currHeading = position.coords.heading;
     //} else {
+    //currHeading = 0;
     calculateHeading();
     cam.setAttribute('position', {
         x: 0,
@@ -39,12 +51,10 @@ function storePosition(position) {
         z: 0
     });
     //}
-    //updatePosition();
-    //setInterval(updatePosition, 5000);
+    updatePosition();
+    setInterval(updatePosition, 5000);
 }
 getLocation();
-
-
 //Updating the Position - Occurs every 5 seconds and only updates if you move more than 7 meters
 function updatePosition() {
     if (navigator.geolocation) {
@@ -85,15 +95,14 @@ function placeObjs() {
                 let longitude = snapshot.child(object + '/longitude').val();
                 let altitude = snapshot.child(object + '/altitude').val();
                 let color = snapshot.child(object + '/color').val();
-                createObject(latitude, longitude, altitude, color, false);
+                let p1 = createObject(latitude, longitude, altitude, color, false);
             }
         });
+        createObject(33.774577, -84.397340, 286, 'black', true);
     });
 }
-placeObjs();
-
-
-
+placeObjs(); // Wait until position is stored
+//createObject(33.774577, -84.397340, 286, 'black', true);
 
 
 
@@ -110,35 +119,38 @@ placeObjs();
 
 //Places Objects in AR
 
-function createObject(objLatitude, objLongitude, objAltitude, objColor, objGltf) {
+async function createObject(objLatitude, objLongitude, objAltitude, objColor, objGltf) {
+    let positioned = await getLocation();
+    if (positioned) {
+        let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
+        if (distance < 125) {
 
-    let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
-    if (distance < 125) {
-        let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
-        demo.innerHTML = "<br>Bearing: " + currHeading;
-        let x = distance * Math.sin(toRadians(bearing));
-        let y = objAltitude;
-        let z = distance * -1 * Math.cos(toRadians(bearing));
-        let el = document.createElement('a-entity');
-        if (objGltf) {
-            el.setAttribute('gltf-model', `${objGltf}`);
-            //el.object3D.scale.set(.1, .1, .1);
-        } else {
-            el.setAttribute('geometry', {
-                primitive: 'sphere',
-                radius: 2.5,
+            let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
+            demo.innerHTML = "<br>Bearing: " + currHeading;
+            let x = distance * Math.sin(toRadians(bearing));
+            let y = objAltitude;
+            let z = distance * -1 * Math.cos(toRadians(bearing));
+            let el = document.createElement('a-entity');
+            if (objGltf) {
+                el.setAttribute('gltf-model', `ParthenonNormal.glb`);
+                //el.object3D.scale.set(.1, .1, .1);
+            } else {
+                el.setAttribute('geometry', {
+                    primitive: 'sphere',
+                    radius: 2.5,
+                });
+                el.setAttribute('material', {
+                    color: objColor
+                });
+            }
+            el.setAttribute('position', {
+                x: x,
+                y: y,
+                z: z
             });
-            el.setAttribute('material', {
-                color: objColor
-            });
+            let sceneEl = document.querySelector('a-scene');
+            sceneEl.appendChild(el);
         }
-        el.setAttribute('position', {
-            x: x,
-            y: y,
-            z: z
-        });
-        let sceneEl = document.querySelector('a-scene');
-        sceneEl.appendChild(el);
     }
 }
 

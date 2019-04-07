@@ -34,9 +34,12 @@ async function getLocation() {
     return value;
 }
 function storePosition(position) {
-    currLat = position.coords.latitude;//33.774577;
-    currLon =position.coords.longitude;//-84.397340;
-    currAlt = position.coords.altitude;//286;
+    currLat = position.coords.latitude;
+    //currLat = 33.774577;
+    currLon =position.coords.longitude;
+    //currLon = -84.397340;
+    currAlt = position.coords.altitude;
+    //currAlt = 286;
     if (currLat == null || currLon == null || currAlt == null) {
         demo.innerHTML = "Lat, Lon, or Alt isn't storing";
     }

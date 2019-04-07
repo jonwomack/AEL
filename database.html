@@ -6,6 +6,21 @@
 </head>
 <body>
 
+
+
+<label for="avatar">Choose a glb file</label>
+
+<form id = "form3" method="get">
+    <input type="file" id="avatar" name="avatar" accept=".glb">
+    <input type="button" onclick="createFile()" value="Upload File">
+</form>
+
+<br>
+
+
+
+
+
 <form id="form1" method="get">
     Groupname:
     <input type="text" name="groupname" value="Group Name">
@@ -18,7 +33,6 @@
     <input type="button" onclick="addUserToGroup()" value="Add User to Group">
 </form>
 <br>
-
 <p>Share Location:
     <label class="switch">
         <input class="switch-input" type="checkbox" />

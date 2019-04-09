@@ -17,5 +17,4 @@ navigator.mediaDevices.getUserMedia(constraints)
     })
     .catch(function(err) {
         console.log(err.name + ": " + err.message);
-        demo.innerHTML = "<br>Camera Not Working";
     });

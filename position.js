@@ -162,14 +162,15 @@ async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName)
     if (positioned) {
         let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
         if (distance < 125) {
-            let url1 = await getGlbFile();
+            let url1 = `https://firebasestorage.googleapis.com/v0/b/arworldgt.appspot.com/o/glb%2FMickey%2FParthenonNormal.glb?alt=media&token=0b4cded7-674e-4434-9ee2-402eb93a09bb`;
+            //await getGlbFile();
             let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
             demo.innerHTML = "<br>Bearing: " + currHeading;
             let x = distance * Math.sin(toRadians(bearing));
             let y = objAltitude;
             let z = distance * -1 * Math.cos(toRadians(bearing));
             let el = document.createElement('a-entity');
-            el.setAttribute('gltf-model', `${url1}`);
+            el.setAttribute('gltf-model', url1);
             //el.object3D.scale.set(.1, .1, .1);
             el.setAttribute('position', {
                 x: x,
@@ -181,7 +182,7 @@ async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName)
         }
     }
 }
-
+/*
 async function getGlbFile() {
     let url1;
     let promise = new Promise(resolve => {
@@ -200,6 +201,7 @@ async function getGlbFile() {
         return url1;
     }
 }
+*/
 
 
 

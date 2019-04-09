@@ -48,6 +48,11 @@ function moveObjectH() {
     time += (5*Math.PI)/360;
 }
 
+
+    //const einstein2 = new AR(33.77509, -84.39786, 283, "Actual Ein", 'white', true, 'Einstein.glb');
+    //const einstein = new AR(33.774577, -84.397340, 295 , "ein", 'white', true, 'Einstein.glb');
+
+
 //Dr.Freeman Objects
 const north = new AR(33.953149972982295, -84.6382802709262, 304, "North", 'red');
 const south = new AR(33.95212652307029, -84.63830172859832, 304, "South", 'blue');

@@ -111,18 +111,7 @@ function placeObjs() {
         });
     });
 }
-placeObjs(); // Wait until position is stored
-//createObject(33.774577, -84.397340, 286, 'black', true);
-
-
-
-//const einstein2 = new AR(33.77509, -84.39786, 283, "Actual Ein", 'white', true, 'Einstein.glb');
-//const einstein = new AR(33.774577, -84.397340, 295 , "ein", 'white', true, 'Einstein.glb');
-
-
-
-
-
+placeObjs();
 
 
 
@@ -166,7 +155,6 @@ async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName,
             let url1 = await getGlbFile(fileName, objectCreator);
             //`https://firebasestorage.googleapis.com/v0/b/arworldgt.appspot.com/o/glb%2FMickey%2FParthenonNormal.glb?alt=media&token=0b4cded7-674e-4434-9ee2-402eb93a09bb`;
             //
-            console.log(url1);
             let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
             demo.innerHTML = "<br>Bearing: " + currHeading;
             let x = distance * Math.sin(toRadians(bearing));
@@ -192,7 +180,6 @@ async function getGlbFile(fileName, objectCreator) {
         let exists = false;
         var storage = firebase.storage();
         storage.ref('glb').child(`${objectCreator}/${fileName}`).getDownloadURL().then(function(url) {
-            console.log(url);
             url1 = url;
             exists = true;
         });

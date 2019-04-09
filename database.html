@@ -4,6 +4,7 @@
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script type="text/javascript" src="firebase.js"></script>
     <script type="text/javascript" src="group.js"></script>
+    <script type="text/javascript" src="switches.js"></script>
     <link rel="stylesheet" type="text/css" href="data.css">
 </head>
 <body>
@@ -32,32 +33,7 @@
         <span class="switch-handle"></span>
     </label>
 </p>
-<script>
-    var bool = false;
-    var myVar;
-    var myVar2;
-    (function() {
-        $(document).ready(function() {
-            $('.switch-input').on('change', function() {
-                var isChecked = $(this).is(':checked');
-                if (isChecked) {
-                    clearInterval();
-                    bool = true;
-                    myVar = setInterval(addUserLocation, 1000);
-                } else {
-                    clearInterval();
-                    bool = false;
-                    myVar2 = setInterval(addUserLocation, 1000);
-                }
-            });
-        });
-
-    })();
-</script>
-
 <br>
-
-
 <h2>Create an AR Object</h2>
 
 <form id="form2" method="get">
@@ -82,8 +58,6 @@
         <span class="switch-label2" data-on="Yes" data-off="No"></span>
         <span class="switch-handle2"></span>
     </label>
-
-
     <br>
     .glb:
     <label class="switch3">
@@ -100,90 +74,9 @@
     </form>
 
     <br>
-    <script>
-        var isPublic = false;
-        var myVar3;
-        var myVar4;
-        (function() {
-            $(document).ready(function() {
-                $('.switch-input2').on('change', function() {
-                    var isChecked = $(this).is(':checked');
-                    if (isChecked) {
-                        clearInterval();
-                        isPublic = true;
-                        myVar3 = setInterval(addUserLocation, 1000);
-                    } else {
-                        clearInterval();
-                        isPublic = false;
-                        myVar4 = setInterval(addUserLocation, 1000);
-                    }
-                });
-            });
-        })();
-    </script>
-
-    <script>
-        var isGlb = false;
-        var myVar4;
-        var myVar5;
-        (function() {
-            $(document).ready(function() {
-                $('.switch-input3').on('change', function() {
-                    var isChecked = $(this).is(':checked');
-                    if (isChecked) {
-                        clearInterval();
-                        isGlb = true;
-                        removeColor();
-                        myVar4 = setInterval(addUserLocation, 1000);
-                    } else {
-                        clearInterval();
-                        isGlb = false;
-                        addColor();
-                        myVar5 = setInterval(addUserLocation, 1000);
-                    }
-                });
-            });
-        })();
-    </script>
     <input type="button" onclick="writeObjectData(isPublic, isGlb)" value="Create Object">
     <br>
 </form>
-
-
-
-
-
-
-
-
-
-<script>
-    function removeColor() {
-        removeHtml(document.getElementById("demo2"), document.getElementById("colorTxt"));
-        appendHtml(document.getElementById("av"), `<input id="avatar" type="file"  name="avatar" accept=".glb">`);
-        appendHtml(document.getElementById("demo3"), `<label id="color2" for="avatar">Choose a glb file</label>`);
-    }
-    function addColor() {
-        removeHtml(document.getElementById("demo3"), document.getElementById("color2"));
-        removeHtml(document.getElementById("av"), document.getElementById("avatar"));
-
-        const parent = document.getElementById("demo2");
-        appendHtml(parent, '<p id="colorTxt">Color: <input type="text" name="color" value="black"></p>');
-
-    }
-    function removeHtml(el, child ) {
-        el.removeChild(child);
-    }
-
-    function appendHtml(el, str) {
-        var div = document.createElement('div');
-        div.innerHTML = str;
-        while (div.children.length > 0) {
-            el.appendChild(div.children[0]);
-        }
-    }
-</script>
-
 
 
 <br>

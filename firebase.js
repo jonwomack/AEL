@@ -12,17 +12,5 @@ firebase.initializeApp(config);
 
 
 
-function createFile() {
-    let input = document.getElementById("avatar");
-    let file = input.files[0];
-    if (file != null) {
-        firebase.storage().ref(`glb/${file.name}`).put(file).then(function (snapshot) {
-            console.log('Uploaded a blob or file!');
-        });
-        demo.innerHTML = "File Uploaded";
-    } else {
-        demo.innerHTML = "No File";
-    }
 
-}
 

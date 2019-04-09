@@ -34,30 +34,32 @@ async function getLocation() {
     return value;
 }
 function storePosition(position) {
-    currLat = position.coords.latitude;
-    //currLat = 33.774577;
-    currLon =position.coords.longitude;
-    //currLon = -84.397340;
-    currAlt = position.coords.altitude;
-    //currAlt = 286;
+    console.log("here");
+    //currLat = position.coords.latitude;
+    currLat = 33.774577;
+    //currLon =position.coords.longitude;
+    currLon = -84.397340;
+    //currAlt = position.coords.altitude;
+    currAlt = 286;
     if (currLat == null || currLon == null || currAlt == null) {
         demo.innerHTML = "Lat, Lon, or Alt isn't storing";
     }
     //if (position.coords.heading != null) {
     //    currHeading = position.coords.heading;
     //} else {
-    //currHeading = 0;
-    calculateHeading();
+    currHeading = 0;
+    //calculateHeading();
     cam.setAttribute('position', {
         x: 0,
         y: currAlt,
         z: 0
     });
     //}
-    updatePosition();
-    setInterval(updatePosition, 5000);
+    //updatePosition();
+    //setInterval(updatePosition, 5000);
 }
 getLocation();
+//storePosition();
 //Updating the Position - Occurs every 5 seconds and only updates if you move more than 7 meters
 function updatePosition() {
     if (navigator.geolocation) {
@@ -97,11 +99,15 @@ function placeObjs() {
                 let latitude = snapshot.child(object + '/latitude').val();
                 let longitude = snapshot.child(object + '/longitude').val();
                 let altitude = snapshot.child(object + '/altitude').val();
-                let color = snapshot.child(object + '/color').val();
-                let p1 = createObject(latitude, longitude, altitude, color, false);
+                if (snapshot.child(object +'/glb').val()) {
+                    let fileName = snapshot.child(object + '/fileName').val();
+                    createObjectGlb(latitude, longitude, altitude, fileName);
+                } else {
+                    let color = snapshot.child(object + '/color').val();
+                    createObject(latitude, longitude, altitude, color);
+                }
             }
         });
-        createObject(33.774577, -84.397340, 286, 'black', true);
     });
 }
 placeObjs(); // Wait until position is stored
@@ -122,30 +128,24 @@ placeObjs(); // Wait until position is stored
 
 //Places Objects in AR
 
-async function createObject(objLatitude, objLongitude, objAltitude, objColor, objGltf) {
+async function createObject(objLatitude, objLongitude, objAltitude, objColor) {
     let positioned = await getLocation();
     if (positioned) {
         let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
         if (distance < 125) {
-
             let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
             demo.innerHTML = "<br>Bearing: " + currHeading;
             let x = distance * Math.sin(toRadians(bearing));
             let y = objAltitude;
             let z = distance * -1 * Math.cos(toRadians(bearing));
             let el = document.createElement('a-entity');
-            if (objGltf) {
-                el.setAttribute('gltf-model', `ParthenonNormal.glb`);
-                //el.object3D.scale.set(.1, .1, .1);
-            } else {
-                el.setAttribute('geometry', {
-                    primitive: 'sphere',
-                    radius: 2.5,
-                });
-                el.setAttribute('material', {
-                    color: objColor
-                });
-            }
+            el.setAttribute('geometry', {
+                primitive: 'sphere',
+                radius: 2.5,
+            });
+            el.setAttribute('material', {
+                color: objColor
+            });
             el.setAttribute('position', {
                 x: x,
                 y: y,
@@ -156,6 +156,55 @@ async function createObject(objLatitude, objLongitude, objAltitude, objColor, ob
         }
     }
 }
+
+async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName) {
+    let positioned = await getLocation();
+    if (positioned) {
+        let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
+        if (distance < 125) {
+            let url1 = await getGlbFile();
+            let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
+            demo.innerHTML = "<br>Bearing: " + currHeading;
+            let x = distance * Math.sin(toRadians(bearing));
+            let y = objAltitude;
+            let z = distance * -1 * Math.cos(toRadians(bearing));
+            let el = document.createElement('a-entity');
+            el.setAttribute('gltf-model', `${url1}`);
+            //el.object3D.scale.set(.1, .1, .1);
+            el.setAttribute('position', {
+                x: x,
+                y: y,
+                z: z
+            });
+            let sceneEl = document.querySelector('a-scene');
+            sceneEl.appendChild(el);
+        }
+    }
+}
+
+async function getGlbFile() {
+    let url1;
+    let promise = new Promise(resolve => {
+        let exists = false;
+        var storage = firebase.storage();
+        storage.ref('glb').child('Mickey/ParthenonNormal.glb').getDownloadURL().then(function(url) {
+            console.log(url);
+            url1 = url;
+            exists = true;
+        });
+        setTimeout(() => resolve(exists), 500); // resolve
+    });
+
+    let value = await promise;
+    if (value) {
+        return url1;
+    }
+}
+
+
+
+
+
 
 
 

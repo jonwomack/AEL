@@ -99,9 +99,10 @@ function placeObjs() {
                 let latitude = snapshot.child(object + '/latitude').val();
                 let longitude = snapshot.child(object + '/longitude').val();
                 let altitude = snapshot.child(object + '/altitude').val();
+                let objectCreator = snapshot.child(object + '/username').val();
                 if (snapshot.child(object +'/glb').val()) {
                     let fileName = snapshot.child(object + '/fileName').val();
-                    createObjectGlb(latitude, longitude, altitude, fileName);
+                    createObjectGlb(latitude, longitude, altitude, fileName, objectCreator);
                 } else {
                     let color = snapshot.child(object + '/color').val();
                     createObject(latitude, longitude, altitude, color);
@@ -157,13 +158,15 @@ async function createObject(objLatitude, objLongitude, objAltitude, objColor) {
     }
 }
 
-async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName) {
+async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName, objectCreator) {
     let positioned = await getLocation();
     if (positioned) {
         let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
         if (distance < 125) {
-            let url1 = `https://firebasestorage.googleapis.com/v0/b/arworldgt.appspot.com/o/glb%2FMickey%2FParthenonNormal.glb?alt=media&token=0b4cded7-674e-4434-9ee2-402eb93a09bb`;
-            //await getGlbFile();
+            let url1 = await getGlbFile(fileName, objectCreator);
+            //`https://firebasestorage.googleapis.com/v0/b/arworldgt.appspot.com/o/glb%2FMickey%2FParthenonNormal.glb?alt=media&token=0b4cded7-674e-4434-9ee2-402eb93a09bb`;
+            //
+            console.log(url1);
             let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
             demo.innerHTML = "<br>Bearing: " + currHeading;
             let x = distance * Math.sin(toRadians(bearing));
@@ -182,13 +185,13 @@ async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName)
         }
     }
 }
-/*
-async function getGlbFile() {
+
+async function getGlbFile(fileName, objectCreator) {
     let url1;
     let promise = new Promise(resolve => {
         let exists = false;
         var storage = firebase.storage();
-        storage.ref('glb').child('Mickey/ParthenonNormal.glb').getDownloadURL().then(function(url) {
+        storage.ref('glb').child(`${objectCreator}/${fileName}`).getDownloadURL().then(function(url) {
             console.log(url);
             url1 = url;
             exists = true;
@@ -201,7 +204,7 @@ async function getGlbFile() {
         return url1;
     }
 }
-*/
+
 
 
 

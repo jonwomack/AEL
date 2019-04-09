@@ -5,5 +5,3 @@
     "maxAgeSeconds": 3600
   }
 ]
-
-gsutil cors set cors.json gs://arworldgt.appspot.com/

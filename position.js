@@ -21,6 +21,10 @@ async function getLocation() {
         let exists = false;
         if ('ondeviceorientationabsolute' in window) {
             hello.innerHTML = "GOTCHA";
+            window.ondeviceorientationabsolute = function(event) {
+                event.geolocation.getCurrentPosition(storePosition2)
+            };
+
         }
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(storePosition);
@@ -36,6 +40,9 @@ async function getLocation() {
     // wait for the promise to resolve
     let value = await promise;
     return value;
+}
+function storePosition2(position) {
+    console.log(position.coords.alpha);
 }
 function storePosition(position) {
     console.log("here");

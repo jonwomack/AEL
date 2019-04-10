@@ -42,7 +42,7 @@ async function getLocation() {
     return value;
 }
 function storePosition2(position) {
-    console.log(position.coords.alpha);
+    hello.innerHTML += position.coords.alpha;
 }
 function storePosition(position) {
     console.log("here");

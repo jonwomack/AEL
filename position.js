@@ -7,6 +7,7 @@ var currX;
 var currZ;
 const cam = document.getElementById("camera");
 const demo = document.getElementById("demo");
+const hello = document.getElementById("hello");
 
 
 
@@ -18,6 +19,9 @@ const password = localStorage.getItem("password");
 async function getLocation() {
     let promise = new Promise(resolve => {
         let exists = false;
+        if ('ondeviceorientationabsolute' in window) {
+            hello.innerHTML = "GOTCHA";
+        }
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(storePosition);
             if (currLat != null && currLon != null && currAlt != null) {

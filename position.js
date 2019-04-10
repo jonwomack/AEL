@@ -19,13 +19,6 @@ const password = localStorage.getItem("password");
 async function getLocation() {
     let promise = new Promise(resolve => {
         let exists = false;
-        if ('ondeviceorientationabsolute' in window) {
-            hello.innerHTML = "GOTCHA";
-            window.ondeviceorientationabsolute = function(event) {
-                console.log(event.alpha);
-            };
-
-        }
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(storePosition);
             if (currLat != null && currLon != null && currAlt != null) {
@@ -43,12 +36,12 @@ async function getLocation() {
 }
 function storePosition(position) {
     console.log("here");
-    //currLat = position.coords.latitude;
-    currLat = 33.774577;
-    //currLon =position.coords.longitude;
-    currLon = -84.397340;
-    //currAlt = position.coords.altitude;
-    currAlt = 286;
+    currLat = position.coords.latitude;
+    //currLat = 33.774577;
+    currLon =position.coords.longitude;
+    //currLon = -84.397340;
+    currAlt = position.coords.altitude;
+    //currAlt = 286;
     if (currLat == null || currLon == null || currAlt == null) {
         demo.innerHTML = "Lat, Lon, or Alt isn't storing";
     }
@@ -56,7 +49,7 @@ function storePosition(position) {
     //    currHeading = position.coords.heading;
     //} else {
     currHeading = 0;
-    //calculateHeading();
+    calculateHeading();
     cam.setAttribute('position', {
         x: 0,
         y: currAlt,
@@ -130,7 +123,7 @@ async function createObject(objLatitude, objLongitude, objAltitude, objColor) {
     let positioned = await getLocation();
     if (positioned) {
         let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
-        if (distance < 125) {
+        if (distance < 125000) {
             let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
             demo.innerHTML = "<br>Bearing: " + currHeading;
             let x = distance * Math.sin(toRadians(bearing));
@@ -218,7 +211,12 @@ async function getGlbFile(fileName, objectCreator) {
 function calculateHeading() {
     if (window.DeviceOrientationEvent) {
         window.addEventListener("deviceorientation", function (event) {
-            if(event.webkitCompassHeading) {
+            if ('ondeviceorientationabsolute' in window) {
+                window.ondeviceorientationabsolute = function(event) {
+                    currHeading = event.alpha;
+                    return true;
+                };
+            } else if(event.webkitCompassHeading) {
                 var compass = event.webkitCompassHeading;
                 handleOrientationEvent(compass);
                 return true;

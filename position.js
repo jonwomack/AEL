@@ -11,8 +11,8 @@ const hello = document.getElementById("hello");
 
 
 
-const username = localStorage.getItem("username");
-const password = localStorage.getItem("password");
+//const username = localStorage.getItem("username");
+//const password = localStorage.getItem("password");
 
 
 //Storing Position i.e. starting AR world

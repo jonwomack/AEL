@@ -67,6 +67,7 @@ const east = new AR(27.655869, -80.388180, 1, "east", 'yellow');
 const west = new AR(27.655852, -80.390410, 1, "wezt", 'purple');
 const house = new AR(27.6555439, -80.3894948, 1, "given", 'white');
 
+
     const n = new AR(33.775197, -84.397288, 286, "North", 'red', false, "");
     const s = new AR(33.774012, -84.397322, 286, "South", 'blue', false, "");
     const e = new AR(33.774618, -84.396867, 286, "East", 'yellow', false, "");

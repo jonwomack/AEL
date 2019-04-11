@@ -152,7 +152,7 @@ async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName,
     let positioned = await getLocation();
     if (positioned) {
         let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
-        if (distance < 125) {
+        if (distance < 125000) {
             let url1 = await getGlbFile(fileName, objectCreator);
             //`https://firebasestorage.googleapis.com/v0/b/arworldgt.appspot.com/o/glb%2FMickey%2FParthenonNormal.glb?alt=media&token=0b4cded7-674e-4434-9ee2-402eb93a09bb`;
             //

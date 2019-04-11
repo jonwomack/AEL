@@ -214,6 +214,7 @@ function calculateHeading() {
             if ('ondeviceorientationabsolute' in window) {
                 window.ondeviceorientationabsolute = function(event) {
                     currHeading = event.alpha;
+                    console.log(event.absolute);
                     return true;
                 };
             } else if(event.webkitCompassHeading) {

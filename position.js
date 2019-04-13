@@ -35,7 +35,6 @@ async function getLocation() {
     return value;
 }
 function storePosition(position) {
-    console.log("here");
     currLat = position.coords.latitude;
     //currLat = 33.774577;
     currLon =position.coords.longitude;
@@ -48,7 +47,6 @@ function storePosition(position) {
     //if (position.coords.heading != null) {
     //    currHeading = position.coords.heading;
     //} else {
-    currHeading = 0;
     calculateHeading();
     cam.setAttribute('position', {
         x: 0,
@@ -56,8 +54,8 @@ function storePosition(position) {
         z: 0
     });
     //}
-    //updatePosition();
-    //setInterval(updatePosition, 5000);
+    updatePosition();
+    setInterval(updatePosition, 5000);
 }
 getLocation();
 //storePosition();

@@ -40,7 +40,7 @@ function loginUser() {
                 loggedin = true;
                 localStorage.setItem("username", usernameDB);
                 localStorage.setItem("password", passwordDB);
-                location.assign('../ARWorld/arworld.html');
+                location.assign('./src/ARWorld/arworld.html');
             }
         });
         if (!loggedin) {

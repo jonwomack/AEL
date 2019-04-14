@@ -8,7 +8,6 @@ var myVar5;
             if (isChecked) {
                 clearInterval();
                 isGlb = true;
-                console.log(isGlb);
                 removeColor();
                 myVar4 = setInterval(addUserLocation, 1000);
             } else {
@@ -33,7 +32,6 @@ var myVar4;
             if (isChecked) {
                 clearInterval();
                 isPublic = true;
-                console.log(isPublic);
                 myVar3 = setInterval(addUserLocation, 1000);
             } else {
                 clearInterval();
@@ -57,7 +55,6 @@ var myVar2;
             if (isChecked) {
                 clearInterval();
                 bool = true;
-                console.log(bool);
                 myVar = setInterval(addUserLocation, 1000);
             } else {
                 clearInterval();

@@ -149,7 +149,7 @@ function createGroup() {
 
 //Go to Previous page
 function goBack() {
-    location.assign('arworld.html');
+    location.assign('../ARWorld/arworld.html');
 }
 
 
@@ -261,4 +261,17 @@ async function addUserToGroup() {
             }
         }
     }
+}
+function displayObjects() {
+    let objList = document.getElementById('objectList');
+    let list = document.createElement('list');
+    firebase.database().ref('/objects/').once('value').then(function (snapshot) {
+        snapshot.forEach( function(childSnapshot) {
+                if(childSnapshot.child('username').val() === username) {
+                    list.innerHTML += `<li>${childSnapshot.key}</li>`;
+                }
+            }
+        );
+    });
+    objList.appendChild(list);
 }

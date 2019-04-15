@@ -2,7 +2,7 @@
     const starBucks = new AR(33.776527, -84.388348, 10, "Starbucks");
 
     const westVillage = new AR(33.779457, -84.404843, 10, "West Village", 'black');
-    const wingZone = new AR(33.779466, -84.405400, 10, "Wing Zone", 'black');
+    const wingZone = new AR(33.779494, -84.405612, 294, "Wing Zone", 'black');
     const fitten = new AR(33.778210, -84.403753, 10, "Fitten", 'black');
     const folk = new AR(33.778907, -84.404858, 10, "Folk", 'black');
     const caldwell = new AR(33.778897, -84.404419, 10, "Caldwell", 'black');

@@ -17,13 +17,13 @@ function addUserLocationH(position) {
         currLat = 0;
         currLon = 0;
         currAlt = 0;
-        //alert("no geo");
     } else {
         if (bool) {
             let user = firebase.database().ref(`/users/${username}`);
             user.update({
                 location: true
             });
+
             writeObjectDataSphere(username, currLat, currLon, currAlt, username, true, false, 'black');
         } else {
             let user = firebase.database().ref(`/users/${username}`);
@@ -66,12 +66,13 @@ async function writeObjectData(isPublic, isGlb) {
     if (!exists) {
         if (isGlb) {
             let fileName = input.files[0].name;
-            createFile();
+            createFile(name);
             writeObjectDataGlb(name, lat, lon, alt, username, isPublic, isGlb, fileName);
         } else {
             let color = x.elements[4].value;
             writeObjectDataSphere(name, lat, lon, alt, username, isPublic, isGlb, color);
         }
+        setTimeout(function (){window.location.reload(true);}, 3000);
     } else {
         alert("Object Already Exists");
     }
@@ -101,11 +102,11 @@ function writeObjectDataGlb(name, latitude, longitude, altitude, username, pub, 
     });
 }
 //Upload Glb file
-function createFile() {
+function createFile(name) {
     let input = document.getElementById("avatar");
     let file = input.files[0];
     if (file != null) {
-        firebase.storage().ref(`glb/${username}/${file.name}`).put(file).then(function (snapshot) {
+        firebase.storage().ref(`glb/${username}/${name}/${file.name}`).put(file).then(function (snapshot) {
             console.log('Uploaded a blob or file!');
         });
         demo.innerHTML = "File Uploaded";
@@ -262,16 +263,39 @@ async function addUserToGroup() {
         }
     }
 }
+
+
 function displayObjects() {
     let objList = document.getElementById('objectList');
     let list = document.createElement('list');
+    list.setAttribute("id", "list");
     firebase.database().ref('/objects/').once('value').then(function (snapshot) {
         snapshot.forEach( function(childSnapshot) {
                 if(childSnapshot.child('username').val() === username) {
-                    list.innerHTML += `<li>${childSnapshot.key}</li>`;
+                    let cs = childSnapshot.key.toString();
+                    if (childSnapshot.child('glb').val() === true) {
+                        let fileName = childSnapshot.child('fileName').val();
+                        list.innerHTML += `<li id='${childSnapshot.key}Item'>${childSnapshot.key} <button onclick='deleteObjectGlb("${cs}", "${fileName}")'>Delete</button></li>`;
+                    } else {
+                        list.innerHTML += `<li id='${childSnapshot.key}Item'>${childSnapshot.key} <button onclick='deleteObject("${cs}")'>Delete</button></li>`;
+                    }
+
                 }
             }
         );
     });
     objList.appendChild(list);
+}
+function deleteObject(object) {
+    document.getElementById("list").removeChild(document.getElementById(`${object}Item`));
+    firebase.database().ref(`/objects/${object}`).once('value').then(function (snapshot) {
+            firebase.database().ref(`/objects/${object}`).remove();
+    })
+}
+function deleteObjectGlb(object, fileName) {
+    document.getElementById("list").removeChild(document.getElementById(`${object}Item`));
+    firebase.database().ref(`/objects/${object}`).once('value').then(function (snapshot) {
+        firebase.database().ref(`/objects/${object}`).remove();
+    });
+    firebase.storage().ref(`/glb/${username}/${object}/${fileName}/`).delete();
 }

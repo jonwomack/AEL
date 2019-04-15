@@ -38,21 +38,19 @@ async function getLocation() {
 }
 
 function storePosition(position) {
-    currLat = position.coords.latitude;
+
     //currLat = 33.774577;
+    //currLon = -84.397340;
+    //currAlt = 286;
+    currLat = position.coords.latitude;
     tempLat = currLat;
     currLon =position.coords.longitude;
-    //currLon = -84.397340;
     tempLon = currLon;
     currAlt = position.coords.altitude;
-    //currAlt = 286;
     tempAlt = currAlt;
     if (currLat == null || currLon == null || currAlt == null) {
         demo.innerHTML = "Lat, Lon, or Alt isn't storing";
     }
-    //if (position.coords.heading != null) {
-    //    currHeading = position.coords.heading;
-    //} else {
     //currHeading = 0;
     calculateHeading();
     currX = 0;
@@ -65,7 +63,7 @@ function storePosition(position) {
 }
 getLocation();
 setInterval(function() {updatePosition(); }, 3000);
-//Updating the Position - Occurs every 5 seconds and only updates if you move more than 7 meters
+//Updating the Position - Occurs every 3 seconds and only updates if you move more than 7 meters
 function updatePosition() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(updatePositionHelper);
@@ -75,8 +73,8 @@ function updatePosition() {
 }
 function updatePositionHelper(position) {
     //tempLat = currLat;
-    tempLat = position.coords.latitude;
     //tempLon = currLon;
+    tempLat = position.coords.latitude;
     tempLon = position.coords.longitude;
     tempAlt = position.coords.altitude;
     let changeInXDistance = calculateDistance(tempLat, currLat, tempLon, currLon);

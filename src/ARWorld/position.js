@@ -2,13 +2,15 @@
 var currLat;
 var currLon;
 var currAlt;
+let tempLat;
+let tempLon;
+let tempAlt;
 var currHeading;
 var currX;
 var currZ;
 const cam = document.getElementById("camera");
 const demo = document.getElementById("demo");
 const hello = document.getElementById("hello");
-
 
 
 //const username = localStorage.getItem("username");
@@ -34,31 +36,35 @@ async function getLocation() {
     let value = await promise;
     return value;
 }
+
 function storePosition(position) {
     currLat = position.coords.latitude;
     //currLat = 33.774577;
+    tempLat = currLat;
     currLon =position.coords.longitude;
     //currLon = -84.397340;
+    tempLon = currLon;
     currAlt = position.coords.altitude;
     //currAlt = 286;
+    tempAlt = currAlt;
     if (currLat == null || currLon == null || currAlt == null) {
         demo.innerHTML = "Lat, Lon, or Alt isn't storing";
     }
     //if (position.coords.heading != null) {
     //    currHeading = position.coords.heading;
     //} else {
+    //currHeading = 0;
     calculateHeading();
+    currX = 0;
+    currZ = 0;
     cam.setAttribute('position', {
-        x: 0,
+        x: currX,
         y: currAlt,
-        z: 0
+        z: currZ
     });
-    //}
-    updatePosition();
-    setInterval(updatePosition, 5000);
 }
 getLocation();
-//storePosition();
+setInterval(function() {updatePosition(); }, 3000);
 //Updating the Position - Occurs every 5 seconds and only updates if you move more than 7 meters
 function updatePosition() {
     if (navigator.geolocation) {
@@ -68,16 +74,22 @@ function updatePosition() {
     }
 }
 function updatePositionHelper(position) {
-    let tempLat = position.coords.latitude;
-    let tempLon = position.coords.longitude;
-    let tempAlt = position.coords.altitude;
+    //tempLat = currLat;
+    tempLat = position.coords.latitude;
+    //tempLon = currLon;
+    tempLon = position.coords.longitude;
+    tempAlt = position.coords.altitude;
     let changeInXDistance = calculateDistance(tempLat, currLat, tempLon, currLon);
-    let changeInTotalDistance = Math.sqrt(Math.pow(changeInXDistance, 2) + Math.pow((tempAlt - currAlt), 2));
-    if ((Math.pow(changeInTotalDistance, .5) > 5)) {
+    let changeInYDistance = tempAlt - currAlt;
+    console.log(changeInYDistance);
+    let changeInTotalDistance = Math.sqrt(Math.pow(changeInXDistance, 2) + Math.pow(changeInYDistance, 2));
+    if (changeInTotalDistance > 5) {
+        console.log("here");
         currLat = tempLat;
         currLon = tempLon;
         currAlt = tempAlt;
         let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
+        console.log(changeInBearing);
         currX = currX + changeInXDistance * Math.sin(toRadians(changeInBearing));
         currZ = currZ + changeInXDistance * -1 * Math.cos(toRadians(changeInBearing));
         cam.setAttribute('position', {

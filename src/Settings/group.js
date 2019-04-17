@@ -113,7 +113,6 @@ function createFile(name) {
     } else {
         demo.innerHTML = "No File";
     }
-
 }
 
 

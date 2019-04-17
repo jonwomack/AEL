@@ -13,12 +13,33 @@
 
 <body>
 <button onclick="toDatabase()">Settings</button>
+<br>
+<!--
+<button onclick="insertObject('glb')">Glb</button>
+<input id="objName" type="text" name="objectName" value="Object Name">
+<input id="insert" type="file"  name="avatar" accept=".glb">
+<br>
+<button onclick="insertObject('png')">Image</button>
+<input id="insert2" type="file" accept=".png">
+<br>
+<button onclick="insertObjectTxt()">Text</button>
+<input id="insert3" type="text" name="textContent" value="Text">
+<br>
+<button onclick="moveLeft()">Left</button>
+<button onclick="moveRight()">Right</button>
+<button onclick="moveForward()">Forward</button>
+<button onclick="moveBackward()">Backward</button>
+<button onclick="moveUp()">Up</button>
+<button onclick="moveDown()">Down</button>
+<br>
+<button onclick="setObject()">Create</button>
+-->
 <div class="camera">
     <video  id="videoElement"></video>
 </div>
 <div id="a-scene">
     <a-scene background="color: black; transparent: true" vr-mode-ui="enabled: false">
-        <a-assets>
+        <a-assets id="assets">
         </a-assets>
         <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#93648D"></a-plane>
         <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>

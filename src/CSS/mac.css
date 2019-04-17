@@ -20,6 +20,7 @@
     }
     input {
         position: relative;
+        z-index: 2;
     }
     body {
         background-color: #00BFFF;

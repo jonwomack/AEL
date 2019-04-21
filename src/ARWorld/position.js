@@ -129,7 +129,7 @@ function placeObjs() {
                 let objectCreator = snapshot.child(object + '/username').val();
                 if (snapshot.child(object +'/type').val() === 'glb') {
                     let fileName = snapshot.child(object + '/fileName').val();
-                    createObjectGlb(latitude, longitude, altitude, fileName, objectCreator);
+                    createObjectGlb(latitude, longitude, altitude, fileName, objectCreator, objectName);
                 } else if (snapshot.child(object +'/type').val() === 'basic') {
                     let color = snapshot.child(object + '/color').val();
                     createObject(latitude, longitude, altitude, color);
@@ -139,7 +139,7 @@ function placeObjs() {
                     createObjectTxt(latitude, longitude, altitude, fileName);
                 } else if (snapshot.child(object +'/type').val() === 'png') {
                     let fileName = snapshot.child(object + '/fileName').val();
-                    createObjectPng(latitude, longitude, altitude, fileName, objectCreator);
+                    createObjectPng(latitude, longitude, altitude, fileName, objectCreator, objectName);
                 }
             }
         });
@@ -181,12 +181,12 @@ async function createObject(objLatitude, objLongitude, objAltitude, objColor) {
     }
 }
 
-async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName, objectCreator) {
+async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName, objectCreator, objName) {
     let positioned = await getLocation();
     if (positioned) {
         let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
         if (distance < 125000) {
-            let url1 = await getFile(fileName, objectCreator);
+            let url1 = await getFile(fileName, objectCreator, objName);
             let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
             demo.innerHTML = "<br>Bearing: " + currHeading;
             let x = distance * Math.sin(toRadians(bearing));
@@ -206,12 +206,12 @@ async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName,
     }
 }
 
-async function createObjectPng(objLatitude, objLongitude, objAltitude, fileName, objectCreator) {
+async function createObjectPng(objLatitude, objLongitude, objAltitude, fileName, objectCreator, objName) {
     let positioned = await getLocation();
     if (positioned) {
         let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
         if (distance < 125000) {
-            let url1 = await getFile(fileName, objectCreator);
+            let url1 = await getFile(fileName, objectCreator, objName);
             let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
             demo.innerHTML = "<br>Bearing: " + currHeading;
             let x = distance * Math.sin(toRadians(bearing));
@@ -238,12 +238,12 @@ async function createObjectPng(objLatitude, objLongitude, objAltitude, fileName,
         }
     }
 }
-async function getFile(fileName, objectCreator) {
+async function getFile(fileName, objectCreator, objName) {
     let url1;
     let promise = new Promise(resolve => {
         let exists = false;
         var storage = firebase.storage();
-        storage.ref('glb').child(`${objectCreator}/${fileName}`).getDownloadURL().then(function(url) {
+        storage.ref('glb').child(`${objectCreator}/${objName}/${fileName}`).getDownloadURL().then(function(url) {
             url1 = url;
             exists = true;
         });

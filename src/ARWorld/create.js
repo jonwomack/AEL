@@ -31,6 +31,7 @@ function insertObjectGlb(objectURL) {
     el.className += "glb";
     let sceneEl = document.querySelector('a-scene');
     sceneEl.appendChild(el);
+    disableInsertButtons();
 }
 function insertObjectPng(objectURL) {
     let el = document.createElement('a-entity');
@@ -54,6 +55,7 @@ function insertObjectPng(objectURL) {
     el.className += "png";
     let sceneEl = document.querySelector('a-scene');
     sceneEl.appendChild(el);
+    disableInsertButtons();
 }
 function insertObjectTxt() {
     let input = document.getElementById('insert3').value;
@@ -71,6 +73,12 @@ function insertObjectTxt() {
     el.className += "txt";
     let sceneEl = document.querySelector('a-scene');
     sceneEl.appendChild(el);
+    disableInsertButtons();
+}
+function disableInsertButtons() {
+    document.getElementById("pngButton").disabled = true;
+    document.getElementById("txtButton").disabled = true;
+    document.getElementById("glbButton").disabled = true;
 }
 
 

@@ -15,14 +15,14 @@
 <body>
 <button onclick="toDatabase()">Settings</button>
 <br>
-<button onclick="insertObject('glb')">Glb</button>
+<button id="glbButton" onclick="insertObject('glb')">Glb</button>
 <input id="objName" type="text" name="objectName" value="Object Name">
 <input id="insert" type="file"  name="avatar" accept=".glb">
 <br>
-<button onclick="insertObject('png')">Image</button>
+<button id="pngButton" onclick="insertObject('png')">Image</button>
 <input id="insert2" type="file" accept=".png">
 <br>
-<button onclick="insertObjectTxt()">Text</button>
+<button id="txtButton" onclick="insertObjectTxt()">Text</button>
 <input id="insert3" type="text" name="textContent" value="Text">
 <br>
 <button onclick="moveLeft()">Left</button>

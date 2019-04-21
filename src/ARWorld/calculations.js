@@ -1,5 +1,5 @@
+const radius = 6371e3; // Radius of Earth in Meters
 function calculateDistance(lat1, lat2, lon1, lon2) {
-    const radius = 6371e3; // Radius of Earth in Meters
     let lat1radians = toRadians(lat1);
     let lat2radians = toRadians(lat2);
     let deltaLat = toRadians(lat2-lat1);
@@ -18,6 +18,21 @@ function calculateBearing(latB1, latB2, lonB1, lonB2) {
     let brng = toDegrees((Math.atan2(y, x)));
     brng = (360 - ((brng + 360) % 360));
     return brng;
+}
+
+function calcLatLon(brng, d) {
+    //Bearing is converted to radians.
+    // Distance in m
+    let lat2;
+    let lon2;
+    brng = toRadians(brng);
+    let lat1 = toRadians(initLat); //Current lat point converted to radians
+    let lon1 = toRadians(initLon); //Current long point converted to radians
+    lat2 = Math.asin(Math.sin(lat1) * Math.cos(d/radius) + Math.cos(lat1) * Math.sin(d/radius) * Math.cos(brng));
+    lon2 = lon1 + Math.atan2(Math.sin(brng) * Math.sin(d/radius) * Math.cos(lat1), Math.cos(d/radius) - Math.sin(lat1) * Math.sin(lat2));
+    lat2 = toDegrees(lat2);
+    lon2 = toDegrees(lon2);
+    return [lat2, lon2];
 }
 
 //Math functions

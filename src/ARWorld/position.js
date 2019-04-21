@@ -8,6 +8,12 @@ let tempAlt;
 var currHeading;
 var currX;
 var currZ;
+var initLat;
+var initLon;
+var initAlt;
+var initHeading;
+var init = false;
+
 const cam = document.getElementById("camera");
 const demo = document.getElementById("demo");
 const hello = document.getElementById("hello");
@@ -38,14 +44,15 @@ async function getLocation() {
 }
 
 function storePosition(position) {
-    /*
        currLat = 33.774577;
        currLon = -84.397340;
        currAlt = 286;
-       */
+
+    /*
     currLat = position.coords.latitude;
-    currLon =position.coords.longitude;
+    currLon = position.coords.longitude;
     currAlt = position.coords.altitude;
+    */
 
     tempLat = currLat;
     tempLon = currLon;
@@ -53,8 +60,18 @@ function storePosition(position) {
     if (currLat == null || currLon == null || currAlt == null) {
         demo.innerHTML = "Lat, Lon, or Alt isn't storing";
     }
-    //currHeading = 180;
-    calculateHeading();
+    currHeading = 0;
+    //calculateHeading();
+    if (init === false) {
+        initLat = currLat;
+        initLon = currLon;
+        initAlt = currAlt;
+        initHeading = currHeading;
+        init = true;
+    }
+
+
+
     currX = 0;
     currZ = 0;
     cam.setAttribute('position', {
@@ -63,7 +80,7 @@ function storePosition(position) {
         z: currZ
     });
 }
-getLocation();
+storePosition();
 //setInterval(function() {updatePosition(); }, 3000);
 //Updating the Position - Occurs every 3 seconds and only updates if you move more than 7 meters
 function updatePosition() {
@@ -110,12 +127,19 @@ function placeObjs() {
                 let longitude = snapshot.child(object + '/longitude').val();
                 let altitude = snapshot.child(object + '/altitude').val();
                 let objectCreator = snapshot.child(object + '/username').val();
-                if (snapshot.child(object +'/glb').val()) {
+                if (snapshot.child(object +'/type').val() === 'glb') {
                     let fileName = snapshot.child(object + '/fileName').val();
                     createObjectGlb(latitude, longitude, altitude, fileName, objectCreator);
-                } else {
+                } else if (snapshot.child(object +'/type').val() === 'basic') {
                     let color = snapshot.child(object + '/color').val();
                     createObject(latitude, longitude, altitude, color);
+                } else if (snapshot.child(object +'/type').val() === 'txt') {
+                    let fileName = snapshot.child(object + '/fileName').val();
+                    console.log(fileName);
+                    createObjectTxt(latitude, longitude, altitude, fileName);
+                } else if (snapshot.child(object +'/type').val() === 'png') {
+                    let fileName = snapshot.child(object + '/fileName').val();
+                    createObjectPng(latitude, longitude, altitude, fileName, objectCreator);
                 }
             }
         });
@@ -162,7 +186,7 @@ async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName,
     if (positioned) {
         let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
         if (distance < 125000) {
-            let url1 = await getGlbFile(fileName, objectCreator);
+            let url1 = await getFile(fileName, objectCreator);
             let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
             demo.innerHTML = "<br>Bearing: " + currHeading;
             let x = distance * Math.sin(toRadians(bearing));
@@ -182,7 +206,39 @@ async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName,
     }
 }
 
-async function getGlbFile(fileName, objectCreator) {
+async function createObjectPng(objLatitude, objLongitude, objAltitude, fileName, objectCreator) {
+    let positioned = await getLocation();
+    if (positioned) {
+        let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
+        if (distance < 125000) {
+            let url1 = await getFile(fileName, objectCreator);
+            let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
+            demo.innerHTML = "<br>Bearing: " + currHeading;
+            let x = distance * Math.sin(toRadians(bearing));
+            let y = objAltitude;
+            let z = distance * -1 * Math.cos(toRadians(bearing));
+            let el = document.createElement('a-entity');
+            let image = document.createElement('a-asset');
+            image.innerHTML = `<img id="imageData" src="${url1}">`;
+            el.setAttribute('geometry', {
+                primitive: 'plane',
+            });
+            el.setAttribute('material', {
+                side: 'double',
+                shader: 'flat',
+                src: `#imageData`
+            });
+            el.setAttribute('position', {
+                x: x,
+                y: y,
+                z: z
+            });
+            let sceneEl = document.querySelector('a-scene');
+            sceneEl.appendChild(el);
+        }
+    }
+}
+async function getFile(fileName, objectCreator) {
     let url1;
     let promise = new Promise(resolve => {
         let exists = false;
@@ -200,129 +256,30 @@ async function getGlbFile(fileName, objectCreator) {
     }
 }
 
-
-var file;
-function insertObject(fileType) {
-    let input;
-    let objectURL;
-    if (fileType === 'glb') {
-        input = document.getElementById("insert");
-        file = input.files[0];
-        objectURL = URL.createObjectURL(file);
-        console.log(objectURL);
-        insertObjectGlb(objectURL);
-    } else if (fileType === 'png') {
-        input = document.getElementById("insert2");
-        file = input.files[0];
-        objectURL = URL.createObjectURL(file);
-        console.log(objectURL);
-        insertObjectPng(objectURL);
-    }
-}
-function insertObjectGlb(objectURL) {
-    let el = document.createElement('a-entity');
-    el.setAttribute('gltf-model', objectURL);
-    el.setAttribute('id', 'moveable');
-    //el.object3D.scale.set(.1, .1, .1);
-    el.setAttribute('position', {
-        x: currX,
-        y: currAlt,
-        z: currZ
-    });
-    let sceneEl = document.querySelector('a-scene');
-    sceneEl.appendChild(el);
-}
-function insertObjectPng(objectURL) {
-    let el = document.createElement('a-entity');
-    let asset = document.getElementById('assets');
-    asset.innerHTML = `<img id="image" src="${objectURL}">`;
-    el.setAttribute('geometry', {
-        primitive: 'plane',
-    });
-    el.setAttribute('material', {
-        side: 'double',
-        shader: 'flat',
-        src: `#image`
-    });
-    el.setAttribute('id', 'moveable');
-    //el.object3D.scale.set(.1, .1, .1);
-    el.setAttribute('position', {
-        x: currX,
-        y: currAlt,
-        z: currZ
-    });
-    let sceneEl = document.querySelector('a-scene');
-    sceneEl.appendChild(el);
-}
-function insertObjectTxt() {
-    let input = document.getElementById('insert3').value;
-    console.log(input);
-    let el = document.createElement('a-entity');
-    el.setAttribute('text', {
-        value: `${input}`,
-    });
-    el.setAttribute('id', 'moveable');
-    el.setAttribute('position', {
-        x: currX,
-        y: currAlt,
-        z: currZ
-    });
-    let sceneEl = document.querySelector('a-scene');
-    sceneEl.appendChild(el);
-}
-
-
-
-async function setObject() {
-    let objName = document.getElementById("objName").value;
-    let exists = await objExists(objName);
-    if (!exists) {
-        createFile(file, objName);
-        writeObjectDataGlb(objName, currLat, currLon, currAlt, username, true, file.name)
-    } else {
-        alert("Object Exists: Change Name");
-    }
-
-}
-
-function createFile(file, objName) {
-    if (file != null) {
-        firebase.storage().ref(`glb/${username}/${objName}/${file.name}`).put(file).then(function (snapshot) {
-            console.log('Uploaded a blob or file!');
-        });
-        demo.innerHTML = "File Uploaded";
-    } else {
-        demo.innerHTML = "No File";
-    }
-}
-function writeObjectDataGlb(name, latitude, longitude, altitude, username, pub, fileName) {
-    firebase.database().ref('/objects/' + name).set({
-        longitude: longitude,
-        latitude: latitude,
-        altitude: altitude,
-        username: username,
-        public: pub,
-        glb: true,
-        fileName: fileName
-    });
-}
-
-async function objExists(name) {
-    let promise = new Promise(resolve => {
-        let object = false;
-        let objects = firebase.database().ref(`objects`);
-        objects.once('value').then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot){
-                let objectName = childSnapshot.key;
-                if (name === objectName) {
-                    object = true;
-                }
+async function createObjectTxt(objLatitude, objLongitude, objAltitude, fileName) {
+    let positioned = await getLocation();
+    if (positioned) {
+        let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
+        if (distance < 125000) {
+            let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
+            demo.innerHTML = "<br>Bearing: " + currHeading;
+            let x = distance * Math.sin(toRadians(bearing));
+            let y = objAltitude;
+            let z = distance * -1 * Math.cos(toRadians(bearing));
+            let el = document.createElement('a-entity');
+            el.setAttribute('text', {
+                value: fileName
             });
-        });
-        setTimeout(() => resolve(object), 500);
-    });
-    let value = await promise;
-    return value;
+            //el.object3D.scale.set(.1, .1, .1);
+            el.setAttribute('position', {
+                x: x,
+                y: y,
+                z: z
+            });
+            let sceneEl = document.querySelector('a-scene');
+            sceneEl.appendChild(el);
+        }
+    }
 }
 
 //Collection of functions used in determining position of the user.
@@ -370,71 +327,6 @@ function toDatabase() {
 
 
 
-function moveLeft() {
-    let el = document.getElementById('moveable');
-    let x = el.getAttribute('position').x;
-    let y = el.getAttribute('position').y;
-    let z = el.getAttribute('position').z;
-    el.setAttribute('position', {
-        x: x - 1,
-        y: y,
-        z: z
-    });
-}
-function moveRight() {
-    let el = document.getElementById('moveable');
-    let x = el.getAttribute('position').x;
-    let y = el.getAttribute('position').y;
-    let z = el.getAttribute('position').z;
-    el.setAttribute('position', {
-        x: x + 1,
-        y: y,
-        z: z
-    });
-}
-function moveForward() {
-    let el = document.getElementById('moveable');
-    let x = el.getAttribute('position').x;
-    let y = el.getAttribute('position').y;
-    let z = el.getAttribute('position').z;
-    el.setAttribute('position', {
-        x: x,
-        y: y,
-        z: z + 1
-    });
-}
-function moveBackward() {
-    let el = document.getElementById('moveable');
-    let x = el.getAttribute('position').x;
-    let y = el.getAttribute('position').y;
-    let z = el.getAttribute('position').z;
-    el.setAttribute('position', {
-        x: x,
-        y: y,
-        z: z - 1
-    });
-}
-function moveUp() {
-    let el = document.getElementById('moveable');
-    let x = el.getAttribute('position').x;
-    let y = el.getAttribute('position').y;
-    let z = el.getAttribute('position').z;
-    el.setAttribute('position', {
-        x: x,
-        y: y + 1,
-        z: z
-    });
-}
-function moveDown() {
-    let el = document.getElementById('moveable');
-    let x = el.getAttribute('position').x;
-    let y = el.getAttribute('position').y;
-    let z = el.getAttribute('position').z;
-    el.setAttribute('position', {
-        x: x,
-        y: y - 1,
-        z: z
-    });
-}
+
 
 

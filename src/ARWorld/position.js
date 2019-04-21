@@ -218,15 +218,15 @@ async function createObjectPng(objLatitude, objLongitude, objAltitude, fileName,
             let y = objAltitude;
             let z = distance * -1 * Math.cos(toRadians(bearing));
             let el = document.createElement('a-entity');
-            let image = document.createElement('a-asset');
-            image.innerHTML = `<img id="imageData" src="${url1}">`;
+            let asset = document.getElementById('assets');
+            asset.innerHTML += `<img id="${objName}" src="${url1}">`;
             el.setAttribute('geometry', {
                 primitive: 'plane',
             });
             el.setAttribute('material', {
                 side: 'double',
                 shader: 'flat',
-                src: `#imageData`
+                src: `#i${objName}`
             });
             el.setAttribute('position', {
                 x: x,

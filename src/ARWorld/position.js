@@ -226,7 +226,7 @@ async function createObjectPng(objLatitude, objLongitude, objAltitude, fileName,
             el.setAttribute('material', {
                 side: 'double',
                 shader: 'flat',
-                src: `#i${objName}`
+                src: `#${objName}`
             });
             el.setAttribute('position', {
                 x: x,

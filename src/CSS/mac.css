@@ -1,35 +1,49 @@
-@media screen and (min-width: 900px) {
-    #videoElement {
+@media screen and (min-device-width: 1200px) and (max-device-width: 1800px) {
+    .login {
+        position: absolute;
+        left: 5%;
+        background-color: white;
+    }
+    .create {
+        position: absolute;
+        left: 55%;
+        background-color: white;
+    }
+    .spinning {
         position: absolute;
         left: 0;
         top: 0;
-        width: 100vw;
-        object-fit: fill;
-        z-index: -1;
+        z-index: -3;
+        max-width: 100%;
     }
-    p {
-        position: relative;
-        text-align: center;
+    h1 {
+        position: absolute;
         color: white;
-        z-index: 2;
+        left: 50%;
+    }
+    form {
+        position: absolute;
+        color: white;
+        left: 50%;
+        top: 40%;
+        z-index: 3;
     }
     button {
         position: relative;
-        left: 50%;
-        z-index: 2;
+        z-index: 3;
     }
     input {
         position: relative;
-        z-index: 2;
+        z-index: 3;
     }
-    body {
-        background-color: #00BFFF;
+    .videoElement {
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        z-index: -10;
     }
-    form {
-        position: relative;
-        z-index: 2;
-    }
-    a-scene {
+    #a-scene {
         position: absolute;
         z-index: 1;
     }

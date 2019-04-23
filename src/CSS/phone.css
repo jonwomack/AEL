@@ -1,77 +1,50 @@
-@media screen and (max-width: 900px) and (orientation: portrait){
-    p {
-        position: relative;
-        text-align: center;
+@media screen and (min-device-width: 10px) and (max-device-width: 800px) {
+    .login {
+        position: absolute;
+        left: 5%;
+        background-color: white;
+    }
+    .create {
+        position: absolute;
+        left: 55%;
+        background-color: white;
+    }
+    .spinning {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -3;
+        max-width: 100%;
+    }
+    h1 {
+        position: absolute;
         color: white;
-        z-index: 10;
+        left: 50%;
+    }
+    form {
+        position: absolute;
+        color: white;
+        left: 50%;
+        top: 40%;
+        z-index: 5;
     }
     button {
         position: relative;
-        left: 50%;
-        z-index: 10;
+        z-index: 5;
     }
     input {
         position: relative;
-        z-index: 10;
-    }
-    body {
-        position: absolute;
-        background-color: #00BFFF;
-    }
-    form {
-        position: relative;
-        z-index: 10;
-    }
-    #videoElement {
-        position: absolute;
-        z-index: -1;
-        height: 100vh;
-    }
-    .camera {
-        position: absolute;
-        top: 0px;
-    }
-    a-scene {
-        position: absolute;
         z-index: 5;
     }
-}
-@media screen and (max-height: 900px) and (orientation: landscape){
-    p {
-        position: relative;
-        text-align: center;
-        color: white;
-        z-index: 10;
-    }
-    button {
-        position: relative;
-        left: 50%;
-        z-index: 10;
-    }
-    input {
-        position: relative;
-        z-index: 10;
-    }
-    body {
+    .videoElement {
         position: absolute;
-        background-color: #00BFFF;
+        top: 0%;
+        left: 0%;
+        height: 100%;
+        z-index: -10;
     }
-    form {
-        position: relative;
-        z-index: 10;
-    }
-    #videoElement {
+    #a-scene {
         position: absolute;
-        z-index: -1;
-        height: 100vh;
-    }
-    .camera {
-        position: absolute;
-        top: 0px;
-    }
-    a-scene {
-        position: absolute;
-        z-index: 5;
+        z-index: 1;
     }
 }
-

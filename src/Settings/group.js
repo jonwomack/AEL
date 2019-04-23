@@ -85,7 +85,7 @@ function writeObjectDataSphere(name, latitude, longitude, altitude, username, pu
         altitude: altitude,
         username: username,
         public: pub,
-        glb: false,
+        glb: 'basic',
         color: color
     });
 }
@@ -97,7 +97,7 @@ function writeObjectDataGlb(name, latitude, longitude, altitude, username, pub, 
         altitude: altitude,
         username: username,
         public: pub,
-        glb: true,
+        type: 'glb',
         fileName: fileName
     });
 }
@@ -272,7 +272,7 @@ function displayObjects() {
         snapshot.forEach( function(childSnapshot) {
                 if(childSnapshot.child('username').val() === username) {
                     let cs = childSnapshot.key.toString();
-                    if (childSnapshot.child('glb').val() === true) {
+                    if (childSnapshot.child('type').val() === 'glb' || childSnapshot.child('type').val() === 'txt') {
                         let fileName = childSnapshot.child('fileName').val();
                         list.innerHTML += `<li id='${childSnapshot.key}Item'>${childSnapshot.key} <button onclick='deleteObjectGlb("${cs}", "${fileName}")'>Delete</button></li>`;
                     } else {

@@ -100,12 +100,10 @@ function updatePositionHelper(position) {
     let changeInYDistance = tempAlt - currAlt;
     let changeInTotalDistance = Math.sqrt(Math.pow(changeInXDistance, 2) + Math.pow(changeInYDistance, 2));
     if (changeInTotalDistance > 5) {
-        console.log("here");
         currLat = tempLat;
         currLon = tempLon;
         currAlt = tempAlt;
         let changeInBearing = calculateBearing(tempLat, currLat, tempLon, currLon);
-        console.log(changeInBearing);
         currX = currX + changeInXDistance * Math.sin(toRadians(changeInBearing));
         currZ = currZ + changeInXDistance * -1 * Math.cos(toRadians(changeInBearing));
         cam.setAttribute('position', {
@@ -135,7 +133,6 @@ function placeObjs() {
                     createObject(latitude, longitude, altitude, color);
                 } else if (snapshot.child(object +'/type').val() === 'txt') {
                     let fileName = snapshot.child(object + '/fileName').val();
-                    console.log(fileName);
                     createObjectTxt(latitude, longitude, altitude, fileName);
                 } else if (snapshot.child(object +'/type').val() === 'png') {
                     let fileName = snapshot.child(object + '/fileName').val();
@@ -158,7 +155,6 @@ async function createObject(objLatitude, objLongitude, objAltitude, objColor) {
         let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
         if (distance < 125000) {
             let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
-            demo.innerHTML = "<br>Bearing: " + currHeading;
             let x = distance * Math.sin(toRadians(bearing));
             let y = objAltitude;
             let z = distance * -1 * Math.cos(toRadians(bearing));
@@ -188,7 +184,6 @@ async function createObjectGlb(objLatitude, objLongitude, objAltitude, fileName,
         if (distance < 125000) {
             let url1 = await getFile(fileName, objectCreator, objName);
             let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
-            demo.innerHTML = "<br>Bearing: " + currHeading;
             let x = distance * Math.sin(toRadians(bearing));
             let y = objAltitude;
             let z = distance * -1 * Math.cos(toRadians(bearing));
@@ -213,7 +208,6 @@ async function createObjectPng(objLatitude, objLongitude, objAltitude, fileName,
         if (distance < 125000) {
             let url1 = await getFile(fileName, objectCreator, objName);
             let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
-            demo.innerHTML = "<br>Bearing: " + currHeading;
             let x = distance * Math.sin(toRadians(bearing));
             let y = objAltitude;
             let z = distance * -1 * Math.cos(toRadians(bearing));
@@ -262,7 +256,6 @@ async function createObjectTxt(objLatitude, objLongitude, objAltitude, fileName)
         let distance = calculateDistance(currLat, objLatitude, currLon, objLongitude);
         if (distance < 125000) {
             let bearing = currHeading + calculateBearing(currLat, objLatitude, currLon, objLongitude);
-            demo.innerHTML = "<br>Bearing: " + currHeading;
             let x = distance * Math.sin(toRadians(bearing));
             let y = objAltitude;
             let z = distance * -1 * Math.cos(toRadians(bearing));
@@ -295,7 +288,6 @@ function calculateHeading() {
             if ('ondeviceorientationabsolute' in window) {
                 window.ondeviceorientationabsolute = function(event) {
                     currHeading = event.alpha;
-                    console.log(event.absolute);
                     return true;
                 };
             } else if(event.webkitCompassHeading) {
@@ -304,7 +296,6 @@ function calculateHeading() {
                 return true;
             } else if (event.absolute == true) {
                 var compass = event.alpha;
-                demo.innerHTML = "<br> Heading: " + compass;
                 handleOrientationEvent(compass);
                 return true;
             } else {

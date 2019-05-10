@@ -258,3 +258,7 @@ function moveDown() {
         z: z
     });
 }
+
+function narrativeCategory() {
+    console.log(document.getElementById("car").value);
+}

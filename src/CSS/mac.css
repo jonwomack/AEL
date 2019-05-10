@@ -47,4 +47,8 @@
         position: absolute;
         z-index: 1;
     }
+    select {
+        position: relative;
+        z-index: 3;
+    }
 }

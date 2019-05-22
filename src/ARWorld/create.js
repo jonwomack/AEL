@@ -80,8 +80,8 @@ function insertObjectTxt() {
     sceneEl.appendChild(el);
     //disableInsertButtons();
 }
-setTimeout(function() {
-    insertObjectTxt();}, 5000);
+setTimeout(function() {insertObjectTxt();}, 1000);
+
 function disableInsertButtons() {
     document.getElementById("txtButton").disabled = true;
 }

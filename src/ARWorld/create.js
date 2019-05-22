@@ -115,7 +115,7 @@ async function setObject() {
             for (let i = 0; i < objTopics.length; i++) {
                 console.log(objTopics[i]);
             }
-            writeObjectDataTxt(objName, lat, lon, y, username, true, document.getElementById('insert3').value);
+            writeObjectDataTxt(objName, lat, lon, y, username, true, document.getElementById('insert3').value, objTopics);
         } else if (el.className === 'glb') {
             console.log("Creating GLB");
             writeObjectDataGlb(objName, lat, lon, y, username, true, file.name);
@@ -162,7 +162,7 @@ function writeObjectDataPng(name, latitude, longitude, altitude, username, pub, 
         fileName: fileName
     });
 }
-function writeObjectDataTxt(name, latitude, longitude, altitude, username, pub, fileName) {
+function writeObjectDataTxt(name, latitude, longitude, altitude, username, pub, fileName, topics) {
     firebase.database().ref('/objects/' + name).set({
         longitude: longitude,
         latitude: latitude,
@@ -170,7 +170,8 @@ function writeObjectDataTxt(name, latitude, longitude, altitude, username, pub, 
         username: username,
         public: pub,
         type: 'txt',
-        fileName: fileName
+        fileName: fileName,
+        topics: topics
     });
 }
 
@@ -206,7 +207,7 @@ function moveLeft() {
     let y = el.getAttribute('position').y;
     let z = el.getAttribute('position').z;
     el.setAttribute('position', {
-        x: x - 1,
+        x: x - .1,
         y: y,
         z: z
     });
@@ -217,7 +218,7 @@ function moveRight() {
     let y = el.getAttribute('position').y;
     let z = el.getAttribute('position').z;
     el.setAttribute('position', {
-        x: x + 1,
+        x: x + .1,
         y: y,
         z: z
     });
@@ -230,7 +231,7 @@ function moveForward() {
     el.setAttribute('position', {
         x: x,
         y: y,
-        z: z + 1
+        z: z + .1
     });
 }
 function moveBackward() {
@@ -241,7 +242,7 @@ function moveBackward() {
     el.setAttribute('position', {
         x: x,
         y: y,
-        z: z - 1
+        z: z - .1
     });
 }
 function moveUp() {
@@ -251,7 +252,7 @@ function moveUp() {
     let z = el.getAttribute('position').z;
     el.setAttribute('position', {
         x: x,
-        y: y + 1,
+        y: y + .1,
         z: z
     });
 }
@@ -262,10 +263,47 @@ function moveDown() {
     let z = el.getAttribute('position').z;
     el.setAttribute('position', {
         x: x,
-        y: y - 1,
+        y: y - .1,
         z: z
     });
 }
+
+document.onkeydown = function(event) {
+    let el = document.getElementById('moveable');
+    let x = el.getAttribute('position').x;
+    let y = el.getAttribute('position').y;
+    let z = el.getAttribute('position').z;
+    switch (event.keyCode) {
+        case 37:
+            el.setAttribute('position', {
+                x: x - .1,
+                y: y,
+                z: z
+            });
+            break;
+        case 38:
+            el.setAttribute('position', {
+                x: x,
+                y: y + .1,
+                z: z
+            });
+            break;
+        case 39:
+            el.setAttribute('position', {
+                x: x + .1,
+                y: y,
+                z: z
+            });
+            break;
+        case 40:
+            el.setAttribute('position', {
+                x: x,
+                y: y - .1,
+                z: z
+            });
+            break;
+    }
+};
 
 function narrativeCategory() {
     console.log(document.getElementById("car").value);

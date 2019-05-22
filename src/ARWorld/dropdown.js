@@ -102,9 +102,11 @@ var objTopics = [];
 function addTopics() {
     let topic = document.getElementById("myInput").value;
     document.getElementById("myInput").value = "";
-    if (!objTopics.includes(topic)) {
+    if (!objTopics.includes(topic) && topics.includes(topic)) {
         console.log(topic);
         objTopics.push(topic);
+    } else {
+        alert("Topic already added or doesn't exist");
     }
 }
 

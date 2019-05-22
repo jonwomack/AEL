@@ -72,13 +72,18 @@ function insertObjectTxt() {
     });
     el.className += "txt";
     let sceneEl = document.querySelector('a-scene');
+    document.getElementById('insert3').addEventListener("input", function () {
+        el.setAttribute('text', {
+            value: `${this.value}`,
+        });
+    });
     sceneEl.appendChild(el);
-    disableInsertButtons();
+    //disableInsertButtons();
 }
+setTimeout(function() {
+    insertObjectTxt();}, 5000);
 function disableInsertButtons() {
-    document.getElementById("pngButton").disabled = true;
     document.getElementById("txtButton").disabled = true;
-    document.getElementById("glbButton").disabled = true;
 }
 
 
@@ -107,6 +112,9 @@ async function setObject() {
             createFile(file, objName);
         } else if (el.className === 'txt') {
             console.log("Creating TXT");
+            for (let i = 0; i < objTopics.length; i++) {
+                console.log(objTopics[i]);
+            }
             writeObjectDataTxt(objName, lat, lon, y, username, true, document.getElementById('insert3').value);
         } else if (el.className === 'glb') {
             console.log("Creating GLB");

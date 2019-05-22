@@ -18,28 +18,44 @@
     <br>
 <input id="objName" type="text" name="objectName" value="Object Name">
     <br>
-        <select id="car">
-            <option value="0">Beginning</option>
-            <option value="1">Action</option>
-            <option value="2">End</option>
-        </select>
-    <br>
-<button id="txtButton" onclick="insertObjectTxt()">Text</button>
+<!--<button id="txtButton" onclick="insertObjectTxt()">Text</button>-->
 <input id="insert3" type="text" name="textContent" value="Text">
 <br>
-<button onclick="setObject()">Create</button>
 </div>
-<button onclick="moveLeft()">Left</button>
-<button onclick="moveRight()">Right</button>
 <button onclick="moveForward()">Forward</button>
 <button onclick="moveBackward()">Backward</button>
-<button onclick="moveUp()">Up</button>
-<button onclick="moveDown()">Down</button>
+<br>
+<input id="myInput" type="text" name="myCountry" placeholder="Topic">
+<button onclick="addTopics()">Add</button>
+<script type="text/javascript" src="dropdown.js"></script>
+<br>
+<svg height="50" width="50">
+</svg>
+<svg height="50" width="50" onclick="moveUp()">
+    <path d="M0 50 L25 0 L50 50 Z" fill="blue"/>
+</svg>
+<br>
+<svg height="50" width="50" onclick="moveLeft()">
+    <path d="M0 25 L50 0 L50 50 Z" fill="blue"/>
+</svg>
+<svg height="50" width="50" onclick="setObject()">
+    <path d="M0 0 L50 0 L50 50 L0 50 Z" fill="green"/>
+</svg>
+<svg height="50" width="50" onclick="moveRight()">
+    <path d="M0 0 L50 25 L0 50 Z" fill="blue"/>
+</svg>
+<br>
+<svg height="50" width="50">
+</svg>
+<svg height="50" width="50" onclick="moveDown()">
+    <path d="M0 0 L25 50 L50 0 Z" fill="blue"/>
+</svg>
+<br>
 <div class="camera">
     <video  class="videoElement"></video>
 </div>
 <div id="a-scene">
-    <a-scene background="color: black; transparent: true" vr-mode-ui="enabled: true">
+    <a-scene background="color: black; transparent: true" vr-mode-ui="enabled: false">
         <a-assets id="assets">
         </a-assets>
         <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#93648D"></a-plane>

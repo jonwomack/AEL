@@ -31,24 +31,35 @@
     button {
         position: relative;
         z-index: 3;
+        left: 50%;
+    }
+    svg {
+        position: relative;
+        z-index: 3;
+        left: 50%;
     }
     input {
         position: relative;
         z-index: 3;
+        left: 50%;
     }
     .videoElement {
         position: absolute;
         top: 0%;
         left: 0%;
         width: 100%;
-        z-index: -10;
+        z-index: -3;
     }
     #a-scene {
         position: absolute;
-        z-index: 1;
+        z-index: -1;
     }
     select {
         position: relative;
         z-index: 3;
+        left: 50%;
+    }
+    .myInputautocomplete-items {
+        z-index: 10;
     }
 }

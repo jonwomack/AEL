@@ -68,7 +68,7 @@ function insertObjectTxt() {
     el.setAttribute('position', {
         x: currX,
         y: currAlt,
-        z: currZ
+        z: currZ - 1
     });
     el.className += "txt";
     let sceneEl = document.querySelector('a-scene');

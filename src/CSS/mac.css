@@ -62,4 +62,12 @@
     .myInputautocomplete-items {
         z-index: 10;
     }
+    strong {
+        position: relative;
+        left: 50%;
+    }
+    font {
+        position: relative;
+        left: 50%;
+    }
 }
